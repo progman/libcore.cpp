@@ -7,6 +7,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <string>
 #include <string.h>
 #include <errno.h>
@@ -15,7 +16,7 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // check const char* in set [0-9]
 // TODO: add hex
-bool lib_cpp::is_uint(const char* str)
+bool lib_cpp::is_udec(const char* str)
 {
 	size_t i = 0;
 
@@ -47,24 +48,210 @@ bool lib_cpp::is_uint(const char* str)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // check const std::string in set [0-9]
-bool lib_cpp::is_uint(const std::string& str)
+bool lib_cpp::is_udec(const std::string& str)
 {
-	return lib_cpp::is_uint(str.c_str());
+	return lib_cpp::is_udec(str.c_str());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert const char* to unsigned int
-bool lib_cpp::str2uint(const char* str, unsigned int& value, unsigned int default_value)
+// convert hex string to uint64_t
+bool lib_cpp::hex2uint64_t(uint64_t& value, uint64_t default_value, const char* pstr, size_t size)
 {
-	value = default_value;
-
-	if (is_uint(str) == false)
+	if (pstr == NULL)
 	{
+		value = default_value;
 		return false;
 	}
 
-	value = atoll(str);
+
+	char ch1, ch2;
+	uint8_t r1, r2, out;
+
+
+	size_t byte_count = size / 2;
+	if (byte_count > sizeof(uint64_t))
+	{
+		value = default_value;
+		return false;
+	}
+
+	bool flag_parity = true;
+	if ((byte_count * 2) != size)
+	{
+		flag_parity = false;
+	}
+
+
+	value = 0;
+	for (;;)
+	{
+		if (flag_parity == false)
+		{
+			ch1 = 0;
+			flag_parity = true;
+		}
+		else
+		{
+			ch1 = *pstr;
+			pstr++;
+		}
+		ch2 = *pstr;
+		pstr++;
+
+
+		if (lib_cpp::hex2bin((uint8_t)ch1, r1) == false)
+		{
+			value = default_value;
+			return false;
+		}
+		if (lib_cpp::hex2bin((uint8_t)ch2, r2) == false)
+		{
+			value = default_value;
+			return false;
+		}
+		out = (uint8_t)((r1 << 4) + r2);
+
+
+		value <<= 8;
+		value  |= out;
+		byte_count--;
+
+
+		if (byte_count == 0) break;
+	}
+
 
 	return true;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// convert hex string to uint64_t
+bool lib_cpp::hex2uint64_t(uint64_t& value, uint64_t default_value, const char* pstr)
+{
+	if (pstr == NULL)
+	{
+		value = default_value;
+		return false;
+	}
+
+	return lib_cpp::hex2uint64_t(value, default_value, pstr, strlen(pstr));
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// convert dec string to uint64_t
+bool lib_cpp::dec2uint64_t(uint64_t& value, uint64_t default_value, const char* pstr, size_t size)
+{
+	const char* pmax = "18446744073709551615";
+	size_t pmax_size = strlen(pmax);
+
+
+// check size input string
+	if (size > pmax_size)
+	{
+		value = default_value;
+		return false;
+	}
+
+
+// check data input string
+	if (lib_cpp::is_udec(pstr) == false)
+	{
+		value = default_value;
+		return false;
+	}
+
+
+// if input string small convert it
+	if (size < pmax_size)
+	{
+		value = strtoull(pstr, NULL, 10);
+		return true;
+	}
+
+
+// if input string size equal max size,  check it
+	bool flag_ok = false;
+	for (size_t i=0; i < pmax_size; i++)
+	{
+		if (pmax[i] > pstr[i])
+		{
+			flag_ok = true;
+			break;
+		}
+
+		if (pmax[i] < pstr[i])
+		{
+			break;
+		}
+
+		if ((i + 1) == pmax_size)
+		{
+			flag_ok = true;
+			break;
+		}
+	}
+	if (flag_ok == false)
+	{
+		value = default_value;
+		return false;
+	}
+
+
+	value = strtoull(pstr, NULL, 10);
+	return true;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// convert dec string to uint64_t
+bool lib_cpp::dec2uint64_t(uint64_t& value, uint64_t default_value, const char* pstr)
+{
+	if (pstr == NULL)
+	{
+		value = default_value;
+		return false;
+	}
+
+	return lib_cpp::dec2uint64_t(value, default_value, pstr, strlen(pstr));
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// convert const char* to uint64_t
+bool lib_cpp::str2uint64_t(uint64_t& value, uint64_t default_value, const char* pstr, size_t size)
+{
+	if (pstr == NULL)
+	{
+		value = default_value;
+		return false;
+	}
+
+
+	if (*pstr == '0')
+	{
+		if (pstr[1] == 'x')
+		{
+			return hex2uint64_t(value, default_value, pstr + 2, size - 2);
+		}
+	}
+
+
+	return lib_cpp::dec2uint64_t(value, default_value, pstr, size);
+
+
+//	if (is_udec(pstr) == false)
+//	{
+//		value = default_value;
+//		return false;
+//	}
+
+
+//	value = atoll(pstr);
+
+
+//	return true;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// convert const char* to uint64_t
+bool lib_cpp::str2uint64_t(uint64_t& value, uint64_t default_value, const char* pstr)
+{
+	value = default_value;
+	if (pstr == NULL) return false;
+
+	return lib_cpp::str2uint64_t(value, default_value, pstr, strlen(pstr));
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert int to string

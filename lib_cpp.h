@@ -10,13 +10,28 @@
 namespace lib_cpp
 {
 // check const char* in set [0-9]
-	bool is_uint(const char* str);
+	bool is_udec(const char* str);
 
 // check const std::string in set [0-9]
-	bool is_uint(const std::string& str);
+	bool is_udec(const std::string& str);
 
-// convert const char* to unsigned int
-	bool str2uint(const char* str, unsigned int& value, unsigned int default_value);
+// convert hex string to uint64_t
+	bool hex2uint64_t(uint64_t& value, uint64_t default_value, const char* pstr, size_t size);
+
+// convert hex string to uint64_t
+	bool hex2uint64_t(uint64_t& value, uint64_t default_value, const char* pstr);
+
+// convert dec string to uint64_t
+	bool dec2uint64_t(uint64_t& value, uint64_t default_value, const char* pstr, size_t size);
+
+// convert dec string to uint64_t
+	bool dec2uint64_t(uint64_t& value, uint64_t default_value, const char* pstr);
+
+// convert const char* to uint64_t
+	bool str2uint64_t(uint64_t& value, uint64_t default_value, const char* pstr, size_t size);
+
+// convert const char* to uint64_t
+	bool str2uint64_t(uint64_t& value, uint64_t default_value, const char* pstr);
 
 // convert int to string
 	std::string sint2str(int value);
