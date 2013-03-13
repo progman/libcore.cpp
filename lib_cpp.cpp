@@ -10,6 +10,7 @@
 #include <string>
 #include <string.h>
 #include <errno.h>
+#include <algorithm>
 #include "lib_cpp.h"
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // check const char* in set [0-9]
@@ -323,5 +324,46 @@ bool lib_cpp::hex2bin(uint8_t source, uint8_t& target)
 	target = hex2bin_table[source];
 
 	return (target == 0xff) ? false : true;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// convert string to bool
+bool lib_cpp::str2bool(const std::string& str)
+{
+	std::string tmp = str;
+	std::transform(str.begin(), str.end(), tmp.begin(), tolower);
+
+	if
+	(
+		(tmp == "true") ||
+		(tmp == "t")    ||
+		(tmp == "on")   ||
+		(tmp == "1")
+	)
+	{
+		return true;
+	}
+
+	return false;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// return (concat str1 and str2) or NULL
+char* lib_cpp::concat_str(const char* str1, const char* str2)
+{
+	if ((str1 == NULL) || (str2 == NULL)) return NULL;
+
+	size_t str1_size = strlen(str1);
+	size_t str2_size = strlen(str2);
+
+	char* str3 = (char*)malloc(str1_size + str2_size + 1);
+	if (str3 == NULL)
+	{
+		return NULL;
+	}
+
+	memcpy(str3, str1, str1_size);
+	memcpy(str3 + str1_size, str2, str2_size);
+	str3[str1_size + str2_size] = 0;
+
+	return str3;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
