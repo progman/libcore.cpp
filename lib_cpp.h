@@ -12,8 +12,14 @@ namespace lib_cpp
 // check const char* in set [0-9]
 	bool is_uint(const char* str);
 
+// check const std::string in set [0-9]
+	bool is_uint(const std::string& str);
+
 // convert const char* to unsigned int
 	bool str2uint(const char* str, unsigned int& value, unsigned int default_value);
+
+// convert int to string
+	std::string sint2str(int value);
 
 // pedantic read from descriptor
 	size_t pedantic_read(int fd, void *data, size_t size);
@@ -38,6 +44,9 @@ namespace lib_cpp
 
 // return (concat str1 and str2) or NULL
 	char* concat_str(const char* str1, const char* str2);
+
+// get env var and convert to bool
+	bool env2bool(const char* name, bool value_default = false);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #endif
