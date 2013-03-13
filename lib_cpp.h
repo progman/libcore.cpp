@@ -26,11 +26,8 @@ namespace lib_cpp
 // write data to exist file
 	int file_set(const char *filename, off_t offset, const void *pdata, size_t data_size);
 
-// convert raw byte to char
-	const char* raw2hex(const uint8_t byte, bool flag_low = true);
-
-// convert bin char to hex string
-	const char* bin2hex(uint8_t ch, bool flag_up = false);
+// convert byte to hex string
+	const char* bin2hex(const uint8_t byte, bool flag_up = false);
 
 // convert sibmol to number, example: '0' -> 0, 'F' -> 15
 	bool hex2bin(uint8_t source, uint8_t& target);
