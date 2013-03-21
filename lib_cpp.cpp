@@ -20,7 +20,7 @@ bool lib_cpp::is_udec(const char *str)
 {
 	size_t i = 0;
 
-	for(;; i++, str++)
+	for (;; i++, str++)
 	{
 		char ch = *str;
 
