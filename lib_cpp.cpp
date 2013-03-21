@@ -14,9 +14,9 @@
 #include <algorithm>
 #include "lib_cpp.h"
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// check const char* in set [0-9]
+// check const char * in set [0-9]
 // TODO: add hex
-bool lib_cpp::is_udec(const char* str)
+bool lib_cpp::is_udec(const char *str)
 {
 	size_t i = 0;
 
@@ -48,13 +48,13 @@ bool lib_cpp::is_udec(const char* str)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // check const std::string in set [0-9]
-bool lib_cpp::is_udec(const std::string& str)
+bool lib_cpp::is_udec(const std::string &str)
 {
 	return lib_cpp::is_udec(str.c_str());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert hex string to uint64_t
-bool lib_cpp::hex2uint64_t(uint64_t& value, uint64_t default_value, const char* pstr, size_t size)
+bool lib_cpp::hex2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr, size_t size)
 {
 	if (pstr == NULL)
 	{
@@ -124,7 +124,7 @@ bool lib_cpp::hex2uint64_t(uint64_t& value, uint64_t default_value, const char* 
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert hex string to uint64_t
-bool lib_cpp::hex2uint64_t(uint64_t& value, uint64_t default_value, const char* pstr)
+bool lib_cpp::hex2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr)
 {
 	if (pstr == NULL)
 	{
@@ -136,9 +136,9 @@ bool lib_cpp::hex2uint64_t(uint64_t& value, uint64_t default_value, const char* 
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert dec string to uint64_t
-bool lib_cpp::dec2uint64_t(uint64_t& value, uint64_t default_value, const char* pstr, size_t size)
+bool lib_cpp::dec2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr, size_t size)
 {
-	const char* pmax = "18446744073709551615";
+	const char *pmax = "18446744073709551615";
 	size_t pmax_size = strlen(pmax);
 
 
@@ -199,7 +199,7 @@ bool lib_cpp::dec2uint64_t(uint64_t& value, uint64_t default_value, const char* 
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert dec string to uint64_t
-bool lib_cpp::dec2uint64_t(uint64_t& value, uint64_t default_value, const char* pstr)
+bool lib_cpp::dec2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr)
 {
 	if (pstr == NULL)
 	{
@@ -210,8 +210,8 @@ bool lib_cpp::dec2uint64_t(uint64_t& value, uint64_t default_value, const char* 
 	return lib_cpp::dec2uint64_t(value, default_value, pstr, strlen(pstr));
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert const char* to uint64_t
-bool lib_cpp::str2uint64_t(uint64_t& value, uint64_t default_value, const char* pstr, size_t size)
+// convert const char * to uint64_t
+bool lib_cpp::str2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr, size_t size)
 {
 	if (pstr == NULL)
 	{
@@ -245,8 +245,8 @@ bool lib_cpp::str2uint64_t(uint64_t& value, uint64_t default_value, const char* 
 //	return true;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert const char* to uint64_t
-bool lib_cpp::str2uint64_t(uint64_t& value, uint64_t default_value, const char* pstr)
+// convert const char * to uint64_t
+bool lib_cpp::str2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr)
 {
 	value = default_value;
 	if (pstr == NULL) return false;
@@ -266,7 +266,7 @@ std::string lib_cpp::sint2str(int value)
 // pedantic read from descriptor
 size_t lib_cpp::pedantic_read(int fd, void *data, size_t size)
 {
-	char *p = (char*)data;
+	char *p = (char *)data;
 	size_t cur_size = size;
 
 	for (;;)
@@ -287,7 +287,7 @@ size_t lib_cpp::pedantic_read(int fd, void *data, size_t size)
 // pedantic write to descriptor
 size_t lib_cpp::pedantic_write(int fd, const void *data, size_t size)
 {
-	char *p = (char*)data;
+	char *p = (char *)data;
 	size_t cur_size = size;
 
 	for (;;)
@@ -451,9 +451,9 @@ int lib_cpp::file_set(const char *filename, off_t offset, const void *pdata, siz
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert byte to hex string
-const char* lib_cpp::bin2hex(const uint8_t byte, bool flag_up)
+const char *lib_cpp::bin2hex(const uint8_t byte, bool flag_up)
 {
-	static const char* const bin2hex_table[] =
+	static const char *const bin2hex_table[] =
 	{
 //		 00    01    02    03    04    05    06    07    08    09    0a    0b    0c    0d    0e    0f
 		"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "0a", "0b", "0c", "0d", "0e", "0f", // 00
@@ -474,7 +474,7 @@ const char* lib_cpp::bin2hex(const uint8_t byte, bool flag_up)
 		"f0", "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "f9", "fa", "fb", "fc", "fd", "fe", "ff"  // f0
 	};
 
-	static const char* const bin2hex_up_table[] =
+	static const char *const bin2hex_up_table[] =
 	{
 //		 00    01    02    03    04    05    06    07    08    09    0A    0B    0C    0D    0E    0F
 		"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "0A", "0B", "0C", "0D", "0E", "0F", // 00
@@ -500,7 +500,7 @@ const char* lib_cpp::bin2hex(const uint8_t byte, bool flag_up)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert sibmol to number, example: '0' -> 0, 'F' -> 15
-bool lib_cpp::hex2bin(uint8_t source, uint8_t& target)
+bool lib_cpp::hex2bin(uint8_t source, uint8_t &target)
 {
 	static uint8_t hex2bin_table[] =
 	{
@@ -529,7 +529,7 @@ bool lib_cpp::hex2bin(uint8_t source, uint8_t& target)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert string to bool
-bool lib_cpp::str2bool(const std::string& str)
+bool lib_cpp::str2bool(const std::string &str)
 {
 	std::string tmp = str;
 	std::transform(str.begin(), str.end(), tmp.begin(), tolower);
@@ -549,14 +549,14 @@ bool lib_cpp::str2bool(const std::string& str)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // return (concat str1 and str2) or NULL
-char* lib_cpp::concat_str(const char* str1, const char* str2)
+char *lib_cpp::concat_str(const char *str1, const char *str2)
 {
 	if ((str1 == NULL) || (str2 == NULL)) return NULL;
 
 	size_t str1_size = strlen(str1);
 	size_t str2_size = strlen(str2);
 
-	char* str3 = (char*)malloc(str1_size + str2_size + 1);
+	char *str3 = (char *)malloc(str1_size + str2_size + 1);
 	if (str3 == NULL)
 	{
 		return NULL;
@@ -570,9 +570,9 @@ char* lib_cpp::concat_str(const char* str1, const char* str2)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // get env var and convert to bool
-bool lib_cpp::env2bool(const char* name, bool value_default)
+bool lib_cpp::env2bool(const char *name, bool value_default)
 {
-	char* p = getenv(name);
+	char *p = getenv(name);
 	if (p == NULL)
 	{
 		return value_default;
