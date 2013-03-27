@@ -10,22 +10,28 @@
 namespace lib_cpp
 {
 // check const char * in set 0x[0-9a-fA-F]+
-	bool is_hex(const char *str);
+	bool is_hex(const char *pstr);
 
 // check const std::string in set 0x[0-9a-fA-F]+
 	bool is_hex(const std::string &str);
 
 // check const char * in set [0-9]+
-	bool is_udec(const char *str);
+	bool is_udec(const char *pstr);
 
 // check const std::string in set [0-9]+
 	bool is_udec(const std::string &str);
 
 // check const char * in set [-+]*[0-9]+
-	bool is_sdec(const char *str);
+	bool is_sdec(const char *pstr);
 
 // check const std::string in set [-+]*[0-9]+
 	bool is_sdec(const std::string &str);
+
+// check number in str less number in str_max
+	bool is_numeric_string_overflow(const char *pstr_max, const char *pstr, const size_t size);
+
+// check number in str less number in str_max
+	bool is_numeric_string_overflow(const char *pstr_max, const std::string &str);
 
 // convert hex string to uint64_t
 	bool hex2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr, size_t size);
@@ -55,16 +61,16 @@ namespace lib_cpp
 	std::string sint2str(int value);
 
 // pedantic read from descriptor
-	size_t pedantic_read(int fd, void *data, size_t size);
+	size_t pedantic_read(int fd, void *pdata, size_t size);
 
 // pedantic write to descriptor
-	size_t pedantic_write(int fd, const void *data, size_t size);
+	size_t pedantic_write(int fd, const void *pdata, size_t size);
 
 // read data from exist file
-	int file_get(const char *filename, off_t offset, void *pdata, size_t data_size);
+	int file_get(const char *pfilename, off_t offset, void *pdata, size_t data_size);
 
 // write data to exist file
-	int file_set(const char *filename, off_t offset, const void *pdata, size_t data_size);
+	int file_set(const char *pfilename, off_t offset, const void *pdata, size_t data_size);
 
 // convert byte to hex string
 	const char *bin2hex(const uint8_t byte, bool flag_up = false);
@@ -76,10 +82,10 @@ namespace lib_cpp
 	bool str2bool(const std::string &str);
 
 // return (concat str1 and str2) or NULL
-	char *concat_str(const char *str1, const char *str2);
+	char *concat_str(const char *pstr1, const char *pstr2);
 
 // get env var and convert to bool
-	bool env2bool(const char *name, bool value_default = false);
+	bool env2bool(const char *pname, bool value_default = false);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #endif

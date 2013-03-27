@@ -36,20 +36,22 @@ static uint8_t hex2bin_table[] =
 };
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // check const char * in set 0x[0-9a-fA-F]+
-bool lib_cpp::is_hex(const char *str)
+bool lib_cpp::is_hex(const char *pstr)
 {
-	if (*str != '0') return false;
-	str++;
+	if (pstr == NULL) return false;
 
-	if (*str != 'x') return false;
-	str++;
+	if (*pstr != '0') return false;
+	pstr++;
+
+	if (*pstr != 'x') return false;
+	pstr++;
 
 
 	size_t i = 0;
 
-	for (;; i++, str++)
+	for (;; i++, pstr++)
 	{
-		uint8_t ch = *str;
+		uint8_t ch = *pstr;
 
 		if (ch == 0)
 		{
@@ -77,13 +79,15 @@ bool lib_cpp::is_hex(const std::string &str)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // check const char * in set [0-9]+
-bool lib_cpp::is_udec(const char *str)
+bool lib_cpp::is_udec(const char *pstr)
 {
+	if (pstr == NULL) return false;
+
 	size_t i = 0;
 
-	for (;; i++, str++)
+	for (;; i++, pstr++)
 	{
-		char ch = *str;
+		char ch = *pstr;
 
 		if (ch == 0)
 		{
@@ -115,68 +119,86 @@ bool lib_cpp::is_udec(const std::string &str)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // check const char * in set [-+]*[0-9]+
-bool lib_cpp::is_sdec(const char *str)
+bool lib_cpp::is_sdec(const char *pstr)
 {
+	if (pstr == NULL) return false;
+
 	if
 	(
-		(*str != '-') &&
-		(*str != '+')
+		(*pstr != '-') &&
+		(*pstr != '+')
 	)
 	{
 		return false;
 	}
 
-	str++;
+	pstr++;
 
 
-	return lib_cpp::is_udec(str);
-/*
-	size_t i = 0;
-
-	for (;; i++, str++)
-	{
-		char ch = *str;
-
-		if (ch == 0)
-		{
-			break;
-		}
-
-		if
-		(
-			(ch < '0') ||
-			(ch > '9')
-		)
-		{
-			if (i == 0)
-			{
-				if
-				(
-					(ch == '-') ||
-					(ch == '+')
-				)
-				{
-					continue;
-				}
-			}
-
-			return false;
-		}
-	}
-
-	if (i == 0)
-	{
-		return false;
-	}
-
-	return true;
-*/
+	return lib_cpp::is_udec(pstr);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // check const std::string in set [-+]*[0-9]+
 bool lib_cpp::is_sdec(const std::string &str)
 {
 	return lib_cpp::is_sdec(str.c_str());
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// check number in str less number in str_max
+bool lib_cpp::is_numeric_string_overflow(const char *pstr_max, const char *pstr, const size_t size)
+{
+	if
+	(
+		(pstr_max == NULL) ||
+		(pstr     == NULL)
+	)
+	{
+		return false;
+	}
+
+	size_t str_max_size = strlen(pstr_max);
+
+
+// check size input string
+	if (size > str_max_size)
+	{
+		return false;
+	}
+
+
+	if (size < str_max_size)
+	{
+		return true;
+	}
+
+
+// size == str_max_size
+	for (size_t i=0; i < str_max_size; i++)
+	{
+		if (pstr_max[i] > pstr[i])
+		{
+			break;
+		}
+
+		if (pstr_max[i] < pstr[i])
+		{
+			return false;
+		}
+
+		if ((i + 1) == str_max_size)
+		{
+			break;
+		}
+	}
+
+
+	return true;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// check number in str less number in str_max
+bool lib_cpp::is_numeric_string_overflow(const char *pstr_max, const std::string &str)
+{
+	return lib_cpp::is_numeric_string_overflow(pstr_max, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert hex string to uint64_t
@@ -281,19 +303,7 @@ bool lib_cpp::hex2uint64_t(uint64_t &value, uint64_t default_value, const char *
 // convert dec string to uint64_t
 bool lib_cpp::dec2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr, size_t size)
 {
-	const char *pmax = "18446744073709551615";
-	size_t pmax_size = strlen(pmax);
-
-
-// check size input string
-	if (size > pmax_size)
-	{
-		value = default_value;
-		return false;
-	}
-
-
-// check data input string
+// check correct data input string
 	if (lib_cpp::is_udec(pstr) == false)
 	{
 		value = default_value;
@@ -301,42 +311,15 @@ bool lib_cpp::dec2uint64_t(uint64_t &value, uint64_t default_value, const char *
 	}
 
 
-// if input string small convert it
-	if (size < pmax_size)
-	{
-		value = strtoull(pstr, NULL, 10);
-		return true;
-	}
-
-
-// if input string size equal max size, check it
-	bool flag_ok = false;
-	for (size_t i=0; i < pmax_size; i++)
-	{
-		if (pmax[i] > pstr[i])
-		{
-			flag_ok = true;
-			break;
-		}
-
-		if (pmax[i] < pstr[i])
-		{
-			break;
-		}
-
-		if ((i + 1) == pmax_size)
-		{
-			flag_ok = true;
-			break;
-		}
-	}
-	if (flag_ok == false)
+// check overflow
+	if (lib_cpp::is_numeric_string_overflow("18446744073709551615", pstr, size) == false)
 	{
 		value = default_value;
 		return false;
 	}
 
 
+// convert it
 	value = strtoull(pstr, NULL, 10); // atoll
 	return true;
 }
@@ -356,22 +339,7 @@ bool lib_cpp::dec2uint64_t(uint64_t &value, uint64_t default_value, const char *
 // convert dec string to int64_t
 bool lib_cpp::dec2int64_t(int64_t &value, int64_t default_value, const char *pstr, size_t size)
 {
-	const char *pmin = "-9223372036854775806";
-	size_t pmin_size = strlen(pmin);
-
-	const char *pmax = "+9223372036854775807";
-	size_t pmax_size = pmin_size;
-
-
-// check size input string
-	if (size > pmax_size)
-	{
-		value = default_value;
-		return false;
-	}
-
-
-// check data input string
+// check correct data input string
 	if (lib_cpp::is_sdec(pstr) == false)
 	{
 		value = default_value;
@@ -379,70 +347,26 @@ bool lib_cpp::dec2int64_t(int64_t &value, int64_t default_value, const char *pst
 	}
 
 
-// if input string small convert it
-	if (size < pmax_size)
-	{
-		value = strtoll(pstr, NULL, 10);
-		return true;
-	}
-
-
-// if input string size equal max size, check it
-	bool flag_ok = false;
-
+// check overflow
 	if (*pstr == '-')
 	{
-		for (size_t i=0; i < pmin_size; i++)
+		if (lib_cpp::is_numeric_string_overflow("-9223372036854775806", pstr, size) == false)
 		{
-			if (pmin[i] > pstr[i])
-			{
-				flag_ok = true;
-				break;
-			}
-
-			if (pmin[i] < pstr[i])
-			{
-				break;
-			}
-
-			if ((i + 1) == pmin_size)
-			{
-				flag_ok = true;
-				break;
-			}
+			value = default_value;
+			return false;
+		}
+	}
+	else
+	{
+		if (lib_cpp::is_numeric_string_overflow("+9223372036854775807", pstr, size) == false)
+		{
+			value = default_value;
+			return false;
 		}
 	}
 
-	if (*pstr == '+')
-	{
-		for (size_t i=0; i < pmax_size; i++)
-		{
-			if (pmax[i] > pstr[i])
-			{
-				flag_ok = true;
-				break;
-			}
 
-			if (pmax[i] < pstr[i])
-			{
-				break;
-			}
-
-			if ((i + 1) == pmax_size)
-			{
-				flag_ok = true;
-				break;
-			}
-		}
-	}
-
-	if (flag_ok == false)
-	{
-		value = default_value;
-		return false;
-	}
-
-
+// convert it
 	value = strtoll(pstr, NULL, 10); // atoll
 	return true;
 }
@@ -503,9 +427,9 @@ std::string lib_cpp::sint2str(int value)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // pedantic read from descriptor
-size_t lib_cpp::pedantic_read(int fd, void *data, size_t size)
+size_t lib_cpp::pedantic_read(int fd, void *pdata, size_t size)
 {
-	char *p = (char *)data;
+	char *p = (char *)pdata;
 	size_t cur_size = size;
 
 	for (;;)
@@ -524,9 +448,9 @@ size_t lib_cpp::pedantic_read(int fd, void *data, size_t size)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // pedantic write to descriptor
-size_t lib_cpp::pedantic_write(int fd, const void *data, size_t size)
+size_t lib_cpp::pedantic_write(int fd, const void *pdata, size_t size)
 {
-	char *p = (char *)data;
+	char *p = (char *)pdata;
 	size_t cur_size = size;
 
 	for (;;)
@@ -544,13 +468,13 @@ size_t lib_cpp::pedantic_write(int fd, const void *data, size_t size)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // read data from exist file
-int lib_cpp::file_get(const char *filename, off_t offset, void *pdata, size_t data_size)
+int lib_cpp::file_get(const char *pfilename, off_t offset, void *pdata, size_t data_size)
 {
 	int rc;
 
 
 // open file
-	rc = open(filename, O_RDONLY);
+	rc = open(pfilename, O_RDONLY);
 	if (rc == -1)
 	{
 		printf("ERROR[open()]: %s\n", strerror(errno));
@@ -612,13 +536,13 @@ int lib_cpp::file_get(const char *filename, off_t offset, void *pdata, size_t da
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // write data to exist file
-int lib_cpp::file_set(const char *filename, off_t offset, const void *pdata, size_t data_size)
+int lib_cpp::file_set(const char *pfilename, off_t offset, const void *pdata, size_t data_size)
 {
 	int rc;
 
 
 // open file
-	rc = open(filename, O_WRONLY);
+	rc = open(pfilename, O_WRONLY);
 	if (rc == -1)
 	{
 		printf("ERROR[open()]: %s\n", strerror(errno));
@@ -767,30 +691,30 @@ bool lib_cpp::str2bool(const std::string &str)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // return (concat str1 and str2) or NULL
-char *lib_cpp::concat_str(const char *str1, const char *str2)
+char *lib_cpp::concat_str(const char *pstr1, const char *pstr2)
 {
-	if ((str1 == NULL) || (str2 == NULL)) return NULL;
+	if ((pstr1 == NULL) || (pstr2 == NULL)) return NULL;
 
-	size_t str1_size = strlen(str1);
-	size_t str2_size = strlen(str2);
+	size_t str1_size = strlen(pstr1);
+	size_t str2_size = strlen(pstr2);
 
-	char *str3 = (char *)malloc(str1_size + str2_size + 1);
-	if (str3 == NULL)
+	char *pstr3 = (char *)malloc(str1_size + str2_size + 1);
+	if (pstr3 == NULL)
 	{
 		return NULL;
 	}
 
-	memcpy(str3, str1, str1_size);
-	memcpy(str3 + str1_size, str2, str2_size);
-	str3[str1_size + str2_size] = 0;
+	memcpy(pstr3, pstr1, str1_size);
+	memcpy(pstr3 + str1_size, pstr2, str2_size);
+	pstr3[str1_size + str2_size] = 0;
 
-	return str3;
+	return pstr3;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // get env var and convert to bool
-bool lib_cpp::env2bool(const char *name, bool value_default)
+bool lib_cpp::env2bool(const char *pname, bool value_default)
 {
-	char *p = getenv(name);
+	char *p = getenv(pname);
 	if (p == NULL)
 	{
 		return value_default;
