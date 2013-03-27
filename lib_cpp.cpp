@@ -49,7 +49,7 @@ bool lib_cpp::is_hex(const char *str)
 
 	for (;; i++, str++)
 	{
-		char ch = *str;
+		uint8_t ch = *str;
 
 		if (ch == 0)
 		{
@@ -172,6 +172,23 @@ bool lib_cpp::hex2uint64_t(uint64_t &value, uint64_t default_value, const char *
 		value = default_value;
 		return false;
 	}
+
+
+	if (*pstr != '0')
+	{
+		value = default_value;
+		return false;
+	}
+	pstr++;
+	size--;
+
+	if (*pstr != 'x')
+	{
+		value = default_value;
+		return false;
+	}
+	pstr++;
+	size--;
 
 
 	char ch1, ch2;
@@ -305,7 +322,7 @@ bool lib_cpp::dec2uint64_t(uint64_t &value, uint64_t default_value, const char *
 	}
 
 
-	value = strtoull(pstr, NULL, 10);
+	value = strtoull(pstr, NULL, 10); // atoll
 	return true;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
@@ -331,29 +348,13 @@ bool lib_cpp::str2uint64_t(uint64_t &value, uint64_t default_value, const char *
 	}
 
 
-	if (*pstr == '0')
+	if (hex2uint64_t(value, default_value, pstr, size) == true)
 	{
-		if (pstr[1] == 'x')
-		{
-			return hex2uint64_t(value, default_value, pstr + 2, size - 2);
-		}
+		return true;
 	}
 
 
 	return lib_cpp::dec2uint64_t(value, default_value, pstr, size);
-
-
-//	if (is_udec(pstr) == false)
-//	{
-//		value = default_value;
-//		return false;
-//	}
-
-
-//	value = atoll(pstr);
-
-
-//	return true;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert const char * to uint64_t
