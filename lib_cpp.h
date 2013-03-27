@@ -9,11 +9,17 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 namespace lib_cpp
 {
-// check const char * in set [0-9]
+// check const char * in set [0-9]+
 	bool is_udec(const char *str);
 
-// check const std::string in set [0-9]
+// check const std::string in set [0-9]+
 	bool is_udec(const std::string &str);
+
+// check const char * in set [-+]*[0-9]+
+	bool is_sdec(const char *str);
+
+// check const std::string in set [-+]*[0-9]+
+	bool is_sdec(const std::string &str);
 
 // convert hex string to uint64_t
 	bool hex2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr, size_t size);

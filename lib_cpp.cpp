@@ -14,7 +14,7 @@
 #include <algorithm>
 #include "lib_cpp.h"
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// check const char * in set [0-9]
+// check const char * in set [0-9]+
 // TODO: add hex
 bool lib_cpp::is_udec(const char *str)
 {
@@ -47,10 +47,61 @@ bool lib_cpp::is_udec(const char *str)
 	return true;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// check const std::string in set [0-9]
+// check const std::string in set [0-9]+
 bool lib_cpp::is_udec(const std::string &str)
 {
 	return lib_cpp::is_udec(str.c_str());
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// check const char * in set [-+]*[0-9]+
+// TODO: add hex
+bool lib_cpp::is_sdec(const char *str)
+{
+	size_t i = 0;
+
+	for (;; i++, str++)
+	{
+		char ch = *str;
+
+		if (ch == 0)
+		{
+			break;
+		}
+
+		if
+		(
+			(ch < '0') ||
+			(ch > '9')
+		)
+		{
+			if (i == 0)
+			{
+				if
+				(
+					(ch == '-') ||
+					(ch == '+')
+				)
+				{
+					continue;
+				}
+			}
+
+			return false;
+		}
+	}
+
+	if (i == 0)
+	{
+		return false;
+	}
+
+	return true;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// check const std::string in set [-+]*[0-9]+
+bool lib_cpp::is_sdec(const std::string &str)
+{
+	return lib_cpp::is_sdec(str.c_str());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert hex string to uint64_t
@@ -166,7 +217,7 @@ bool lib_cpp::dec2uint64_t(uint64_t &value, uint64_t default_value, const char *
 	}
 
 
-// if input string size equal max size,  check it
+// if input string size equal max size, check it
 	bool flag_ok = false;
 	for (size_t i=0; i < pmax_size; i++)
 	{
