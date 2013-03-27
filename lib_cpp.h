@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.0.2
+// 0.0.3
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #ifndef LIB_CPP_H_INCLUDE
@@ -38,6 +38,12 @@ namespace lib_cpp
 
 // convert dec string to uint64_t
 	bool dec2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr);
+
+// convert dec string to int64_t
+	bool dec2int64_t (int64_t  &value, int64_t  default_value, const char *pstr, size_t size);
+
+// convert dec string to int64_t
+	bool dec2int64_t (int64_t  &value, int64_t  default_value, const char *pstr);
 
 // convert const char * to uint64_t
 	bool str2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr, size_t size);

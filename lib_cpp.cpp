@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.0.2
+// 0.0.3
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #include <sys/mman.h>
@@ -117,6 +117,20 @@ bool lib_cpp::is_udec(const std::string &str)
 // check const char * in set [-+]*[0-9]+
 bool lib_cpp::is_sdec(const char *str)
 {
+	if
+	(
+		(*str != '-') &&
+		(*str != '+')
+	)
+	{
+		return false;
+	}
+
+	str++;
+
+
+	return lib_cpp::is_udec(str);
+/*
 	size_t i = 0;
 
 	for (;; i++, str++)
@@ -156,6 +170,7 @@ bool lib_cpp::is_sdec(const char *str)
 	}
 
 	return true;
+*/
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // check const std::string in set [-+]*[0-9]+
@@ -338,6 +353,112 @@ bool lib_cpp::dec2uint64_t(uint64_t &value, uint64_t default_value, const char *
 	return lib_cpp::dec2uint64_t(value, default_value, pstr, strlen(pstr));
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// convert dec string to int64_t
+bool lib_cpp::dec2int64_t(int64_t &value, int64_t default_value, const char *pstr, size_t size)
+{
+	const char *pmin = "-9223372036854775806";
+	size_t pmin_size = strlen(pmin);
+
+	const char *pmax = "+9223372036854775807";
+	size_t pmax_size = pmin_size;
+
+
+// check size input string
+	if (size > pmax_size)
+	{
+		value = default_value;
+		return false;
+	}
+
+
+// check data input string
+	if (lib_cpp::is_sdec(pstr) == false)
+	{
+		value = default_value;
+		return false;
+	}
+
+
+// if input string small convert it
+	if (size < pmax_size)
+	{
+		value = strtoll(pstr, NULL, 10);
+		return true;
+	}
+
+
+// if input string size equal max size, check it
+	bool flag_ok = false;
+
+	if (*pstr == '-')
+	{
+		for (size_t i=0; i < pmin_size; i++)
+		{
+			if (pmin[i] > pstr[i])
+			{
+				flag_ok = true;
+				break;
+			}
+
+			if (pmin[i] < pstr[i])
+			{
+				break;
+			}
+
+			if ((i + 1) == pmin_size)
+			{
+				flag_ok = true;
+				break;
+			}
+		}
+	}
+
+	if (*pstr == '+')
+	{
+		for (size_t i=0; i < pmax_size; i++)
+		{
+			if (pmax[i] > pstr[i])
+			{
+				flag_ok = true;
+				break;
+			}
+
+			if (pmax[i] < pstr[i])
+			{
+				break;
+			}
+
+			if ((i + 1) == pmax_size)
+			{
+				flag_ok = true;
+				break;
+			}
+		}
+	}
+
+	if (flag_ok == false)
+	{
+		value = default_value;
+		return false;
+	}
+
+
+	value = strtoll(pstr, NULL, 10); // atoll
+	return true;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// convert dec string to int64_t
+bool lib_cpp::dec2int64_t(int64_t &value, int64_t default_value, const char *pstr)
+{
+	if (pstr == NULL)
+	{
+		value = default_value;
+		return false;
+	}
+
+	return lib_cpp::dec2int64_t(value, default_value, pstr, strlen(pstr));
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert const char * to uint64_t
 bool lib_cpp::str2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr, size_t size)
 {
@@ -348,7 +469,13 @@ bool lib_cpp::str2uint64_t(uint64_t &value, uint64_t default_value, const char *
 	}
 
 
-	if (hex2uint64_t(value, default_value, pstr, size) == true)
+	if (lib_cpp::hex2uint64_t(value, default_value, pstr, size) == true)
+	{
+		return true;
+	}
+
+
+	if (lib_cpp::dec2int64_t((int64_t &)value, (int64_t &)default_value, pstr, size) == true)
 	{
 		return true;
 	}
