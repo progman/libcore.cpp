@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.0.2
+// 0.0.3
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #include <stdio.h>
@@ -71,6 +71,119 @@ int flip()
 	return 0;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+int str2bool()
+{
+	if (lib_cpp::str2bool("true") == false)
+	{
+		printf("ERROR[str2bool()]: step001\n");
+		return -1;
+	}
+
+	if (lib_cpp::str2bool("True") == false)
+	{
+		printf("ERROR[str2bool()]: step002\n");
+		return -1;
+	}
+
+	if (lib_cpp::str2bool("TRUE") == false)
+	{
+		printf("ERROR[str2bool()]: step003\n");
+		return -1;
+	}
+
+	if (lib_cpp::str2bool("false") == true)
+	{
+		printf("ERROR[str2bool()]: step004\n");
+		return -1;
+	}
+
+	if (lib_cpp::str2bool("False") == true)
+	{
+		printf("ERROR[str2bool()]: step005\n");
+		return -1;
+	}
+
+	if (lib_cpp::str2bool("FALSE") == true)
+	{
+		printf("ERROR[str2bool()]: step006\n");
+		return -1;
+	}
+
+	if (lib_cpp::str2bool("t") == false)
+	{
+		printf("ERROR[str2bool()]: step007\n");
+		return -1;
+	}
+
+	if (lib_cpp::str2bool("on") == false)
+	{
+		printf("ERROR[str2bool()]: step008\n");
+		return -1;
+	}
+
+	if (lib_cpp::str2bool("1") == false)
+	{
+		printf("ERROR[str2bool()]: step009\n");
+		return -1;
+	}
+
+	if (lib_cpp::str2bool(std::string("true")) == false)
+	{
+		printf("ERROR[str2bool()]: step010\n");
+		return -1;
+	}
+
+	if (lib_cpp::str2bool(std::string("True")) == false)
+	{
+		printf("ERROR[str2bool()]: step011\n");
+		return -1;
+	}
+
+	if (lib_cpp::str2bool(std::string("TRUE")) == false)
+	{
+		printf("ERROR[str2bool()]: step012\n");
+		return -1;
+	}
+
+	if (lib_cpp::str2bool(std::string("false")) == true)
+	{
+		printf("ERROR[str2bool()]: step013\n");
+		return -1;
+	}
+
+	if (lib_cpp::str2bool(std::string("False")) == true)
+	{
+		printf("ERROR[str2bool()]: step014\n");
+		return -1;
+	}
+
+	if (lib_cpp::str2bool(std::string("FALSE")) == true)
+	{
+		printf("ERROR[str2bool()]: step015\n");
+		return -1;
+	}
+
+	if (lib_cpp::str2bool(std::string("t")) == false)
+	{
+		printf("ERROR[str2bool()]: step016\n");
+		return -1;
+	}
+
+	if (lib_cpp::str2bool(std::string("on")) == false)
+	{
+		printf("ERROR[str2bool()]: step017\n");
+		return -1;
+	}
+
+	if (lib_cpp::str2bool(std::string("1")) == false)
+	{
+		printf("ERROR[str2bool()]: step018\n");
+		return -1;
+	}
+
+	return 0;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 int main(int argc, char *argv[])
 {
 	int rc;
@@ -95,6 +208,9 @@ int main(int argc, char *argv[])
 	if (rc == -1) return 1;
 
 	rc = flip();
+	if (rc == -1) return 1;
+
+	rc = str2bool();
 	if (rc == -1) return 1;
 
 
