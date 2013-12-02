@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.0.6
+// 0.0.7
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #ifndef LIB_CPP_H_INCLUDE
@@ -61,10 +61,10 @@ namespace lib_cpp
 	std::string sint2str(int value);
 
 // pedantic read from descriptor
-	size_t pedantic_read(int fd, void *pdata, size_t size);
+	size_t pedantic_read(int fd, off64_t offset, void *pdata, size_t size);
 
 // pedantic write to descriptor
-	size_t pedantic_write(int fd, const void *pdata, size_t size);
+	size_t pedantic_write(int fd, off64_t offset, const void *pdata, size_t size);
 
 // read data from exist file
 	int file_get(const char *pfilename, off_t offset, void *pdata, size_t data_size);

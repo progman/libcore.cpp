@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.0.6
+// 0.0.7
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #include <sys/mman.h>
@@ -427,8 +427,15 @@ std::string lib_cpp::sint2str(int value)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // pedantic read from descriptor
-size_t lib_cpp::pedantic_read(int fd, void *pdata, size_t size)
+size_t lib_cpp::pedantic_read(int fd, off64_t offset, void *pdata, size_t size)
 {
+	if (offset != off64_t(-1))
+	{
+		int rc = lseek64(fd, offset, SEEK_SET);
+		if (rc == -1) return -1;
+	}
+
+
 	char *p = (char *)pdata;
 	size_t cur_size = size;
 
@@ -444,12 +451,20 @@ size_t lib_cpp::pedantic_read(int fd, void *pdata, size_t size)
 		if (cur_size == 0) break;
 	}
 
+
 	return size;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // pedantic write to descriptor
-size_t lib_cpp::pedantic_write(int fd, const void *pdata, size_t size)
+size_t lib_cpp::pedantic_write(int fd, off64_t offset, const void *pdata, size_t size)
 {
+	if (offset != off64_t(-1))
+	{
+		int rc = lseek64(fd, offset, SEEK_SET);
+		if (rc == -1) return -1;
+	}
+
+
 	char *p = (char *)pdata;
 	size_t cur_size = size;
 
@@ -514,7 +529,7 @@ int lib_cpp::file_get(const char *pfilename, off_t offset, void *pdata, size_t d
 
 
 // read from file
-	rc = pedantic_read(fd, pdata, data_size);
+	rc = pedantic_read(fd, -1, pdata, data_size);
 	if (rc == -1)
 	{
 		close(fd);
@@ -582,7 +597,7 @@ int lib_cpp::file_set(const char *pfilename, off_t offset, const void *pdata, si
 
 
 // write to file
-	rc = pedantic_write(fd, pdata, data_size);
+	rc = pedantic_write(fd, -1, pdata, data_size);
 	if (rc == -1)
 	{
 		close(fd);
