@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.0.8
+// 0.0.9
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #ifndef LIB_CPP_H_INCLUDE
@@ -57,8 +57,11 @@ namespace lib_cpp
 // convert const char * to uint64_t
 	bool str2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr);
 
-// convert int to string
-	std::string sint2str(int value);
+// convert uint64_t to string
+	std::string uint64_t2str(uint64_t value);
+
+// convert int64_t  to string
+	std::string int64_t2str(int64_t value);
 
 // pedantic read from descriptor
 	size_t pedantic_read(int fd, off64_t offset, void *pdata, size_t size);
