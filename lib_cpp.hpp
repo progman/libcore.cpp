@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.1.4
+// 0.1.5
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #ifndef LIB_CPP_H_INCLUDE
@@ -9,6 +9,12 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 namespace lib_cpp
 {
+// convert uint64_t to string
+	void uint2str(uint64_t source, std::string &target);
+
+// convert int64_t  to string
+	void sint2str(int64_t  source, std::string &target);
+
 // check const char * in set 0x[0-9a-fA-F]+
 	bool is_hex(const char *pstr);
 
@@ -57,11 +63,17 @@ namespace lib_cpp
 // convert const char * to uint64_t
 	bool str2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr);
 
-// convert uint64_t to string
-	void uint2str(uint64_t source, std::string &target);
+// convert string to bool
+	bool str2bool(const char *str);
 
-// convert int64_t  to string
-	void sint2str(int64_t  source, std::string &target);
+// convert string to bool
+	bool str2bool(const std::string &str);
+
+// convert byte to hex string
+	const char *bin2hex(const uint8_t byte, bool flag_up = false);
+
+// convert sibmol to number, example: '0' -> 0, 'F' -> 15
+	bool hex2bin(uint8_t source, uint8_t &target);
 
 // block read from handle
 	size_t blk_read(int handle, off64_t offset, void *pdata, size_t size);
@@ -80,18 +92,6 @@ namespace lib_cpp
 
 // write data to exist file
 	int file_set(const char *pfilename, off_t offset, const void *pdata, size_t data_size);
-
-// convert byte to hex string
-	const char *bin2hex(const uint8_t byte, bool flag_up = false);
-
-// convert sibmol to number, example: '0' -> 0, 'F' -> 15
-	bool hex2bin(uint8_t source, uint8_t &target);
-
-// convert string to bool
-	bool str2bool(const char *str);
-
-// convert string to bool
-	bool str2bool(const std::string &str);
 
 // return (concat str1 and str2) or NULL
 	char *concat_str(const char *pstr1, const char *pstr2);

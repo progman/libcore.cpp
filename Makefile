@@ -9,7 +9,7 @@ PROG_URL        := https://github.com/progman/lib_cpp.git
 OUT_DIR         := bin
 C_LIST          :=
 CPP_LIST        := lib_cpp.cpp test.cpp
-HEADER_LIST     := lib_cpp.h
+HEADER_LIST     := lib_cpp.hpp
 
 CFLAGS          :=
 CPPFLAGS        :=
