@@ -1,17 +1,19 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.1.0
+// 0.1.1
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-#include <sys/mman.h>
-#include <unistd.h>
-#include <sys/stat.h>
+#include <algorithm>
+#include <errno.h>
 #include <fcntl.h>
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <string>
 #include <string.h>
-#include <errno.h>
-#include <algorithm>
+#include <sys/mman.h>
+#include <sys/socket.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 #include "lib_cpp.h"
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #if (INTPTR_MAX != INT32_MAX) && (INTPTR_MAX != INT64_MAX)
@@ -451,22 +453,22 @@ std::string lib_cpp::int64_t2str(int64_t value)
 	return buf;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// pedantic read from descriptor
-size_t lib_cpp::pedantic_read(int fd, off64_t offset, void *pdata, size_t size)
+// block read from handle
+size_t lib_cpp::blk_read(int handle, off64_t offset, void *pdata, size_t size)
 {
 	if (offset != off64_t(-1))
 	{
-		int rc = lseek64(fd, offset, SEEK_SET);
+		int rc = ::lseek64(handle, offset, SEEK_SET);
 		if (rc == -1) return -1;
 	}
 
 
-	char *p = (char *)pdata;
+	uint8_t *p = (uint8_t *)pdata;
 	size_t cur_size = size;
 
 	for (;;)
 	{
-		size_t rc = ::read(fd, p, cur_size);
+		size_t rc = ::read(handle, p, cur_size);
 		if (rc == 0) return -1;
 		if (rc == size_t(-1)) return -1;
 
@@ -480,22 +482,22 @@ size_t lib_cpp::pedantic_read(int fd, off64_t offset, void *pdata, size_t size)
 	return size;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// pedantic write to descriptor
-size_t lib_cpp::pedantic_write(int fd, off64_t offset, const void *pdata, size_t size)
+// block write to handle
+size_t lib_cpp::blk_write(int handle, off64_t offset, const void *pdata, size_t size)
 {
 	if (offset != off64_t(-1))
 	{
-		int rc = lseek64(fd, offset, SEEK_SET);
+		int rc = ::lseek64(handle, offset, SEEK_SET);
 		if (rc == -1) return -1;
 	}
 
 
-	char *p = (char *)pdata;
+	uint8_t *p = (uint8_t *)pdata;
 	size_t cur_size = size;
 
 	for (;;)
 	{
-		size_t rc = ::write(fd, p, cur_size);
+		size_t rc = ::write(handle, p, cur_size);
 		if (rc == size_t(-1)) return -1;
 
 		p += rc;
@@ -503,6 +505,50 @@ size_t lib_cpp::pedantic_write(int fd, off64_t offset, const void *pdata, size_t
 
 		if (cur_size == 0) break;
 	}
+
+	return size;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// block recv from handle
+size_t lib_cpp::blk_recv(int handle, void *pdata, size_t size)
+{
+	uint8_t *p_cur = (uint8_t *)pdata;
+	size_t count = size;
+
+
+	for (;;)
+	{
+		ssize_t size_cur = ::recv(handle, p_cur, count, MSG_NOSIGNAL);
+		if (size_cur == -1) return -1;
+
+		count -= size_cur;
+		p_cur += size_cur;
+
+		if (count == 0) break;
+	}
+
+
+	return size;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// block send to handle
+size_t lib_cpp::blk_send(int handle, const void *pdata, size_t size)
+{
+	uint8_t *p_cur = (uint8_t *)pdata;
+	size_t count = size;
+
+
+	for (;;)
+	{
+		ssize_t size_cur = ::send(handle, p_cur, count, MSG_NOSIGNAL);
+		if (size_cur == -1) return -1;
+
+		count -= size_cur;
+		p_cur += size_cur;
+
+		if (count == 0) break;
+	}
+
 
 	return size;
 }
@@ -554,7 +600,7 @@ int lib_cpp::file_get(const char *pfilename, off_t offset, void *pdata, size_t d
 
 
 // read from file
-	rc = pedantic_read(fd, -1, pdata, data_size);
+	rc = blk_read(fd, -1, pdata, data_size);
 	if (rc == -1)
 	{
 		close(fd);
@@ -622,7 +668,7 @@ int lib_cpp::file_set(const char *pfilename, off_t offset, const void *pdata, si
 
 
 // write to file
-	rc = pedantic_write(fd, -1, pdata, data_size);
+	rc = blk_write(fd, -1, pdata, data_size);
 	if (rc == -1)
 	{
 		close(fd);

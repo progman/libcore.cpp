@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.1.0
+// 0.1.1
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #ifndef LIB_CPP_H_INCLUDE
@@ -63,11 +63,17 @@ namespace lib_cpp
 // convert int64_t  to string
 	std::string int64_t2str(int64_t value);
 
-// pedantic read from descriptor
-	size_t pedantic_read(int fd, off64_t offset, void *pdata, size_t size);
+// block read from handle
+	size_t blk_read(int handle, off64_t offset, void *pdata, size_t size);
 
-// pedantic write to descriptor
-	size_t pedantic_write(int fd, off64_t offset, const void *pdata, size_t size);
+// block write to handle
+	size_t blk_write(int handle, off64_t offset, const void *pdata, size_t size);
+
+// block recv from handle
+	size_t blk_recv(int handle, void *pdata, size_t size);
+
+// block send to handle
+	size_t blk_send(int handle, const void *pdata, size_t size);
 
 // read data from exist file
 	int file_get(const char *pfilename, off_t offset, void *pdata, size_t data_size);
