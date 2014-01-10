@@ -1,10 +1,11 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.1.1
+// 0.1.2
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #include <algorithm>
 #include <errno.h>
 #include <fcntl.h>
+#include <signal.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string>
@@ -1021,6 +1022,23 @@ bool lib_cpp::is_ipaddress(const char *str)
 
 	if ((val1 > 255) || (val2 > 255) || (val3 > 255) || (val4 > 255)) return false;
 
+
+	return true;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// set signal
+bool set_signal(int signo, void (*sig_handler)(int))
+{
+	struct sigaction act, oldact;
+	act.sa_handler = sig_handler;
+	sigemptyset(&act.sa_mask);
+	act.sa_flags = 0;
+	if (signo != SIGALRM)
+	{
+		act.sa_flags |= SA_RESTART;
+	}
+
+	if (sigaction(signo, &act, &oldact) == -1) return false;
 
 	return true;
 }
