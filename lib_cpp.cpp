@@ -656,10 +656,9 @@ int lib_cpp::file_get(const char *pfilename, off_t offset, void *pdata, size_t d
 
 
 // open file
-	rc = open(pfilename, O_RDONLY);
+	rc = ::open(pfilename, O_RDONLY);
 	if (rc == -1)
 	{
-		printf("ERROR[open()]: %s\n", strerror(errno));
 		return -1;
 	}
 	int fd = rc;
@@ -667,11 +666,12 @@ int lib_cpp::file_get(const char *pfilename, off_t offset, void *pdata, size_t d
 
 // get file size
 	struct stat my_stat;
-	rc = fstat(fd, &my_stat);
+	rc = ::fstat(fd, &my_stat);
 	if (rc == -1)
 	{
-		close(fd);
-		printf("ERROR[fstat()]: %s\n", strerror(errno));
+		rc = errno;
+		::close(fd);
+		errno = rc;
 		return -1;
 	}
 	size_t size = my_stat.st_size;
@@ -680,36 +680,37 @@ int lib_cpp::file_get(const char *pfilename, off_t offset, void *pdata, size_t d
 // check offset
 	if ((offset + data_size) > size)
 	{
-		printf("ERROR[file_get()]: offset too big\n");
+		errno = EINVAL;
 		return -1;
 	}
 
 
 // seek in file
-	rc = lseek(fd, offset, SEEK_SET);
+	rc = ::lseek(fd, offset, SEEK_SET);
 	if (rc == -1)
 	{
-		close(fd);
-		printf("ERROR[lseek()]: %s\n", strerror(errno));
+		rc = errno;
+		::close(fd);
+		errno = rc;
 		return -1;
 	}
 
 
 // read from file
-	rc = blk_read(fd, -1, pdata, data_size);
+	rc = lib_cpp::blk_read(fd, -1, pdata, data_size);
 	if (rc == -1)
 	{
-		close(fd);
-		printf("ERROR[read()]: %s\n", strerror(errno));
+		rc = errno;
+		::close(fd);
+		errno = rc;
 		return -1;
 	}
 
 
 // close file
-	rc = close(fd);
+	rc = ::close(fd);
 	if (rc == -1)
 	{
-		printf("ERROR[close()]: %s\n", strerror(errno));
 		return -1;
 	}
 
@@ -724,10 +725,9 @@ int lib_cpp::file_set(const char *pfilename, off_t offset, const void *pdata, si
 
 
 // open file
-	rc = open(pfilename, O_WRONLY);
+	rc = ::open(pfilename, O_WRONLY);
 	if (rc == -1)
 	{
-		printf("ERROR[open()]: %s\n", strerror(errno));
 		return -1;
 	}
 	int fd = rc;
@@ -735,11 +735,12 @@ int lib_cpp::file_set(const char *pfilename, off_t offset, const void *pdata, si
 
 // get file size
 	struct stat my_stat;
-	rc = fstat(fd, &my_stat);
+	rc = ::fstat(fd, &my_stat);
 	if (rc == -1)
 	{
-		close(fd);
-		printf("ERROR[fstat()]: %s\n", strerror(errno));
+		rc = errno;
+		::close(fd);
+		errno = rc;
 		return -1;
 	}
 	size_t size = my_stat.st_size;
@@ -748,46 +749,48 @@ int lib_cpp::file_set(const char *pfilename, off_t offset, const void *pdata, si
 // check offset
 	if ((offset + data_size) > size)
 	{
-		printf("ERROR[file_get()]: offset too big\n");
+		errno = EINVAL;
 		return -1;
 	}
 
 
 // seek in file
-	rc = lseek(fd, offset, SEEK_SET);
+	rc = ::lseek(fd, offset, SEEK_SET);
 	if (rc == -1)
 	{
-		close(fd);
-		printf("ERROR[lseek()]: %s\n", strerror(errno));
+		rc = errno;
+		::close(fd);
+		errno = rc;
 		return -1;
 	}
 
 
 // write to file
-	rc = blk_write(fd, -1, pdata, data_size);
+	rc = lib_cpp::blk_write(fd, -1, pdata, data_size);
 	if (rc == -1)
 	{
-		close(fd);
-		printf("ERROR[write()]: %s\n", strerror(errno));
+		rc = errno;
+		::close(fd);
+		errno = rc;
 		return -1;
 	}
 
 
 // fsync file
-	rc = fdatasync(fd);
+	rc = ::fdatasync(fd);
 	if (rc == -1)
 	{
-		close(fd);
-		printf("ERROR[fdatasync()]: %s\n", strerror(errno));
+		rc = errno;
+		::close(fd);
+		errno = rc;
 		return -1;
 	}
 
 
 // close file
-	rc = close(fd);
+	rc = ::close(fd);
 	if (rc == -1)
 	{
-		printf("ERROR[close()]: %s\n", strerror(errno));
 		return -1;
 	}
 
