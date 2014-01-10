@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.1.3
+// 0.1.4
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #ifndef LIB_CPP_H_INCLUDE
@@ -58,10 +58,10 @@ namespace lib_cpp
 	bool str2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr);
 
 // convert uint64_t to string
-	std::string uint64_t2str(uint64_t value);
+	void uint2str(uint64_t source, std::string &target);
 
 // convert int64_t  to string
-	std::string int64_t2str(int64_t value);
+	void sint2str(int64_t  source, std::string &target);
 
 // block read from handle
 	size_t blk_read(int handle, off64_t offset, void *pdata, size_t size);
