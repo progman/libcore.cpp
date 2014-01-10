@@ -762,10 +762,10 @@ bool lib_cpp::str2bool(const char *str)
 {
 //	return lib_cpp::str2bool(std::string(str));
 
-	if (strcasecmp(str, "true") == 0) return true;
+	if (strcasecmp(str, "1")    == 0) return true;
 	if (strcasecmp(str, "t")    == 0) return true;
 	if (strcasecmp(str, "on")   == 0) return true;
-	if (strcasecmp(str, "1")    == 0) return true;
+	if (strcasecmp(str, "true") == 0) return true;
 
 	return false;
 }
@@ -1027,7 +1027,7 @@ bool lib_cpp::is_ipaddress(const char *str)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // set signal
-bool set_signal(int signo, void (*sig_handler)(int))
+bool lib_cpp::set_signal(int signo, void (*sig_handler)(int))
 {
 	struct sigaction act, oldact;
 	act.sa_handler = sig_handler;
@@ -1041,5 +1041,11 @@ bool set_signal(int signo, void (*sig_handler)(int))
 	if (sigaction(signo, &act, &oldact) == -1) return false;
 
 	return true;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// string to lower
+void lib_cpp::tolower(const std::string &source, std::string &target)
+{
+	std::transform(source.begin(), source.end(), target.begin(), tolower);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//

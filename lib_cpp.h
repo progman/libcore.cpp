@@ -113,6 +113,9 @@ namespace lib_cpp
 
 // set signal
 	bool set_signal(int signo, void (*sig_handler)(int));
+
+// string to lower
+	void tolower(const std::string &source, std::string &target);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #endif
