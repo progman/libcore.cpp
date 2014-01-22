@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.1.5
+// 0.1.6
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #ifndef LIB_CPP_H_INCLUDE
@@ -15,58 +15,56 @@ namespace lib_cpp
 // convert int64_t  to string
 	void sint2str(int64_t  source, std::string &target);
 
-// check const char * in set 0x[0-9a-fA-F]+
+// check const string in set 0x[0-9a-fA-F]+
 	bool is_hex(const char *pstr);
-
-// check const std::string in set 0x[0-9a-fA-F]+
 	bool is_hex(const std::string &str);
 
-// check const char * in set [0-9]+
+// check const string in set [0-9]+
 	bool is_udec(const char *pstr);
-
-// check const std::string in set [0-9]+
 	bool is_udec(const std::string &str);
 
-// check const char * in set [-+]*[0-9]+
+// check const string in set [-+]*[0-9]+
 	bool is_sdec(const char *pstr);
-
-// check const std::string in set [-+]*[0-9]+
 	bool is_sdec(const std::string &str);
 
-// check number in str less number in str_max
+// check number in string less number in str_max
 	bool is_numeric_string_overflow(const char *pstr_max, const char *pstr, const size_t size);
-
-// check number in str less number in str_max
 	bool is_numeric_string_overflow(const char *pstr_max, const std::string &str);
 
 // convert hex string to uint64_t
 	bool hex2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr, size_t size);
-
-// convert hex string to uint64_t
 	bool hex2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr);
+	bool hex2uint64_t(uint64_t &value, uint64_t default_value, const std::string &str);
+	bool hex2uint64_t(uint64_t &value, const char *pstr, size_t size);
+	bool hex2uint64_t(uint64_t &value, const char *pstr);
+	bool hex2uint64_t(uint64_t &value, const std::string &str);
 
 // convert dec string to uint64_t
 	bool dec2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr, size_t size);
-
-// convert dec string to uint64_t
 	bool dec2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr);
+	bool dec2uint64_t(uint64_t &value, uint64_t default_value, const std::string &str);
+	bool dec2uint64_t(uint64_t &value, const char *pstr, size_t size);
+	bool dec2uint64_t(uint64_t &value, const char *pstr);
+	bool dec2uint64_t(uint64_t &value, const std::string &str);
 
 // convert dec string to int64_t
 	bool dec2int64_t (int64_t  &value, int64_t  default_value, const char *pstr, size_t size);
-
-// convert dec string to int64_t
 	bool dec2int64_t (int64_t  &value, int64_t  default_value, const char *pstr);
+	bool dec2int64_t (int64_t  &value, int64_t  default_value, const std::string &str);
+	bool dec2int64_t (int64_t  &value, const char *pstr, size_t size);
+	bool dec2int64_t (int64_t  &value, const char *pstr);
+	bool dec2int64_t (int64_t  &value, const std::string &str);
 
-// convert const char * to uint64_t
+// convert string to uint64_t
 	bool str2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr, size_t size);
-
-// convert const char * to uint64_t
 	bool str2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr);
+	bool str2uint64_t(uint64_t &value, uint64_t default_value, const std::string &str);
+	bool str2uint64_t(uint64_t &value, const char *pstr, size_t size);
+	bool str2uint64_t(uint64_t &value, const char *pstr);
+	bool str2uint64_t(uint64_t &value, const std::string &str);
 
 // convert string to bool
 	bool str2bool(const char *str);
-
-// convert string to bool
 	bool str2bool(const std::string &str);
 
 // convert byte to hex string
@@ -89,9 +87,13 @@ namespace lib_cpp
 
 // read data from exist file
 	int file_get(const char *pfilename, off_t offset, void *pdata, size_t data_size);
+	int file_get(const char *pfilename, void **pdata, size_t *data_size);
+	int file_get(const char *pfilename, std::string &data);
 
 // write data to exist file
 	int file_set(const char *pfilename, off_t offset, const void *pdata, size_t data_size);
+	int file_set(const char *pfilename, off_t offset, const std::string &data);
+	int file_set(const char *pfilename, const std::string &data);
 
 // return (concat str1 and str2) or NULL
 	char *concat_str(const char *pstr1, const char *pstr2);
@@ -116,6 +118,9 @@ namespace lib_cpp
 
 // string to lower
 	void strtolower(const std::string &source, std::string &target);
+
+// check pointer and strlen
+	size_t strlen(const char *pstr);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #endif

@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.1.5
+// 0.1.6
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #define _LARGE_FILE_API
@@ -243,7 +243,7 @@ bool lib_cpp::is_numeric_string_overflow(const char *pstr_max, const std::string
 // convert hex string to uint64_t
 bool lib_cpp::hex2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr, size_t size)
 {
-	if (pstr == NULL)
+	if (size == 0)
 	{
 		value = default_value;
 		return false;
@@ -330,13 +330,31 @@ bool lib_cpp::hex2uint64_t(uint64_t &value, uint64_t default_value, const char *
 // convert hex string to uint64_t
 bool lib_cpp::hex2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr)
 {
-	if (pstr == NULL)
-	{
-		value = default_value;
-		return false;
-	}
-
-	return lib_cpp::hex2uint64_t(value, default_value, pstr, strlen(pstr));
+	return lib_cpp::hex2uint64_t(value, default_value, pstr, lib_cpp::strlen(pstr));
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// convert hex string to uint64_t
+bool lib_cpp::hex2uint64_t(uint64_t &value, uint64_t default_value, const std::string &str)
+{
+	return lib_cpp::hex2uint64_t(value, default_value, str.c_str(), str.size());
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// convert hex string to uint64_t
+bool lib_cpp::hex2uint64_t(uint64_t &value, const char *pstr, size_t size)
+{
+	return lib_cpp::hex2uint64_t(value, 0, pstr, size);
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// convert hex string to uint64_t
+bool lib_cpp::hex2uint64_t(uint64_t &value, const char *pstr)
+{
+	return lib_cpp::hex2uint64_t(value, 0, pstr, lib_cpp::strlen(pstr));
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// convert hex string to uint64_t
+bool lib_cpp::hex2uint64_t(uint64_t &value, const std::string &str)
+{
+	return lib_cpp::hex2uint64_t(value, 0, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert dec string to uint64_t
@@ -366,13 +384,31 @@ bool lib_cpp::dec2uint64_t(uint64_t &value, uint64_t default_value, const char *
 // convert dec string to uint64_t
 bool lib_cpp::dec2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr)
 {
-	if (pstr == NULL)
-	{
-		value = default_value;
-		return false;
-	}
-
-	return lib_cpp::dec2uint64_t(value, default_value, pstr, strlen(pstr));
+	return lib_cpp::dec2uint64_t(value, default_value, pstr, lib_cpp::strlen(pstr));
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// convert dec string to uint64_t
+bool lib_cpp::dec2uint64_t(uint64_t &value, uint64_t default_value, const std::string &str)
+{
+	return lib_cpp::dec2uint64_t(value, default_value, str.c_str(), str.size());
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// convert dec string to uint64_t
+bool lib_cpp::dec2uint64_t(uint64_t &value, const char *pstr, size_t size)
+{
+	return lib_cpp::dec2uint64_t(value, 0, pstr, size);
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// convert dec string to uint64_t
+bool lib_cpp::dec2uint64_t(uint64_t &value, const char *pstr)
+{
+	return lib_cpp::dec2uint64_t(value, 0, pstr, lib_cpp::strlen(pstr));
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// convert dec string to uint64_t
+bool lib_cpp::dec2uint64_t(uint64_t &value, const std::string &str)
+{
+	return lib_cpp::dec2uint64_t(value, 0, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert dec string to int64_t
@@ -413,19 +449,37 @@ bool lib_cpp::dec2int64_t(int64_t &value, int64_t default_value, const char *pst
 // convert dec string to int64_t
 bool lib_cpp::dec2int64_t(int64_t &value, int64_t default_value, const char *pstr)
 {
-	if (pstr == NULL)
-	{
-		value = default_value;
-		return false;
-	}
-
-	return lib_cpp::dec2int64_t(value, default_value, pstr, strlen(pstr));
+	return lib_cpp::dec2int64_t(value, default_value, pstr, lib_cpp::strlen(pstr));
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// convert dec string to int64_t
+bool lib_cpp::dec2int64_t(int64_t &value, int64_t  default_value, const std::string &str)
+{
+	return lib_cpp::dec2int64_t(value, default_value, str.c_str(), str.size());
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// convert dec string to int64_t
+bool lib_cpp::dec2int64_t(int64_t &value, const char *pstr, size_t size)
+{
+	return lib_cpp::dec2int64_t(value, 0, pstr, size);
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// convert dec string to int64_t
+bool lib_cpp::dec2int64_t(int64_t &value, const char *pstr)
+{
+	return lib_cpp::dec2int64_t(value, 0, pstr, lib_cpp::strlen(pstr));
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// convert dec string to int64_t
+bool lib_cpp::dec2int64_t(int64_t &value, const std::string &str)
+{
+	return lib_cpp::dec2int64_t(value, 0, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert const char * to uint64_t
 bool lib_cpp::str2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr, size_t size)
 {
-	if (pstr == NULL)
+	if (size == 0)
 	{
 		value = default_value;
 		return false;
@@ -450,10 +504,31 @@ bool lib_cpp::str2uint64_t(uint64_t &value, uint64_t default_value, const char *
 // convert const char * to uint64_t
 bool lib_cpp::str2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr)
 {
-	value = default_value;
-	if (pstr == NULL) return false;
-
-	return lib_cpp::str2uint64_t(value, default_value, pstr, strlen(pstr));
+	return lib_cpp::str2uint64_t(value, default_value, pstr, lib_cpp::strlen(pstr));
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// convert const char * to uint64_t
+bool lib_cpp::str2uint64_t(uint64_t &value, uint64_t default_value, const std::string &str)
+{
+	return lib_cpp::str2uint64_t(value, default_value, str.c_str(), str.size());
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// convert const char * to uint64_t
+bool lib_cpp::str2uint64_t(uint64_t &value, const char *pstr, size_t size)
+{
+	return lib_cpp::str2uint64_t(value, 0, pstr, size);
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// convert const char * to uint64_t
+bool lib_cpp::str2uint64_t(uint64_t &value, const char *pstr)
+{
+	return lib_cpp::str2uint64_t(value, 0, pstr, lib_cpp::strlen(pstr));
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// convert const char * to uint64_t
+bool lib_cpp::str2uint64_t(uint64_t &value, const std::string &str)
+{
+	return lib_cpp::str2uint64_t(value, 0, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert string to bool
@@ -718,6 +793,53 @@ int lib_cpp::file_get(const char *pfilename, off_t offset, void *pdata, size_t d
 	return 0;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// read data from exist file
+int lib_cpp::file_get(const char *pfilename, void **pdata, size_t *data_size)
+{
+	int rc;
+
+	struct stat buf;
+	rc = ::stat(pfilename, &buf);
+	if (rc != 0)
+	{
+		return -1;
+	}
+	*data_size = buf.st_size;
+
+	*pdata = malloc(*data_size);
+	if (*pdata == NULL)
+	{
+		return -1;
+	}
+
+	rc = lib_cpp::file_get(pfilename, 0, *pdata, *data_size);
+	if (rc == -1)
+	{
+		::free(*pdata);
+		return -1;
+	}
+
+	return 0;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// read data from exist file
+int lib_cpp::file_get(const char *pfilename, std::string &data)
+{
+	int rc;
+	void *pdata;
+	size_t data_size;
+
+	rc = lib_cpp::file_get(pfilename, &pdata, &data_size);
+	if (rc == -1)
+	{
+		return -1;
+	}
+
+	data = std::string((const char *)pdata, data_size);
+
+	return 0;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // write data to exist file
 int lib_cpp::file_set(const char *pfilename, off_t offset, const void *pdata, size_t data_size)
 {
@@ -725,7 +847,7 @@ int lib_cpp::file_set(const char *pfilename, off_t offset, const void *pdata, si
 
 
 // open file
-	rc = ::open(pfilename, O_WRONLY);
+	rc = ::open(pfilename, O_WRONLY | O_CREAT);
 	if (rc == -1)
 	{
 		return -1;
@@ -796,6 +918,18 @@ int lib_cpp::file_set(const char *pfilename, off_t offset, const void *pdata, si
 
 
 	return 0;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// write data to exist file
+int lib_cpp::file_set(const char *pfilename, off_t offset, const std::string &data)
+{
+	return lib_cpp::file_set(pfilename, offset, data.c_str(), data.size());
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// write data to exist file
+int lib_cpp::file_set(const char *pfilename, const std::string &data)
+{
+	return lib_cpp::file_set(pfilename, 0, data.c_str(), data.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // return (concat str1 and str2) or NULL
@@ -1052,5 +1186,13 @@ bool lib_cpp::set_signal(int signo, void (*sig_handler)(int))
 void lib_cpp::strtolower(const std::string &source, std::string &target)
 {
 	std::transform(source.begin(), source.end(), target.begin(), tolower);
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// check pointer and strlen
+size_t lib_cpp::strlen(const char *pstr)
+{
+	if (pstr == NULL) return 0;
+
+	return ::strlen(pstr);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
