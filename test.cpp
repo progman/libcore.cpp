@@ -8,113 +8,152 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 int str2bool()
 {
-	if (lib_cpp::str2bool("true") == false)
-	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
-		return -1;
-	}
+	bool value;
+	bool rc;
 
-	if (lib_cpp::str2bool("True") == false)
-	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "002");
-		return -1;
-	}
 
-	if (lib_cpp::str2bool("TRUE") == false)
-	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
-		return -1;
-	}
-
-	if (lib_cpp::str2bool("false") == true)
-	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "004");
-		return -1;
-	}
-
-	if (lib_cpp::str2bool("False") == true)
-	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "005");
-		return -1;
-	}
-
-	if (lib_cpp::str2bool("FALSE") == true)
-	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
-		return -1;
-	}
-
-	if (lib_cpp::str2bool("t") == false)
-	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "007");
-		return -1;
-	}
-
-	if (lib_cpp::str2bool("on") == false)
-	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "008");
-		return -1;
-	}
-
-	if (lib_cpp::str2bool("1") == false)
+	rc = lib_cpp::str2bool(value, false, "1");
+	if ((rc == false) || (value == false))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "009");
 		return -1;
 	}
 
-	if (lib_cpp::str2bool(std::string("true")) == false)
+	rc = lib_cpp::str2bool(value, false, "t");
+	if ((rc == false) || (value == false))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "010");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "007");
 		return -1;
 	}
 
-	if (lib_cpp::str2bool(std::string("True")) == false)
+	rc = lib_cpp::str2bool(value, false, "T");
+	if ((rc == false) || (value == false))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "011");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "007");
 		return -1;
 	}
 
-	if (lib_cpp::str2bool(std::string("TRUE")) == false)
+	rc = lib_cpp::str2bool(value, false, "on");
+	if ((rc == false) || (value == false))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "012");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "008");
 		return -1;
 	}
 
-	if (lib_cpp::str2bool(std::string("false")) == true)
+	rc = lib_cpp::str2bool(value, false, "On");
+	if ((rc == false) || (value == false))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "013");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "008");
 		return -1;
 	}
 
-	if (lib_cpp::str2bool(std::string("False")) == true)
+	rc = lib_cpp::str2bool(value, false, "ON");
+	if ((rc == false) || (value == false))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "014");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "008");
 		return -1;
 	}
 
-	if (lib_cpp::str2bool(std::string("FALSE")) == true)
+	rc = lib_cpp::str2bool(value, false, "true");
+	if ((rc == false) || (value == false))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "015");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
 		return -1;
 	}
 
-	if (lib_cpp::str2bool(std::string("t")) == false)
+	rc = lib_cpp::str2bool(value, false, "True");
+	if ((rc == false) || (value == false))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "016");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "002");
 		return -1;
 	}
 
-	if (lib_cpp::str2bool(std::string("on")) == false)
+	rc = lib_cpp::str2bool(value, false, "TRUE");
+	if ((rc == false) || (value == false))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "017");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
 		return -1;
 	}
 
-	if (lib_cpp::str2bool(std::string("1")) == false)
+
+	rc = lib_cpp::str2bool(value, false, "0");
+	if ((rc == false) || (value == true))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "018");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "009");
 		return -1;
 	}
+
+	rc = lib_cpp::str2bool(value, false, "f");
+	if ((rc == false) || (value == true))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "007");
+		return -1;
+	}
+
+	rc = lib_cpp::str2bool(value, false, "F");
+	if ((rc == false) || (value == true))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "007");
+		return -1;
+	}
+
+	rc = lib_cpp::str2bool(value, false, "off");
+	if ((rc == false) || (value == true))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "004");
+		return -1;
+	}
+
+	rc = lib_cpp::str2bool(value, false, "Off");
+	if ((rc == false) || (value == true))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "005");
+		return -1;
+	}
+
+	rc = lib_cpp::str2bool(value, false, "OFF");
+	if ((rc == false) || (value == true))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
+		return -1;
+	}
+
+	rc = lib_cpp::str2bool(value, false, "false");
+	if ((rc == false) || (value == true))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "004");
+		return -1;
+	}
+
+	rc = lib_cpp::str2bool(value, false, "False");
+	if ((rc == false) || (value == true))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "005");
+		return -1;
+	}
+
+	rc = lib_cpp::str2bool(value, false, "FALSE");
+	if ((rc == false) || (value == true))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
+		return -1;
+	}
+
+
+	rc = lib_cpp::str2bool(value, false, "");
+	if ((rc == true) || (value == true))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
+		return -1;
+	}
+
+	rc = lib_cpp::str2bool(value, true, "");
+	if ((rc == true) || (value == false))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
+		return -1;
+	}
+
 
 	return 0;
 }
@@ -215,6 +254,56 @@ int remove_file_ext()
 	return 0;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+int find()
+{
+	const char *pdata = "hello world!";
+
+	const char *ppattern = "world";
+
+	size_t index = lib_cpp::find(pdata, strlen(pdata), ppattern, strlen(ppattern));
+	if (index == size_t(-1))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
+		return -1;
+	}
+
+	if (pdata[index] != 'w')
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "002");
+		return -1;
+	}
+
+	index++;
+	if (pdata[index] != 'o')
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
+		return -1;
+	}
+
+	index++;
+	if (pdata[index] != 'r')
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "004");
+		return -1;
+	}
+
+	index++;
+	if (pdata[index] != 'l')
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "005");
+		return -1;
+	}
+
+	index++;
+	if (pdata[index] != 'd')
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
+		return -1;
+	}
+
+	return 0;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 int main(int argc, char *argv[])
 {
 	int rc;
@@ -245,6 +334,9 @@ int main(int argc, char *argv[])
 	if (rc == -1) return 1;
 
 	rc = remove_file_ext();
+	if (rc == -1) return 1;
+
+	rc = find();
 	if (rc == -1) return 1;
 
 

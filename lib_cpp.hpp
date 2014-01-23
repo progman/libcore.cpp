@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.1.7
+// 0.1.8
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #ifndef LIB_CPP_H_INCLUDE
@@ -10,10 +10,10 @@
 namespace lib_cpp
 {
 // convert uint to string
-	void uint2str(uint64_t source, std::string &target);
+	bool uint2str(uint64_t source, std::string &target);
 
 // convert sint to string
-	void sint2str(int64_t  source, std::string &target);
+	bool sint2str(int64_t  source, std::string &target);
 
 // check const string in set 0x[0-9a-fA-F]+
 	bool is_hex(const char *pstr);
@@ -32,40 +32,42 @@ namespace lib_cpp
 	bool is_numeric_string_overflow(const char *pstr_max, const std::string &str);
 
 // convert hex string to uint
-	bool hex2uint(uint64_t &value, uint64_t default_value, const char *pstr, size_t size);
-	bool hex2uint(uint64_t &value, uint64_t default_value, const char *pstr);
-	bool hex2uint(uint64_t &value, uint64_t default_value, const std::string &str);
-	bool hex2uint(uint64_t &value, const char *pstr, size_t size);
-	bool hex2uint(uint64_t &value, const char *pstr);
-	bool hex2uint(uint64_t &value, const std::string &str);
+	bool hex2uint(uint64_t &result, uint64_t default_value, const char *pstr, size_t size);
+	bool hex2uint(uint64_t &result, uint64_t default_value, const char *pstr);
+	bool hex2uint(uint64_t &result, uint64_t default_value, const std::string &str);
+	bool hex2uint(uint64_t &result, const char *pstr, size_t size);
+	bool hex2uint(uint64_t &result, const char *pstr);
+	bool hex2uint(uint64_t &result, const std::string &str);
 
 // convert dec string to uint
-	bool dec2uint(uint64_t &value, uint64_t default_value, const char *pstr, size_t size);
-	bool dec2uint(uint64_t &value, uint64_t default_value, const char *pstr);
-	bool dec2uint(uint64_t &value, uint64_t default_value, const std::string &str);
-	bool dec2uint(uint64_t &value, const char *pstr, size_t size);
-	bool dec2uint(uint64_t &value, const char *pstr);
-	bool dec2uint(uint64_t &value, const std::string &str);
+	bool dec2uint(uint64_t &result, uint64_t default_value, const char *pstr, size_t size);
+	bool dec2uint(uint64_t &result, uint64_t default_value, const char *pstr);
+	bool dec2uint(uint64_t &result, uint64_t default_value, const std::string &str);
+	bool dec2uint(uint64_t &result, const char *pstr, size_t size);
+	bool dec2uint(uint64_t &result, const char *pstr);
+	bool dec2uint(uint64_t &result, const std::string &str);
 
 // convert dec string to sint
-	bool dec2sint(int64_t  &value, int64_t  default_value, const char *pstr, size_t size);
-	bool dec2sint(int64_t  &value, int64_t  default_value, const char *pstr);
-	bool dec2sint(int64_t  &value, int64_t  default_value, const std::string &str);
-	bool dec2sint(int64_t  &value, const char *pstr, size_t size);
-	bool dec2sint(int64_t  &value, const char *pstr);
-	bool dec2sint(int64_t  &value, const std::string &str);
+	bool dec2sint(int64_t  &result, int64_t  default_value, const char *pstr, size_t size);
+	bool dec2sint(int64_t  &result, int64_t  default_value, const char *pstr);
+	bool dec2sint(int64_t  &result, int64_t  default_value, const std::string &str);
+	bool dec2sint(int64_t  &result, const char *pstr, size_t size);
+	bool dec2sint(int64_t  &result, const char *pstr);
+	bool dec2sint(int64_t  &result, const std::string &str);
 
 // convert string to uint
-	bool str2uint(uint64_t &value, uint64_t default_value, const char *pstr, size_t size);
-	bool str2uint(uint64_t &value, uint64_t default_value, const char *pstr);
-	bool str2uint(uint64_t &value, uint64_t default_value, const std::string &str);
-	bool str2uint(uint64_t &value, const char *pstr, size_t size);
-	bool str2uint(uint64_t &value, const char *pstr);
-	bool str2uint(uint64_t &value, const std::string &str);
+	bool str2uint(uint64_t &result, uint64_t default_value, const char *pstr, size_t size);
+	bool str2uint(uint64_t &result, uint64_t default_value, const char *pstr);
+	bool str2uint(uint64_t &result, uint64_t default_value, const std::string &str);
+	bool str2uint(uint64_t &result, const char *pstr, size_t size);
+	bool str2uint(uint64_t &result, const char *pstr);
+	bool str2uint(uint64_t &result, const std::string &str);
 
 // convert string to bool
-	bool str2bool(const char *str);
-	bool str2bool(const std::string &str);
+	bool str2bool(bool &result, bool default_value, const char *str);
+	bool str2bool(bool &result, bool default_value, const std::string &str);
+	bool str2bool(bool &result, const char *str);
+	bool str2bool(bool &result, const std::string &str);
 
 // convert byte to hex string
 	const char *bin2hex(const uint8_t byte, bool flag_up = false);
@@ -99,7 +101,7 @@ namespace lib_cpp
 	char *concat_str(const char *pstr1, const char *pstr2);
 
 // get env var and convert to bool
-	bool env2bool(const char *pname, bool value_default = false);
+	bool env2bool(bool &result, bool value_default, const char *pname);
 
 // signal name
 	const char *get_signal_name(const int sig);
@@ -121,6 +123,9 @@ namespace lib_cpp
 
 // check pointer and strlen
 	size_t strlen(const char *pstr);
+
+// find block
+	size_t find(const void *p, size_t size, const void *ppattern, size_t pattern_size);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #endif

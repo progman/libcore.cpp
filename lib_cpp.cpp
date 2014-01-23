@@ -1,5 +1,4 @@
-//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.1.7
+// 0.1.8
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #define _LARGE_FILE_API
@@ -45,7 +44,7 @@ static uint8_t hex2bin_table[] =
 };
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert uint to string
-void lib_cpp::uint2str(uint64_t source, std::string &target)
+bool lib_cpp::uint2str(uint64_t source, std::string &target)
 {
 	char buf[128];
 
@@ -57,10 +56,12 @@ void lib_cpp::uint2str(uint64_t source, std::string &target)
 #endif
 
 	target = buf;
+
+	return true;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert sint to string
-void lib_cpp::sint2str(int64_t source, std::string &target)
+bool lib_cpp::sint2str(int64_t source, std::string &target)
 {
 	char buf[128];
 
@@ -72,6 +73,8 @@ void lib_cpp::sint2str(int64_t source, std::string &target)
 #endif
 
 	target = buf;
+
+	return true;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // check const char * in set 0x[0-9a-fA-F]+
@@ -486,13 +489,13 @@ bool lib_cpp::str2uint(uint64_t &value, uint64_t default_value, const char *pstr
 	}
 
 
-	if (lib_cpp::hex2uint(value, default_value, pstr, size) == true)
+	if (lib_cpp::hex2uint(value, default_value, pstr, size) != false)
 	{
 		return true;
 	}
 
 
-	if (lib_cpp::dec2sint((int64_t &)value, (int64_t &)default_value, pstr, size) == true)
+	if (lib_cpp::dec2sint((int64_t &)value, (int64_t &)default_value, pstr, size) != false)
 	{
 		return true;
 	}
@@ -531,40 +534,69 @@ bool lib_cpp::str2uint(uint64_t &value, const std::string &str)
 	return lib_cpp::str2uint(value, 0, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert string to bool
-bool lib_cpp::str2bool(const char *str)
+bool lib_cpp::str2bool(bool &result, bool default_value, const char *str)
 {
-//	return lib_cpp::str2bool(std::string(str));
-
-	if (strcasecmp(str, "1")    == 0) return true;
-	if (strcasecmp(str, "t")    == 0) return true;
-	if (strcasecmp(str, "on")   == 0) return true;
-	if (strcasecmp(str, "true") == 0) return true;
-
-	return false;
-}
-//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert string to bool
-bool lib_cpp::str2bool(const std::string &str)
-{
-	return lib_cpp::str2bool(str.c_str());
-/*
-	std::string tmp = str;
-	std::transform(str.begin(), str.end(), tmp.begin(), tolower);
-
-	if
-	(
-		(tmp == "true") ||
-		(tmp == "t")    ||
-		(tmp == "on")   ||
-		(tmp == "1")
-	)
+	if (strcasecmp(str, "1")    == 0)
 	{
+		result = true;
+		return true;
+	}
+	if (strcasecmp(str, "t")    == 0)
+	{
+		result = true;
+		return true;
+	}
+	if (strcasecmp(str, "on")   == 0)
+	{
+		result = true;
+		return true;
+	}
+	if (strcasecmp(str, "true") == 0)
+	{
+		result = true;
 		return true;
 	}
 
+
+	if (strcasecmp(str, "0")    == 0)
+	{
+		result = false;
+		return true;
+	}
+	if (strcasecmp(str, "f")    == 0)
+	{
+		result = false;
+		return true;
+	}
+	if (strcasecmp(str, "off")   == 0)
+	{
+		result = false;
+		return true;
+	}
+	if (strcasecmp(str, "false") == 0)
+	{
+		result = false;
+		return true;
+	}
+
+
+	result = default_value;
 	return false;
-*/
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+bool lib_cpp::str2bool(bool &result, bool default_value, const std::string &str)
+{
+	return lib_cpp::str2bool(result, default_value, str.c_str());
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+bool lib_cpp::str2bool(bool &result, const char *str)
+{
+	return lib_cpp::str2bool(result, false, str);
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+bool lib_cpp::str2bool(bool &result, const std::string &str)
+{
+	return lib_cpp::str2bool(result, false, str.c_str());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert byte to hex string
@@ -955,15 +987,21 @@ char *lib_cpp::concat_str(const char *pstr1, const char *pstr2)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // get env var and convert to bool
-bool lib_cpp::env2bool(const char *pname, bool value_default)
+bool lib_cpp::env2bool(bool &result, bool value_default, const char *pname)
 {
 	char *p = getenv(pname);
 	if (p == NULL)
 	{
-		return value_default;
+		result = value_default;
+		return false;
 	}
 
-	return lib_cpp::str2bool(p);
+	if (lib_cpp::str2bool(result, value_default, p) == false)
+	{
+		return false;
+	}
+
+	return true;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // signal name
@@ -1195,5 +1233,26 @@ size_t lib_cpp::strlen(const char *pstr)
 	if (pstr == NULL) return 0;
 
 	return ::strlen(pstr);
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// find block
+size_t lib_cpp::find(const void *p, size_t size, const void *ppattern, size_t pattern_size)
+{
+	if ((p == NULL) || (ppattern == NULL)) return -1;
+
+	if (pattern_size > size) return -1;
+
+	const int8_t *p2 = (int8_t *)p;
+	size_t find_size = size - pattern_size;
+	for (size_t i = 0; i < find_size; i++)
+	{
+		if (::memcmp(p2, ppattern, pattern_size) == 0)
+		{
+			return i;
+		}
+		p2++;
+	}
+
+	return size_t(-1);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
