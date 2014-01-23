@@ -15,63 +15,63 @@ int str2bool()
 	rc = lib_cpp::str2bool(value, false, "1");
 	if ((rc == false) || (value == false))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "009");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
 		return -1;
 	}
 
 	rc = lib_cpp::str2bool(value, false, "t");
 	if ((rc == false) || (value == false))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "007");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "002");
 		return -1;
 	}
 
 	rc = lib_cpp::str2bool(value, false, "T");
 	if ((rc == false) || (value == false))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "007");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
 		return -1;
 	}
 
 	rc = lib_cpp::str2bool(value, false, "on");
 	if ((rc == false) || (value == false))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "008");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "004");
 		return -1;
 	}
 
 	rc = lib_cpp::str2bool(value, false, "On");
 	if ((rc == false) || (value == false))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "008");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "005");
 		return -1;
 	}
 
 	rc = lib_cpp::str2bool(value, false, "ON");
 	if ((rc == false) || (value == false))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "008");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
 		return -1;
 	}
 
 	rc = lib_cpp::str2bool(value, false, "true");
 	if ((rc == false) || (value == false))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "007");
 		return -1;
 	}
 
 	rc = lib_cpp::str2bool(value, false, "True");
 	if ((rc == false) || (value == false))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "002");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "008");
 		return -1;
 	}
 
 	rc = lib_cpp::str2bool(value, false, "TRUE");
 	if ((rc == false) || (value == false))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "009");
 		return -1;
 	}
 
@@ -79,63 +79,63 @@ int str2bool()
 	rc = lib_cpp::str2bool(value, false, "0");
 	if ((rc == false) || (value == true))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "009");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "010");
 		return -1;
 	}
 
 	rc = lib_cpp::str2bool(value, false, "f");
 	if ((rc == false) || (value == true))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "007");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "011");
 		return -1;
 	}
 
 	rc = lib_cpp::str2bool(value, false, "F");
 	if ((rc == false) || (value == true))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "007");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "012");
 		return -1;
 	}
 
 	rc = lib_cpp::str2bool(value, false, "off");
 	if ((rc == false) || (value == true))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "004");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "013");
 		return -1;
 	}
 
 	rc = lib_cpp::str2bool(value, false, "Off");
 	if ((rc == false) || (value == true))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "005");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "014");
 		return -1;
 	}
 
 	rc = lib_cpp::str2bool(value, false, "OFF");
 	if ((rc == false) || (value == true))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "015");
 		return -1;
 	}
 
 	rc = lib_cpp::str2bool(value, false, "false");
 	if ((rc == false) || (value == true))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "004");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "016");
 		return -1;
 	}
 
 	rc = lib_cpp::str2bool(value, false, "False");
 	if ((rc == false) || (value == true))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "005");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "017");
 		return -1;
 	}
 
 	rc = lib_cpp::str2bool(value, false, "FALSE");
 	if ((rc == false) || (value == true))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "018");
 		return -1;
 	}
 
@@ -143,14 +143,14 @@ int str2bool()
 	rc = lib_cpp::str2bool(value, false, "");
 	if ((rc == true) || (value == true))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "019");
 		return -1;
 	}
 
 	rc = lib_cpp::str2bool(value, true, "");
 	if ((rc == true) || (value == false))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "020");
 		return -1;
 	}
 
