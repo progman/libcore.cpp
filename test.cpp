@@ -4,7 +4,7 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #include <stdio.h>
 #include <string.h>
-#include "lib_cpp.hpp"
+#include "libcore.hpp"
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 int str2bool()
 {
@@ -12,63 +12,63 @@ int str2bool()
 	bool rc;
 
 
-	rc = lib_cpp::str2bool(value, false, "1");
+	rc = libcore::str2bool(value, false, "1");
 	if ((rc == false) || (value == false))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
 		return -1;
 	}
 
-	rc = lib_cpp::str2bool(value, false, "t");
+	rc = libcore::str2bool(value, false, "t");
 	if ((rc == false) || (value == false))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "002");
 		return -1;
 	}
 
-	rc = lib_cpp::str2bool(value, false, "T");
+	rc = libcore::str2bool(value, false, "T");
 	if ((rc == false) || (value == false))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
 		return -1;
 	}
 
-	rc = lib_cpp::str2bool(value, false, "on");
+	rc = libcore::str2bool(value, false, "on");
 	if ((rc == false) || (value == false))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "004");
 		return -1;
 	}
 
-	rc = lib_cpp::str2bool(value, false, "On");
+	rc = libcore::str2bool(value, false, "On");
 	if ((rc == false) || (value == false))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "005");
 		return -1;
 	}
 
-	rc = lib_cpp::str2bool(value, false, "ON");
+	rc = libcore::str2bool(value, false, "ON");
 	if ((rc == false) || (value == false))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
 		return -1;
 	}
 
-	rc = lib_cpp::str2bool(value, false, "true");
+	rc = libcore::str2bool(value, false, "true");
 	if ((rc == false) || (value == false))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "007");
 		return -1;
 	}
 
-	rc = lib_cpp::str2bool(value, false, "True");
+	rc = libcore::str2bool(value, false, "True");
 	if ((rc == false) || (value == false))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "008");
 		return -1;
 	}
 
-	rc = lib_cpp::str2bool(value, false, "TRUE");
+	rc = libcore::str2bool(value, false, "TRUE");
 	if ((rc == false) || (value == false))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "009");
@@ -76,63 +76,63 @@ int str2bool()
 	}
 
 
-	rc = lib_cpp::str2bool(value, false, "0");
+	rc = libcore::str2bool(value, false, "0");
 	if ((rc == false) || (value == true))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "010");
 		return -1;
 	}
 
-	rc = lib_cpp::str2bool(value, false, "f");
+	rc = libcore::str2bool(value, false, "f");
 	if ((rc == false) || (value == true))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "011");
 		return -1;
 	}
 
-	rc = lib_cpp::str2bool(value, false, "F");
+	rc = libcore::str2bool(value, false, "F");
 	if ((rc == false) || (value == true))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "012");
 		return -1;
 	}
 
-	rc = lib_cpp::str2bool(value, false, "off");
+	rc = libcore::str2bool(value, false, "off");
 	if ((rc == false) || (value == true))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "013");
 		return -1;
 	}
 
-	rc = lib_cpp::str2bool(value, false, "Off");
+	rc = libcore::str2bool(value, false, "Off");
 	if ((rc == false) || (value == true))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "014");
 		return -1;
 	}
 
-	rc = lib_cpp::str2bool(value, false, "OFF");
+	rc = libcore::str2bool(value, false, "OFF");
 	if ((rc == false) || (value == true))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "015");
 		return -1;
 	}
 
-	rc = lib_cpp::str2bool(value, false, "false");
+	rc = libcore::str2bool(value, false, "false");
 	if ((rc == false) || (value == true))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "016");
 		return -1;
 	}
 
-	rc = lib_cpp::str2bool(value, false, "False");
+	rc = libcore::str2bool(value, false, "False");
 	if ((rc == false) || (value == true))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "017");
 		return -1;
 	}
 
-	rc = lib_cpp::str2bool(value, false, "FALSE");
+	rc = libcore::str2bool(value, false, "FALSE");
 	if ((rc == false) || (value == true))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "018");
@@ -140,14 +140,14 @@ int str2bool()
 	}
 
 
-	rc = lib_cpp::str2bool(value, false, "");
+	rc = libcore::str2bool(value, false, "");
 	if ((rc == true) || (value == true))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "019");
 		return -1;
 	}
 
-	rc = lib_cpp::str2bool(value, true, "");
+	rc = libcore::str2bool(value, true, "");
 	if ((rc == true) || (value == false))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "020");
@@ -177,14 +177,14 @@ int flip()
 	char t3[]={ 3, 2, 1 };
 	char t4[]={ 3, 2, 1, 0 };
 
-	lib_cpp::flip(t1, sizeof(t1));
+	libcore::flip(t1, sizeof(t1));
 	if (t1[0] != 3)
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
 		return -1;
 	}
 
-	lib_cpp::flip(t2, sizeof(t2));
+	libcore::flip(t2, sizeof(t2));
 	if
 	(
 		(t2[0] != 2) ||
@@ -195,7 +195,7 @@ int flip()
 		return -1;
 	}
 
-	lib_cpp::flip(t3, sizeof(t3));
+	libcore::flip(t3, sizeof(t3));
 	if
 	(
 		(t3[0] != 1) ||
@@ -207,7 +207,7 @@ int flip()
 		return -1;
 	}
 
-	lib_cpp::flip(t4, sizeof(t4));
+	libcore::flip(t4, sizeof(t4));
 	if
 	(
 		(t4[0] != 0) ||
@@ -229,7 +229,7 @@ int remove_file_ext()
 
 	in = "";
 	out = in;
-	if ((lib_cpp::remove_file_ext(out) == true) || (out != in))
+	if ((libcore::remove_file_ext(out) == true) || (out != in))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
 		return -1;
@@ -237,7 +237,7 @@ int remove_file_ext()
 
 	in = "wow";
 	out = in;
-	if ((lib_cpp::remove_file_ext(out) == true) || (out != in))
+	if ((libcore::remove_file_ext(out) == true) || (out != in))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "002");
 		return -1;
@@ -245,7 +245,7 @@ int remove_file_ext()
 
 	in = "wow.zip";
 	out = in;
-	if ((lib_cpp::remove_file_ext(out) == false) || (out != "wow"))
+	if ((libcore::remove_file_ext(out) == false) || (out != "wow"))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
 		return -1;
@@ -260,7 +260,7 @@ int find()
 
 	const char *ppattern = "world";
 
-	size_t index = lib_cpp::find(pdata, strlen(pdata), ppattern, strlen(ppattern));
+	size_t index = libcore::find(pdata, strlen(pdata), ppattern, strlen(ppattern));
 	if (index == size_t(-1))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");

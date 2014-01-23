@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.1.8
+// 0.1.9
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #define _LARGE_FILE_API
@@ -17,7 +17,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include "lib_cpp.hpp"
+#include "libcore.hpp"
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #if (INTPTR_MAX != INT32_MAX) && (INTPTR_MAX != INT64_MAX)
 #error "need 32-bit or 64-bit"
@@ -45,7 +45,7 @@ static uint8_t hex2bin_table[] =
 };
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert uint to string
-bool lib_cpp::uint2str(uint64_t source, std::string &target)
+bool libcore::uint2str(uint64_t source, std::string &target)
 {
 	char buf[128];
 
@@ -62,7 +62,7 @@ bool lib_cpp::uint2str(uint64_t source, std::string &target)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert sint to string
-bool lib_cpp::sint2str(int64_t source, std::string &target)
+bool libcore::sint2str(int64_t source, std::string &target)
 {
 	char buf[128];
 
@@ -79,7 +79,7 @@ bool lib_cpp::sint2str(int64_t source, std::string &target)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // check const char * in set 0x[0-9a-fA-F]+
-bool lib_cpp::is_hex(const char *pstr)
+bool libcore::is_hex(const char *pstr)
 {
 	if (pstr == NULL) return false;
 
@@ -116,13 +116,13 @@ bool lib_cpp::is_hex(const char *pstr)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // check const std::string in set 0x[0-9a-fA-F]+
-bool lib_cpp::is_hex(const std::string &str)
+bool libcore::is_hex(const std::string &str)
 {
-	return lib_cpp::is_hex(str.c_str());
+	return libcore::is_hex(str.c_str());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // check const char * in set [0-9]+
-bool lib_cpp::is_udec(const char *pstr)
+bool libcore::is_udec(const char *pstr)
 {
 	if (pstr == NULL) return false;
 
@@ -156,13 +156,13 @@ bool lib_cpp::is_udec(const char *pstr)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // check const std::string in set [0-9]+
-bool lib_cpp::is_udec(const std::string &str)
+bool libcore::is_udec(const std::string &str)
 {
-	return lib_cpp::is_udec(str.c_str());
+	return libcore::is_udec(str.c_str());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // check const char * in set [-+]*[0-9]+
-bool lib_cpp::is_sdec(const char *pstr)
+bool libcore::is_sdec(const char *pstr)
 {
 	if (pstr == NULL) return false;
 
@@ -178,17 +178,17 @@ bool lib_cpp::is_sdec(const char *pstr)
 	pstr++;
 
 
-	return lib_cpp::is_udec(pstr);
+	return libcore::is_udec(pstr);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // check const std::string in set [-+]*[0-9]+
-bool lib_cpp::is_sdec(const std::string &str)
+bool libcore::is_sdec(const std::string &str)
 {
-	return lib_cpp::is_sdec(str.c_str());
+	return libcore::is_sdec(str.c_str());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // check number in str less number in str_max
-bool lib_cpp::is_numeric_string_overflow(const char *pstr_max, const char *pstr, const size_t size)
+bool libcore::is_numeric_string_overflow(const char *pstr_max, const char *pstr, const size_t size)
 {
 	if
 	(
@@ -239,13 +239,13 @@ bool lib_cpp::is_numeric_string_overflow(const char *pstr_max, const char *pstr,
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // check number in str less number in str_max
-bool lib_cpp::is_numeric_string_overflow(const char *pstr_max, const std::string &str)
+bool libcore::is_numeric_string_overflow(const char *pstr_max, const std::string &str)
 {
-	return lib_cpp::is_numeric_string_overflow(pstr_max, str.c_str(), str.size());
+	return libcore::is_numeric_string_overflow(pstr_max, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert hex string to uint
-bool lib_cpp::hex2uint(uint64_t &value, uint64_t default_value, const char *pstr, size_t size)
+bool libcore::hex2uint(uint64_t &value, uint64_t default_value, const char *pstr, size_t size)
 {
 	if (size == 0)
 	{
@@ -306,12 +306,12 @@ bool lib_cpp::hex2uint(uint64_t &value, uint64_t default_value, const char *pstr
 		pstr++;
 
 
-		if (lib_cpp::hex2bin((uint8_t)ch1, r1) == false)
+		if (libcore::hex2bin((uint8_t)ch1, r1) == false)
 		{
 			value = default_value;
 			return false;
 		}
-		if (lib_cpp::hex2bin((uint8_t)ch2, r2) == false)
+		if (libcore::hex2bin((uint8_t)ch2, r2) == false)
 		{
 			value = default_value;
 			return false;
@@ -332,40 +332,40 @@ bool lib_cpp::hex2uint(uint64_t &value, uint64_t default_value, const char *pstr
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert hex string to uint
-bool lib_cpp::hex2uint(uint64_t &value, uint64_t default_value, const char *pstr)
+bool libcore::hex2uint(uint64_t &value, uint64_t default_value, const char *pstr)
 {
-	return lib_cpp::hex2uint(value, default_value, pstr, lib_cpp::strlen(pstr));
+	return libcore::hex2uint(value, default_value, pstr, libcore::strlen(pstr));
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert hex string to uint
-bool lib_cpp::hex2uint(uint64_t &value, uint64_t default_value, const std::string &str)
+bool libcore::hex2uint(uint64_t &value, uint64_t default_value, const std::string &str)
 {
-	return lib_cpp::hex2uint(value, default_value, str.c_str(), str.size());
+	return libcore::hex2uint(value, default_value, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert hex string to uint
-bool lib_cpp::hex2uint(uint64_t &value, const char *pstr, size_t size)
+bool libcore::hex2uint(uint64_t &value, const char *pstr, size_t size)
 {
-	return lib_cpp::hex2uint(value, 0, pstr, size);
+	return libcore::hex2uint(value, 0, pstr, size);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert hex string to uint
-bool lib_cpp::hex2uint(uint64_t &value, const char *pstr)
+bool libcore::hex2uint(uint64_t &value, const char *pstr)
 {
-	return lib_cpp::hex2uint(value, 0, pstr, lib_cpp::strlen(pstr));
+	return libcore::hex2uint(value, 0, pstr, libcore::strlen(pstr));
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert hex string to uint
-bool lib_cpp::hex2uint(uint64_t &value, const std::string &str)
+bool libcore::hex2uint(uint64_t &value, const std::string &str)
 {
-	return lib_cpp::hex2uint(value, 0, str.c_str(), str.size());
+	return libcore::hex2uint(value, 0, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert dec string to uint
-bool lib_cpp::dec2uint(uint64_t &value, uint64_t default_value, const char *pstr, size_t size)
+bool libcore::dec2uint(uint64_t &value, uint64_t default_value, const char *pstr, size_t size)
 {
 // check correct data input string
-	if (lib_cpp::is_udec(pstr) == false)
+	if (libcore::is_udec(pstr) == false)
 	{
 		value = default_value;
 		return false;
@@ -373,7 +373,7 @@ bool lib_cpp::dec2uint(uint64_t &value, uint64_t default_value, const char *pstr
 
 
 // check overflow
-	if (lib_cpp::is_numeric_string_overflow("18446744073709551615", pstr, size) == false)
+	if (libcore::is_numeric_string_overflow("18446744073709551615", pstr, size) == false)
 	{
 		value = default_value;
 		return false;
@@ -386,40 +386,40 @@ bool lib_cpp::dec2uint(uint64_t &value, uint64_t default_value, const char *pstr
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert dec string to uint
-bool lib_cpp::dec2uint(uint64_t &value, uint64_t default_value, const char *pstr)
+bool libcore::dec2uint(uint64_t &value, uint64_t default_value, const char *pstr)
 {
-	return lib_cpp::dec2uint(value, default_value, pstr, lib_cpp::strlen(pstr));
+	return libcore::dec2uint(value, default_value, pstr, libcore::strlen(pstr));
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert dec string to uint
-bool lib_cpp::dec2uint(uint64_t &value, uint64_t default_value, const std::string &str)
+bool libcore::dec2uint(uint64_t &value, uint64_t default_value, const std::string &str)
 {
-	return lib_cpp::dec2uint(value, default_value, str.c_str(), str.size());
+	return libcore::dec2uint(value, default_value, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert dec string to uint
-bool lib_cpp::dec2uint(uint64_t &value, const char *pstr, size_t size)
+bool libcore::dec2uint(uint64_t &value, const char *pstr, size_t size)
 {
-	return lib_cpp::dec2uint(value, 0, pstr, size);
+	return libcore::dec2uint(value, 0, pstr, size);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert dec string to uint
-bool lib_cpp::dec2uint(uint64_t &value, const char *pstr)
+bool libcore::dec2uint(uint64_t &value, const char *pstr)
 {
-	return lib_cpp::dec2uint(value, 0, pstr, lib_cpp::strlen(pstr));
+	return libcore::dec2uint(value, 0, pstr, libcore::strlen(pstr));
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert dec string to uint
-bool lib_cpp::dec2uint(uint64_t &value, const std::string &str)
+bool libcore::dec2uint(uint64_t &value, const std::string &str)
 {
-	return lib_cpp::dec2uint(value, 0, str.c_str(), str.size());
+	return libcore::dec2uint(value, 0, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert dec string to sint
-bool lib_cpp::dec2sint(int64_t &value, int64_t default_value, const char *pstr, size_t size)
+bool libcore::dec2sint(int64_t &value, int64_t default_value, const char *pstr, size_t size)
 {
 // check correct data input string
-	if (lib_cpp::is_sdec(pstr) == false)
+	if (libcore::is_sdec(pstr) == false)
 	{
 		value = default_value;
 		return false;
@@ -429,7 +429,7 @@ bool lib_cpp::dec2sint(int64_t &value, int64_t default_value, const char *pstr, 
 // check overflow
 	if (*pstr == '-')
 	{
-		if (lib_cpp::is_numeric_string_overflow("-9223372036854775806", pstr, size) == false)
+		if (libcore::is_numeric_string_overflow("-9223372036854775806", pstr, size) == false)
 		{
 			value = default_value;
 			return false;
@@ -437,7 +437,7 @@ bool lib_cpp::dec2sint(int64_t &value, int64_t default_value, const char *pstr, 
 	}
 	else
 	{
-		if (lib_cpp::is_numeric_string_overflow("+9223372036854775807", pstr, size) == false)
+		if (libcore::is_numeric_string_overflow("+9223372036854775807", pstr, size) == false)
 		{
 			value = default_value;
 			return false;
@@ -451,37 +451,37 @@ bool lib_cpp::dec2sint(int64_t &value, int64_t default_value, const char *pstr, 
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert dec string to sint
-bool lib_cpp::dec2sint(int64_t &value, int64_t default_value, const char *pstr)
+bool libcore::dec2sint(int64_t &value, int64_t default_value, const char *pstr)
 {
-	return lib_cpp::dec2sint(value, default_value, pstr, lib_cpp::strlen(pstr));
+	return libcore::dec2sint(value, default_value, pstr, libcore::strlen(pstr));
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert dec string to sint
-bool lib_cpp::dec2sint(int64_t &value, int64_t  default_value, const std::string &str)
+bool libcore::dec2sint(int64_t &value, int64_t  default_value, const std::string &str)
 {
-	return lib_cpp::dec2sint(value, default_value, str.c_str(), str.size());
+	return libcore::dec2sint(value, default_value, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert dec string to sint
-bool lib_cpp::dec2sint(int64_t &value, const char *pstr, size_t size)
+bool libcore::dec2sint(int64_t &value, const char *pstr, size_t size)
 {
-	return lib_cpp::dec2sint(value, 0, pstr, size);
+	return libcore::dec2sint(value, 0, pstr, size);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert dec string to sint
-bool lib_cpp::dec2sint(int64_t &value, const char *pstr)
+bool libcore::dec2sint(int64_t &value, const char *pstr)
 {
-	return lib_cpp::dec2sint(value, 0, pstr, lib_cpp::strlen(pstr));
+	return libcore::dec2sint(value, 0, pstr, libcore::strlen(pstr));
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert dec string to sint
-bool lib_cpp::dec2sint(int64_t &value, const std::string &str)
+bool libcore::dec2sint(int64_t &value, const std::string &str)
 {
-	return lib_cpp::dec2sint(value, 0, str.c_str(), str.size());
+	return libcore::dec2sint(value, 0, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert const char * to uint
-bool lib_cpp::str2uint(uint64_t &value, uint64_t default_value, const char *pstr, size_t size)
+bool libcore::str2uint(uint64_t &value, uint64_t default_value, const char *pstr, size_t size)
 {
 	if (size == 0)
 	{
@@ -490,52 +490,52 @@ bool lib_cpp::str2uint(uint64_t &value, uint64_t default_value, const char *pstr
 	}
 
 
-	if (lib_cpp::hex2uint(value, default_value, pstr, size) != false)
+	if (libcore::hex2uint(value, default_value, pstr, size) != false)
 	{
 		return true;
 	}
 
 
-	if (lib_cpp::dec2sint((int64_t &)value, (int64_t &)default_value, pstr, size) != false)
+	if (libcore::dec2sint((int64_t &)value, (int64_t &)default_value, pstr, size) != false)
 	{
 		return true;
 	}
 
 
-	return lib_cpp::dec2uint(value, default_value, pstr, size);
+	return libcore::dec2uint(value, default_value, pstr, size);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert const char * to uint
-bool lib_cpp::str2uint(uint64_t &value, uint64_t default_value, const char *pstr)
+bool libcore::str2uint(uint64_t &value, uint64_t default_value, const char *pstr)
 {
-	return lib_cpp::str2uint(value, default_value, pstr, lib_cpp::strlen(pstr));
+	return libcore::str2uint(value, default_value, pstr, libcore::strlen(pstr));
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert const char * to uint
-bool lib_cpp::str2uint(uint64_t &value, uint64_t default_value, const std::string &str)
+bool libcore::str2uint(uint64_t &value, uint64_t default_value, const std::string &str)
 {
-	return lib_cpp::str2uint(value, default_value, str.c_str(), str.size());
+	return libcore::str2uint(value, default_value, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert const char * to uint
-bool lib_cpp::str2uint(uint64_t &value, const char *pstr, size_t size)
+bool libcore::str2uint(uint64_t &value, const char *pstr, size_t size)
 {
-	return lib_cpp::str2uint(value, 0, pstr, size);
+	return libcore::str2uint(value, 0, pstr, size);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert const char * to uint
-bool lib_cpp::str2uint(uint64_t &value, const char *pstr)
+bool libcore::str2uint(uint64_t &value, const char *pstr)
 {
-	return lib_cpp::str2uint(value, 0, pstr, lib_cpp::strlen(pstr));
+	return libcore::str2uint(value, 0, pstr, libcore::strlen(pstr));
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert const char * to uint
-bool lib_cpp::str2uint(uint64_t &value, const std::string &str)
+bool libcore::str2uint(uint64_t &value, const std::string &str)
 {
-	return lib_cpp::str2uint(value, 0, str.c_str(), str.size());
+	return libcore::str2uint(value, 0, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-bool lib_cpp::str2bool(bool &result, bool default_value, const char *str)
+bool libcore::str2bool(bool &result, bool default_value, const char *str)
 {
 	if (strcasecmp(str, "1")    == 0)
 	{
@@ -585,23 +585,23 @@ bool lib_cpp::str2bool(bool &result, bool default_value, const char *str)
 	return false;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-bool lib_cpp::str2bool(bool &result, bool default_value, const std::string &str)
+bool libcore::str2bool(bool &result, bool default_value, const std::string &str)
 {
-	return lib_cpp::str2bool(result, default_value, str.c_str());
+	return libcore::str2bool(result, default_value, str.c_str());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-bool lib_cpp::str2bool(bool &result, const char *str)
+bool libcore::str2bool(bool &result, const char *str)
 {
-	return lib_cpp::str2bool(result, false, str);
+	return libcore::str2bool(result, false, str);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-bool lib_cpp::str2bool(bool &result, const std::string &str)
+bool libcore::str2bool(bool &result, const std::string &str)
 {
-	return lib_cpp::str2bool(result, false, str.c_str());
+	return libcore::str2bool(result, false, str.c_str());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert byte to hex string
-const char *lib_cpp::bin2hex(const uint8_t byte, bool flag_up)
+const char *libcore::bin2hex(const uint8_t byte, bool flag_up)
 {
 	static const char *const bin2hex_table[] =
 	{
@@ -650,7 +650,7 @@ const char *lib_cpp::bin2hex(const uint8_t byte, bool flag_up)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert sibmol to number, example: '0' -> 0, 'F' -> 15
-bool lib_cpp::hex2bin(uint8_t source, uint8_t &target)
+bool libcore::hex2bin(uint8_t source, uint8_t &target)
 {
 	target = ::hex2bin_table[source];
 
@@ -658,7 +658,7 @@ bool lib_cpp::hex2bin(uint8_t source, uint8_t &target)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // block read from handle
-size_t lib_cpp::blk_read(int handle, off64_t offset, void *pdata, size_t size)
+size_t libcore::blk_read(int handle, off64_t offset, void *pdata, size_t size)
 {
 	if (offset != off64_t(-1))
 	{
@@ -687,7 +687,7 @@ size_t lib_cpp::blk_read(int handle, off64_t offset, void *pdata, size_t size)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // block write to handle
-size_t lib_cpp::blk_write(int handle, off64_t offset, const void *pdata, size_t size)
+size_t libcore::blk_write(int handle, off64_t offset, const void *pdata, size_t size)
 {
 	if (offset != off64_t(-1))
 	{
@@ -714,7 +714,7 @@ size_t lib_cpp::blk_write(int handle, off64_t offset, const void *pdata, size_t 
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // block recv from handle
-size_t lib_cpp::blk_recv(int handle, void *pdata, size_t size)
+size_t libcore::blk_recv(int handle, void *pdata, size_t size)
 {
 	uint8_t *p_cur = (uint8_t *)pdata;
 	size_t count = size;
@@ -736,7 +736,7 @@ size_t lib_cpp::blk_recv(int handle, void *pdata, size_t size)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // block send to handle
-size_t lib_cpp::blk_send(int handle, const void *pdata, size_t size)
+size_t libcore::blk_send(int handle, const void *pdata, size_t size)
 {
 	uint8_t *p_cur = (uint8_t *)pdata;
 	size_t count = size;
@@ -758,7 +758,7 @@ size_t lib_cpp::blk_send(int handle, const void *pdata, size_t size)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // read data from exist file
-int lib_cpp::file_get(const char *pfilename, off_t offset, void *pdata, size_t data_size)
+int libcore::file_get(const char *pfilename, off_t offset, void *pdata, size_t data_size)
 {
 	int rc;
 
@@ -805,7 +805,7 @@ int lib_cpp::file_get(const char *pfilename, off_t offset, void *pdata, size_t d
 
 
 // read from file
-	rc = lib_cpp::blk_read(fd, -1, pdata, data_size);
+	rc = libcore::blk_read(fd, -1, pdata, data_size);
 	if (rc == -1)
 	{
 		rc = errno;
@@ -827,7 +827,7 @@ int lib_cpp::file_get(const char *pfilename, off_t offset, void *pdata, size_t d
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // read data from exist file
-int lib_cpp::file_get(const char *pfilename, void **pdata, size_t *data_size)
+int libcore::file_get(const char *pfilename, void **pdata, size_t *data_size)
 {
 	int rc;
 
@@ -845,7 +845,7 @@ int lib_cpp::file_get(const char *pfilename, void **pdata, size_t *data_size)
 		return -1;
 	}
 
-	rc = lib_cpp::file_get(pfilename, 0, *pdata, *data_size);
+	rc = libcore::file_get(pfilename, 0, *pdata, *data_size);
 	if (rc == -1)
 	{
 		::free(*pdata);
@@ -856,13 +856,13 @@ int lib_cpp::file_get(const char *pfilename, void **pdata, size_t *data_size)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // read data from exist file
-int lib_cpp::file_get(const char *pfilename, std::string &data)
+int libcore::file_get(const char *pfilename, std::string &data)
 {
 	int rc;
 	void *pdata;
 	size_t data_size;
 
-	rc = lib_cpp::file_get(pfilename, &pdata, &data_size);
+	rc = libcore::file_get(pfilename, &pdata, &data_size);
 	if (rc == -1)
 	{
 		return -1;
@@ -875,7 +875,7 @@ int lib_cpp::file_get(const char *pfilename, std::string &data)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // write data to exist file
-int lib_cpp::file_set(const char *pfilename, off_t offset, const void *pdata, size_t data_size)
+int libcore::file_set(const char *pfilename, off_t offset, const void *pdata, size_t data_size)
 {
 	int rc;
 
@@ -922,7 +922,7 @@ int lib_cpp::file_set(const char *pfilename, off_t offset, const void *pdata, si
 
 
 // write to file
-	rc = lib_cpp::blk_write(fd, -1, pdata, data_size);
+	rc = libcore::blk_write(fd, -1, pdata, data_size);
 	if (rc == -1)
 	{
 		rc = errno;
@@ -955,19 +955,19 @@ int lib_cpp::file_set(const char *pfilename, off_t offset, const void *pdata, si
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // write data to exist file
-int lib_cpp::file_set(const char *pfilename, off_t offset, const std::string &data)
+int libcore::file_set(const char *pfilename, off_t offset, const std::string &data)
 {
-	return lib_cpp::file_set(pfilename, offset, data.c_str(), data.size());
+	return libcore::file_set(pfilename, offset, data.c_str(), data.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // write data to exist file
-int lib_cpp::file_set(const char *pfilename, const std::string &data)
+int libcore::file_set(const char *pfilename, const std::string &data)
 {
-	return lib_cpp::file_set(pfilename, 0, data.c_str(), data.size());
+	return libcore::file_set(pfilename, 0, data.c_str(), data.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // return (concat str1 and str2) or NULL
-char *lib_cpp::concat_str(const char *pstr1, const char *pstr2)
+char *libcore::concat_str(const char *pstr1, const char *pstr2)
 {
 	if ((pstr1 == NULL) || (pstr2 == NULL)) return NULL;
 
@@ -988,7 +988,7 @@ char *lib_cpp::concat_str(const char *pstr1, const char *pstr2)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // get env var and convert to bool
-bool lib_cpp::env2bool(bool &result, bool value_default, const char *pname)
+bool libcore::env2bool(bool &result, bool value_default, const char *pname)
 {
 	char *p = getenv(pname);
 	if (p == NULL)
@@ -997,7 +997,7 @@ bool lib_cpp::env2bool(bool &result, bool value_default, const char *pname)
 		return false;
 	}
 
-	if (lib_cpp::str2bool(result, value_default, p) == false)
+	if (libcore::str2bool(result, value_default, p) == false)
 	{
 		return false;
 	}
@@ -1006,7 +1006,7 @@ bool lib_cpp::env2bool(bool &result, bool value_default, const char *pname)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // signal name
-const char *lib_cpp::get_signal_name(const int sig)
+const char *libcore::get_signal_name(const int sig)
 {
 	struct
 	{
@@ -1135,7 +1135,7 @@ const char *lib_cpp::get_signal_name(const int sig)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // flip bytes
-void lib_cpp::flip(void *pbuffer, size_t size)
+void libcore::flip(void *pbuffer, size_t size)
 {
 	if (size < 2) return;
 
@@ -1153,7 +1153,7 @@ void lib_cpp::flip(void *pbuffer, size_t size)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // remove file extension
-bool lib_cpp::remove_file_ext(std::string& filename)
+bool libcore::remove_file_ext(std::string& filename)
 {
 	size_t pos = filename.rfind('.');
 
@@ -1168,7 +1168,7 @@ bool lib_cpp::remove_file_ext(std::string& filename)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // check ipv4 string like '127.0.0.1'
-bool lib_cpp::is_ipaddress(const char *str)
+bool libcore::is_ipaddress(const char *str)
 {
 	std::string tmp = str;
 	size_t point1 = tmp.find('.', 0);
@@ -1206,7 +1206,7 @@ bool lib_cpp::is_ipaddress(const char *str)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // set signal
-bool lib_cpp::set_signal(int signo, void (*sig_handler)(int))
+bool libcore::set_signal(int signo, void (*sig_handler)(int))
 {
 	struct sigaction act, oldact;
 	act.sa_handler = sig_handler;
@@ -1223,13 +1223,13 @@ bool lib_cpp::set_signal(int signo, void (*sig_handler)(int))
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // string to lower
-void lib_cpp::strtolower(const std::string &source, std::string &target)
+void libcore::strtolower(const std::string &source, std::string &target)
 {
 	std::transform(source.begin(), source.end(), target.begin(), tolower);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // check pointer and strlen
-size_t lib_cpp::strlen(const char *pstr)
+size_t libcore::strlen(const char *pstr)
 {
 	if (pstr == NULL) return 0;
 
@@ -1237,7 +1237,7 @@ size_t lib_cpp::strlen(const char *pstr)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // find block
-size_t lib_cpp::find(const void *p, size_t size, const void *ppattern, size_t pattern_size)
+size_t libcore::find(const void *p, size_t size, const void *ppattern, size_t pattern_size)
 {
 	if ((p == NULL) || (ppattern == NULL)) return -1;
 
