@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.1.9
+// 0.2.0
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #ifndef LIBCORE_HPP_INCLUDE
@@ -10,10 +10,10 @@
 namespace libcore
 {
 // convert uint to string
-	bool uint2str(uint64_t source, std::string &target);
+	bool uint2str(std::string &result, uint64_t source, uint8_t zero_count = 0);
 
 // convert sint to string
-	bool sint2str(int64_t  source, std::string &target);
+	bool sint2str(std::string &result,  int64_t source, uint8_t zero_count = 0);
 
 // check const string in set 0x[0-9a-fA-F]+
 	bool is_hex(const char *pstr);

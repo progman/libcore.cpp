@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.1.9
+// 0.2.0
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #define _LARGE_FILE_API
@@ -45,35 +45,63 @@ static uint8_t hex2bin_table[] =
 };
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert uint to string
-bool libcore::uint2str(uint64_t source, std::string &target)
+bool libcore::uint2str(std::string &result, uint64_t source, uint8_t zero_count)
 {
-	char buf[128];
+	char buf[128], format[128];
 
+	if (zero_count == 0)
+	{
 #if (INTPTR_MAX == INT32_MAX)
-	sprintf(buf, "%llu", source);
+		sprintf(buf, "%llu", source);
 #endif
 #if (INTPTR_MAX == INT64_MAX)
-	sprintf(buf, "%lu", source);
+		sprintf(buf, "%lu", source);
 #endif
+	}
+	else
+	{
+#if (INTPTR_MAX == INT32_MAX)
+		sprintf(format, "%%0%ullu", zero_count);
+		sprintf(buf, format, source);
+#endif
+#if (INTPTR_MAX == INT64_MAX)
+		sprintf(format, "%%0%ulu", zero_count);
+		sprintf(buf, format, source);
+#endif
+	}
 
-	target = buf;
+	result = buf;
 
 	return true;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert sint to string
-bool libcore::sint2str(int64_t source, std::string &target)
+bool libcore::sint2str(std::string &result, int64_t source, uint8_t zero_count)
 {
-	char buf[128];
+	char buf[128], format[128];
 
+	if (zero_count == 0)
+	{
 #if (INTPTR_MAX == INT32_MAX)
-	sprintf(buf, "%lld", source);
+		sprintf(buf, "%lld", source);
 #endif
 #if (INTPTR_MAX == INT64_MAX)
-	sprintf(buf, "%ld", source);
+		sprintf(buf, "%ld", source);
 #endif
+	}
+	else
+	{
+#if (INTPTR_MAX == INT32_MAX)
+		sprintf(format, "%%0%ulld", zero_count);
+		sprintf(buf, format, source);
+#endif
+#if (INTPTR_MAX == INT64_MAX)
+		sprintf(format, "%%0%uld", zero_count);
+		sprintf(buf, format, source);
+#endif
+	}
 
-	target = buf;
+	result = buf;
 
 	return true;
 }

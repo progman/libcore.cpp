@@ -6,6 +6,68 @@
 #include <string.h>
 #include "libcore.hpp"
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+int uint2str()
+{
+	bool rc;
+	std::string value;
+
+	rc = libcore::uint2str(value, +10);
+	if ((rc == false) || (value != "10"))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
+		return -1;
+	}
+
+	rc = libcore::uint2str(value, 1917, 6);
+	if ((rc == false) || (value != "001917"))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "002");
+		return -1;
+	}
+
+	uint64_t x = 0;
+	x = ~x;
+	rc = libcore::uint2str(value, x);
+	if ((rc == false) || (value != "18446744073709551615"))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
+		return -1;
+	}
+
+	return 0;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+int sint2str()
+{
+	bool rc;
+	std::string value;
+
+	rc = libcore::sint2str(value, -10);
+	if ((rc == false) || (value != "-10"))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
+		return -1;
+	}
+
+	rc = libcore::sint2str(value, 1917, 6);
+	if ((rc == false) || (value != "001917"))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "002");
+		return -1;
+	}
+
+	uint64_t x = 0;
+	x = ~x;
+	rc = libcore::sint2str(value, x);
+	if ((rc == false) || (value != "-1"))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
+		return -1;
+	}
+
+	return 0;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 int str2bool()
 {
 	bool value;
@@ -323,6 +385,12 @@ int main(int argc, char *argv[])
 		}
 	}
 
+
+	rc = uint2str();
+	if (rc == -1) return 1;
+
+	rc = sint2str();
+	if (rc == -1) return 1;
 
 	rc = str2bool();
 	if (rc == -1) return 1;
