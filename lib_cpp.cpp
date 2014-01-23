@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.1.6
+// 0.1.7
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #define _LARGE_FILE_API
@@ -44,7 +44,7 @@ static uint8_t hex2bin_table[] =
 	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff  // 0xF0
 };
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert uint64_t to string
+// convert uint to string
 void lib_cpp::uint2str(uint64_t source, std::string &target)
 {
 	char buf[128];
@@ -59,7 +59,7 @@ void lib_cpp::uint2str(uint64_t source, std::string &target)
 	target = buf;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert int64_t to string
+// convert sint to string
 void lib_cpp::sint2str(int64_t source, std::string &target)
 {
 	char buf[128];
@@ -240,8 +240,8 @@ bool lib_cpp::is_numeric_string_overflow(const char *pstr_max, const std::string
 	return lib_cpp::is_numeric_string_overflow(pstr_max, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert hex string to uint64_t
-bool lib_cpp::hex2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr, size_t size)
+// convert hex string to uint
+bool lib_cpp::hex2uint(uint64_t &value, uint64_t default_value, const char *pstr, size_t size)
 {
 	if (size == 0)
 	{
@@ -327,38 +327,38 @@ bool lib_cpp::hex2uint64_t(uint64_t &value, uint64_t default_value, const char *
 	return true;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert hex string to uint64_t
-bool lib_cpp::hex2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr)
+// convert hex string to uint
+bool lib_cpp::hex2uint(uint64_t &value, uint64_t default_value, const char *pstr)
 {
-	return lib_cpp::hex2uint64_t(value, default_value, pstr, lib_cpp::strlen(pstr));
+	return lib_cpp::hex2uint(value, default_value, pstr, lib_cpp::strlen(pstr));
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert hex string to uint64_t
-bool lib_cpp::hex2uint64_t(uint64_t &value, uint64_t default_value, const std::string &str)
+// convert hex string to uint
+bool lib_cpp::hex2uint(uint64_t &value, uint64_t default_value, const std::string &str)
 {
-	return lib_cpp::hex2uint64_t(value, default_value, str.c_str(), str.size());
+	return lib_cpp::hex2uint(value, default_value, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert hex string to uint64_t
-bool lib_cpp::hex2uint64_t(uint64_t &value, const char *pstr, size_t size)
+// convert hex string to uint
+bool lib_cpp::hex2uint(uint64_t &value, const char *pstr, size_t size)
 {
-	return lib_cpp::hex2uint64_t(value, 0, pstr, size);
+	return lib_cpp::hex2uint(value, 0, pstr, size);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert hex string to uint64_t
-bool lib_cpp::hex2uint64_t(uint64_t &value, const char *pstr)
+// convert hex string to uint
+bool lib_cpp::hex2uint(uint64_t &value, const char *pstr)
 {
-	return lib_cpp::hex2uint64_t(value, 0, pstr, lib_cpp::strlen(pstr));
+	return lib_cpp::hex2uint(value, 0, pstr, lib_cpp::strlen(pstr));
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert hex string to uint64_t
-bool lib_cpp::hex2uint64_t(uint64_t &value, const std::string &str)
+// convert hex string to uint
+bool lib_cpp::hex2uint(uint64_t &value, const std::string &str)
 {
-	return lib_cpp::hex2uint64_t(value, 0, str.c_str(), str.size());
+	return lib_cpp::hex2uint(value, 0, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert dec string to uint64_t
-bool lib_cpp::dec2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr, size_t size)
+// convert dec string to uint
+bool lib_cpp::dec2uint(uint64_t &value, uint64_t default_value, const char *pstr, size_t size)
 {
 // check correct data input string
 	if (lib_cpp::is_udec(pstr) == false)
@@ -381,38 +381,38 @@ bool lib_cpp::dec2uint64_t(uint64_t &value, uint64_t default_value, const char *
 	return true;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert dec string to uint64_t
-bool lib_cpp::dec2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr)
+// convert dec string to uint
+bool lib_cpp::dec2uint(uint64_t &value, uint64_t default_value, const char *pstr)
 {
-	return lib_cpp::dec2uint64_t(value, default_value, pstr, lib_cpp::strlen(pstr));
+	return lib_cpp::dec2uint(value, default_value, pstr, lib_cpp::strlen(pstr));
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert dec string to uint64_t
-bool lib_cpp::dec2uint64_t(uint64_t &value, uint64_t default_value, const std::string &str)
+// convert dec string to uint
+bool lib_cpp::dec2uint(uint64_t &value, uint64_t default_value, const std::string &str)
 {
-	return lib_cpp::dec2uint64_t(value, default_value, str.c_str(), str.size());
+	return lib_cpp::dec2uint(value, default_value, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert dec string to uint64_t
-bool lib_cpp::dec2uint64_t(uint64_t &value, const char *pstr, size_t size)
+// convert dec string to uint
+bool lib_cpp::dec2uint(uint64_t &value, const char *pstr, size_t size)
 {
-	return lib_cpp::dec2uint64_t(value, 0, pstr, size);
+	return lib_cpp::dec2uint(value, 0, pstr, size);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert dec string to uint64_t
-bool lib_cpp::dec2uint64_t(uint64_t &value, const char *pstr)
+// convert dec string to uint
+bool lib_cpp::dec2uint(uint64_t &value, const char *pstr)
 {
-	return lib_cpp::dec2uint64_t(value, 0, pstr, lib_cpp::strlen(pstr));
+	return lib_cpp::dec2uint(value, 0, pstr, lib_cpp::strlen(pstr));
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert dec string to uint64_t
-bool lib_cpp::dec2uint64_t(uint64_t &value, const std::string &str)
+// convert dec string to uint
+bool lib_cpp::dec2uint(uint64_t &value, const std::string &str)
 {
-	return lib_cpp::dec2uint64_t(value, 0, str.c_str(), str.size());
+	return lib_cpp::dec2uint(value, 0, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert dec string to int64_t
-bool lib_cpp::dec2int64_t(int64_t &value, int64_t default_value, const char *pstr, size_t size)
+// convert dec string to sint
+bool lib_cpp::dec2sint(int64_t &value, int64_t default_value, const char *pstr, size_t size)
 {
 // check correct data input string
 	if (lib_cpp::is_sdec(pstr) == false)
@@ -446,38 +446,38 @@ bool lib_cpp::dec2int64_t(int64_t &value, int64_t default_value, const char *pst
 	return true;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert dec string to int64_t
-bool lib_cpp::dec2int64_t(int64_t &value, int64_t default_value, const char *pstr)
+// convert dec string to sint
+bool lib_cpp::dec2sint(int64_t &value, int64_t default_value, const char *pstr)
 {
-	return lib_cpp::dec2int64_t(value, default_value, pstr, lib_cpp::strlen(pstr));
+	return lib_cpp::dec2sint(value, default_value, pstr, lib_cpp::strlen(pstr));
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert dec string to int64_t
-bool lib_cpp::dec2int64_t(int64_t &value, int64_t  default_value, const std::string &str)
+// convert dec string to sint
+bool lib_cpp::dec2sint(int64_t &value, int64_t  default_value, const std::string &str)
 {
-	return lib_cpp::dec2int64_t(value, default_value, str.c_str(), str.size());
+	return lib_cpp::dec2sint(value, default_value, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert dec string to int64_t
-bool lib_cpp::dec2int64_t(int64_t &value, const char *pstr, size_t size)
+// convert dec string to sint
+bool lib_cpp::dec2sint(int64_t &value, const char *pstr, size_t size)
 {
-	return lib_cpp::dec2int64_t(value, 0, pstr, size);
+	return lib_cpp::dec2sint(value, 0, pstr, size);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert dec string to int64_t
-bool lib_cpp::dec2int64_t(int64_t &value, const char *pstr)
+// convert dec string to sint
+bool lib_cpp::dec2sint(int64_t &value, const char *pstr)
 {
-	return lib_cpp::dec2int64_t(value, 0, pstr, lib_cpp::strlen(pstr));
+	return lib_cpp::dec2sint(value, 0, pstr, lib_cpp::strlen(pstr));
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert dec string to int64_t
-bool lib_cpp::dec2int64_t(int64_t &value, const std::string &str)
+// convert dec string to sint
+bool lib_cpp::dec2sint(int64_t &value, const std::string &str)
 {
-	return lib_cpp::dec2int64_t(value, 0, str.c_str(), str.size());
+	return lib_cpp::dec2sint(value, 0, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert const char * to uint64_t
-bool lib_cpp::str2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr, size_t size)
+// convert const char * to uint
+bool lib_cpp::str2uint(uint64_t &value, uint64_t default_value, const char *pstr, size_t size)
 {
 	if (size == 0)
 	{
@@ -486,49 +486,49 @@ bool lib_cpp::str2uint64_t(uint64_t &value, uint64_t default_value, const char *
 	}
 
 
-	if (lib_cpp::hex2uint64_t(value, default_value, pstr, size) == true)
+	if (lib_cpp::hex2uint(value, default_value, pstr, size) == true)
 	{
 		return true;
 	}
 
 
-	if (lib_cpp::dec2int64_t((int64_t &)value, (int64_t &)default_value, pstr, size) == true)
+	if (lib_cpp::dec2sint((int64_t &)value, (int64_t &)default_value, pstr, size) == true)
 	{
 		return true;
 	}
 
 
-	return lib_cpp::dec2uint64_t(value, default_value, pstr, size);
+	return lib_cpp::dec2uint(value, default_value, pstr, size);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert const char * to uint64_t
-bool lib_cpp::str2uint64_t(uint64_t &value, uint64_t default_value, const char *pstr)
+// convert const char * to uint
+bool lib_cpp::str2uint(uint64_t &value, uint64_t default_value, const char *pstr)
 {
-	return lib_cpp::str2uint64_t(value, default_value, pstr, lib_cpp::strlen(pstr));
+	return lib_cpp::str2uint(value, default_value, pstr, lib_cpp::strlen(pstr));
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert const char * to uint64_t
-bool lib_cpp::str2uint64_t(uint64_t &value, uint64_t default_value, const std::string &str)
+// convert const char * to uint
+bool lib_cpp::str2uint(uint64_t &value, uint64_t default_value, const std::string &str)
 {
-	return lib_cpp::str2uint64_t(value, default_value, str.c_str(), str.size());
+	return lib_cpp::str2uint(value, default_value, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert const char * to uint64_t
-bool lib_cpp::str2uint64_t(uint64_t &value, const char *pstr, size_t size)
+// convert const char * to uint
+bool lib_cpp::str2uint(uint64_t &value, const char *pstr, size_t size)
 {
-	return lib_cpp::str2uint64_t(value, 0, pstr, size);
+	return lib_cpp::str2uint(value, 0, pstr, size);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert const char * to uint64_t
-bool lib_cpp::str2uint64_t(uint64_t &value, const char *pstr)
+// convert const char * to uint
+bool lib_cpp::str2uint(uint64_t &value, const char *pstr)
 {
-	return lib_cpp::str2uint64_t(value, 0, pstr, lib_cpp::strlen(pstr));
+	return lib_cpp::str2uint(value, 0, pstr, lib_cpp::strlen(pstr));
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert const char * to uint64_t
-bool lib_cpp::str2uint64_t(uint64_t &value, const std::string &str)
+// convert const char * to uint
+bool lib_cpp::str2uint(uint64_t &value, const std::string &str)
 {
-	return lib_cpp::str2uint64_t(value, 0, str.c_str(), str.size());
+	return lib_cpp::str2uint(value, 0, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert string to bool
@@ -806,7 +806,7 @@ int lib_cpp::file_get(const char *pfilename, void **pdata, size_t *data_size)
 	}
 	*data_size = buf.st_size;
 
-	*pdata = malloc(*data_size);
+	*pdata = ::malloc(*data_size);
 	if (*pdata == NULL)
 	{
 		return -1;
@@ -836,6 +836,7 @@ int lib_cpp::file_get(const char *pfilename, std::string &data)
 	}
 
 	data = std::string((const char *)pdata, data_size);
+	::free(pdata);
 
 	return 0;
 }
@@ -1150,10 +1151,10 @@ bool lib_cpp::is_ipaddress(const char *str)
 	uint64_t val3;
 	uint64_t val4;
 
-	if (dec2uint64_t(val1, 0, num1.c_str(), num1.size()) == false) return false;
-	if (dec2uint64_t(val2, 0, num2.c_str(), num2.size()) == false) return false;
-	if (dec2uint64_t(val3, 0, num3.c_str(), num3.size()) == false) return false;
-	if (dec2uint64_t(val4, 0, num4.c_str(), num4.size()) == false) return false;
+	if (dec2uint(val1, 0, num1.c_str(), num1.size()) == false) return false;
+	if (dec2uint(val2, 0, num2.c_str(), num2.size()) == false) return false;
+	if (dec2uint(val3, 0, num3.c_str(), num3.size()) == false) return false;
+	if (dec2uint(val4, 0, num4.c_str(), num4.size()) == false) return false;
 
 	std::string tmp2 = num1 + '.' + num2 + '.' + num3 + '.' + num4;
 

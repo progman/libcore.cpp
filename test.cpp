@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.0.4
+// 0.0.5
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #include <stdio.h>
@@ -10,109 +10,109 @@ int str2bool()
 {
 	if (lib_cpp::str2bool("true") == false)
 	{
-		printf("ERROR[str2bool()]: step001\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
 		return -1;
 	}
 
 	if (lib_cpp::str2bool("True") == false)
 	{
-		printf("ERROR[str2bool()]: step002\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "002");
 		return -1;
 	}
 
 	if (lib_cpp::str2bool("TRUE") == false)
 	{
-		printf("ERROR[str2bool()]: step003\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
 		return -1;
 	}
 
 	if (lib_cpp::str2bool("false") == true)
 	{
-		printf("ERROR[str2bool()]: step004\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "004");
 		return -1;
 	}
 
 	if (lib_cpp::str2bool("False") == true)
 	{
-		printf("ERROR[str2bool()]: step005\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "005");
 		return -1;
 	}
 
 	if (lib_cpp::str2bool("FALSE") == true)
 	{
-		printf("ERROR[str2bool()]: step006\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
 		return -1;
 	}
 
 	if (lib_cpp::str2bool("t") == false)
 	{
-		printf("ERROR[str2bool()]: step007\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "007");
 		return -1;
 	}
 
 	if (lib_cpp::str2bool("on") == false)
 	{
-		printf("ERROR[str2bool()]: step008\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "008");
 		return -1;
 	}
 
 	if (lib_cpp::str2bool("1") == false)
 	{
-		printf("ERROR[str2bool()]: step009\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "009");
 		return -1;
 	}
 
 	if (lib_cpp::str2bool(std::string("true")) == false)
 	{
-		printf("ERROR[str2bool()]: step010\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "010");
 		return -1;
 	}
 
 	if (lib_cpp::str2bool(std::string("True")) == false)
 	{
-		printf("ERROR[str2bool()]: step011\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "011");
 		return -1;
 	}
 
 	if (lib_cpp::str2bool(std::string("TRUE")) == false)
 	{
-		printf("ERROR[str2bool()]: step012\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "012");
 		return -1;
 	}
 
 	if (lib_cpp::str2bool(std::string("false")) == true)
 	{
-		printf("ERROR[str2bool()]: step013\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "013");
 		return -1;
 	}
 
 	if (lib_cpp::str2bool(std::string("False")) == true)
 	{
-		printf("ERROR[str2bool()]: step014\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "014");
 		return -1;
 	}
 
 	if (lib_cpp::str2bool(std::string("FALSE")) == true)
 	{
-		printf("ERROR[str2bool()]: step015\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "015");
 		return -1;
 	}
 
 	if (lib_cpp::str2bool(std::string("t")) == false)
 	{
-		printf("ERROR[str2bool()]: step016\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "016");
 		return -1;
 	}
 
 	if (lib_cpp::str2bool(std::string("on")) == false)
 	{
-		printf("ERROR[str2bool()]: step017\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "017");
 		return -1;
 	}
 
 	if (lib_cpp::str2bool(std::string("1")) == false)
 	{
-		printf("ERROR[str2bool()]: step018\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "018");
 		return -1;
 	}
 
@@ -124,7 +124,7 @@ int get_signal_name()
 #ifdef SIGINT
 	if (strcmp(get_signal_name(SIGINT), "SIGINT") != 0)
 	{
-		printf("ERROR[get_signal_name()]: step001\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
 		return -1;
 	}
 #endif
@@ -141,7 +141,7 @@ int flip()
 	lib_cpp::flip(t1, sizeof(t1));
 	if (t1[0] != 3)
 	{
-		printf("ERROR[flip()]: step001\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
 		return -1;
 	}
 
@@ -152,7 +152,7 @@ int flip()
 		(t2[1] != 3)
 	)
 	{
-		printf("ERROR[flip()]: step002\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "002");
 		return -1;
 	}
 
@@ -164,7 +164,7 @@ int flip()
 		(t3[2] != 3)
 	)
 	{
-		printf("ERROR[flip()]: step003\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
 		return -1;
 	}
 
@@ -177,7 +177,7 @@ int flip()
 		(t4[3] != 3)
 	)
 	{
-		printf("ERROR[flip()]: step004\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "004");
 		return -1;
 	}
 
@@ -192,7 +192,7 @@ int remove_file_ext()
 	out = in;
 	if ((lib_cpp::remove_file_ext(out) == true) || (out != in))
 	{
-		printf("ERROR[flip()]: step001\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
 		return -1;
 	}
 
@@ -200,7 +200,7 @@ int remove_file_ext()
 	out = in;
 	if ((lib_cpp::remove_file_ext(out) == true) || (out != in))
 	{
-		printf("ERROR[flip()]: step002\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "002");
 		return -1;
 	}
 
@@ -208,7 +208,7 @@ int remove_file_ext()
 	out = in;
 	if ((lib_cpp::remove_file_ext(out) == false) || (out != "wow"))
 	{
-		printf("ERROR[flip()]: step003\n");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
 		return -1;
 	}
 
