@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.2.0
+// 0.2.1
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #define _LARGE_FILE_API
@@ -821,19 +821,8 @@ int libcore::file_get(const char *pfilename, off_t offset, void *pdata, size_t d
 	}
 
 
-// seek in file
-	rc = ::lseek(fd, offset, SEEK_SET);
-	if (rc == -1)
-	{
-		rc = errno;
-		::close(fd);
-		errno = rc;
-		return -1;
-	}
-
-
 // read from file
-	rc = libcore::blk_read(fd, -1, pdata, data_size);
+	rc = libcore::blk_read(fd, offset, pdata, data_size);
 	if (rc == -1)
 	{
 		rc = errno;
@@ -903,13 +892,14 @@ int libcore::file_get(const char *pfilename, std::string &data)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // write data to exist file
-int libcore::file_set(const char *pfilename, off_t offset, const void *pdata, size_t data_size)
+int libcore::file_set(const char *pfilename, off_t offset, const void *pdata, size_t data_size, bool flag_sync)
 {
 	int rc;
 
 
 // open file
-	rc = ::open(pfilename, O_WRONLY | O_CREAT);
+	umask(0);
+	rc = ::open(pfilename, O_WRONLY | O_CREAT | O_LARGEFILE, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	if (rc == -1)
 	{
 		return -1;
@@ -938,19 +928,8 @@ int libcore::file_set(const char *pfilename, off_t offset, const void *pdata, si
 	}
 
 
-// seek in file
-	rc = ::lseek(fd, offset, SEEK_SET);
-	if (rc == -1)
-	{
-		rc = errno;
-		::close(fd);
-		errno = rc;
-		return -1;
-	}
-
-
 // write to file
-	rc = libcore::blk_write(fd, -1, pdata, data_size);
+	rc = libcore::blk_write(fd, offset, pdata, data_size);
 	if (rc == -1)
 	{
 		rc = errno;
@@ -961,13 +940,16 @@ int libcore::file_set(const char *pfilename, off_t offset, const void *pdata, si
 
 
 // fsync file
-	rc = ::fdatasync(fd);
-	if (rc == -1)
+	if (flag_sync != false)
 	{
-		rc = errno;
-		::close(fd);
-		errno = rc;
-		return -1;
+		rc = ::fdatasync(fd);
+		if (rc == -1)
+		{
+			rc = errno;
+			::close(fd);
+			errno = rc;
+			return -1;
+		}
 	}
 
 
@@ -983,15 +965,15 @@ int libcore::file_set(const char *pfilename, off_t offset, const void *pdata, si
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // write data to exist file
-int libcore::file_set(const char *pfilename, off_t offset, const std::string &data)
+int libcore::file_set(const char *pfilename, off_t offset, const std::string &data, bool flag_sync)
 {
-	return libcore::file_set(pfilename, offset, data.c_str(), data.size());
+	return libcore::file_set(pfilename, offset, data.c_str(), data.size(), flag_sync);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // write data to exist file
-int libcore::file_set(const char *pfilename, const std::string &data)
+int libcore::file_set(const char *pfilename, const std::string &data, bool flag_sync)
 {
-	return libcore::file_set(pfilename, 0, data.c_str(), data.size());
+	return libcore::file_set(pfilename, 0, data.c_str(), data.size(), flag_sync);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // return (concat str1 and str2) or NULL
