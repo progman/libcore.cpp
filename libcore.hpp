@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.2.1
+// 0.2.2
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #ifndef LIBCORE_HPP_INCLUDE
@@ -93,9 +93,9 @@ namespace libcore
 	int file_get(const char *pfilename, std::string &data);
 
 // write data to exist file
-	int file_set(const char *pfilename, off_t offset, const void *pdata, size_t data_size, bool flag_sync = true);
-	int file_set(const char *pfilename, off_t offset, const std::string &data, bool flag_sync = true);
-	int file_set(const char *pfilename, const std::string &data, bool flag_sync = true);
+	int file_set(const char *pfilename, off_t offset, const void *pdata, size_t data_size, bool flag_sync = true, bool flag_truncate = false, bool flag_excl = false);
+	int file_set(const char *pfilename, off_t offset, const std::string &data, bool flag_sync = true, bool flag_truncate = false, bool flag_excl = false);
+	int file_set(const char *pfilename, const std::string &data, bool flag_sync = true, bool flag_truncate = false, bool flag_excl = false);
 
 // return (concat str1 and str2) or NULL
 	char *concat_str(const char *pstr1, const char *pstr2);
