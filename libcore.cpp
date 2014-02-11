@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.2.2
+// 0.2.3
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #define _LARGE_FILE_API
@@ -715,7 +715,7 @@ size_t libcore::blk_read(int handle, off64_t offset, void *pdata, size_t size)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // block write to handle
-size_t libcore::blk_write(int handle, off64_t offset, const void *pdata, size_t size)
+size_t libcore::blk_write(int handle, off64_t offset, const void *pdata, size_t size, bool flag_sync)
 {
 	if (offset != off64_t(-1))
 	{
@@ -737,6 +737,18 @@ size_t libcore::blk_write(int handle, off64_t offset, const void *pdata, size_t 
 
 		if (cur_size == 0) break;
 	}
+
+
+// fsync file
+	if (flag_sync != false)
+	{
+		int rc = ::fdatasync(handle);
+		if (rc == -1)
+		{
+			return -1;
+		}
+	}
+
 
 	return size;
 }
@@ -785,6 +797,63 @@ size_t libcore::blk_send(int handle, const void *pdata, size_t size)
 	return size;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// file open read only
+int libcore::file_open_ro(const char *pfilename)
+{
+	return ::open(pfilename, O_RDONLY);
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// file open read/write
+int libcore::file_open_rw(const char *pfilename, bool flag_truncate, bool flag_excl)
+{
+// set open flags
+	int open_flags = O_WRONLY | O_CREAT | O_LARGEFILE;
+	if (flag_truncate != false)
+	{
+		open_flags |= O_TRUNC;
+	}
+	if (flag_excl != false)
+	{
+		open_flags |= O_EXCL;
+	}
+
+
+// open file
+	umask(0);
+	return ::open(pfilename, open_flags, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// file close
+int libcore::file_close(int handle, bool flag_sync = false)
+{
+	int rc;
+
+
+// fsync file
+	if (flag_sync != false)
+	{
+		rc = ::fdatasync(handle);
+		if (rc == -1)
+		{
+			rc = errno;
+			::close(handle);
+			errno = rc;
+			return -1;
+		}
+	}
+
+
+// close file
+	rc = ::close(handle);
+	if (rc == -1)
+	{
+		return -1;
+	}
+
+
+	return 0;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // read data from exist file
 int libcore::file_get(const char *pfilename, off_t offset, void *pdata, size_t data_size)
 {
@@ -792,7 +861,7 @@ int libcore::file_get(const char *pfilename, off_t offset, void *pdata, size_t d
 
 
 // open file
-	rc = ::open(pfilename, O_RDONLY);
+	rc = libcore::file_open_ro(pfilename);
 	if (rc == -1)
 	{
 		return -1;
@@ -833,7 +902,7 @@ int libcore::file_get(const char *pfilename, off_t offset, void *pdata, size_t d
 
 
 // close file
-	rc = ::close(fd);
+	rc = libcore::file_close(fd, false);
 	if (rc == -1)
 	{
 		return -1;
@@ -897,21 +966,8 @@ int libcore::file_set(const char *pfilename, off_t offset, const void *pdata, si
 	int rc;
 
 
-// set open flags
-	int open_flags = O_WRONLY | O_CREAT | O_LARGEFILE;
-	if (flag_truncate != false)
-	{
-		open_flags |= O_TRUNC;
-	}
-	if (flag_excl != false)
-	{
-		open_flags |= O_EXCL;
-	}
-
-
 // open file
-	umask(0);
-	rc = ::open(pfilename, open_flags, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	rc = libcore::file_open_rw(pfilename, flag_truncate, flag_excl);
 	if (rc == -1)
 	{
 		return -1;
@@ -920,7 +976,7 @@ int libcore::file_set(const char *pfilename, off_t offset, const void *pdata, si
 
 
 // write to file
-	rc = libcore::blk_write(fd, offset, pdata, data_size);
+	rc = libcore::blk_write(fd, offset, pdata, data_size, false);
 	if (rc == -1)
 	{
 		rc = errno;
@@ -930,22 +986,8 @@ int libcore::file_set(const char *pfilename, off_t offset, const void *pdata, si
 	}
 
 
-// fsync file
-	if (flag_sync != false)
-	{
-		rc = ::fdatasync(fd);
-		if (rc == -1)
-		{
-			rc = errno;
-			::close(fd);
-			errno = rc;
-			return -1;
-		}
-	}
-
-
 // close file
-	rc = ::close(fd);
+	rc = libcore::file_close(fd, flag_sync);
 	if (rc == -1)
 	{
 		return -1;
