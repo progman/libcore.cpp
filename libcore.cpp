@@ -84,14 +84,12 @@ bool libcore::uint2str(std::string &result, uint64_t source, uint8_t zero_count,
 	int i = (sizeof(s) - 1);
 
 
-	s[i] = '\0';
-	i--;
+	s[i--] = '\0';
 
 
 	for (;;)
 	{
-		s[i] = (source % 10) + '0';
-		i--;
+		s[i--] = (source % 10) + '0';
 		source /= 10;
 		if (source == 0) break;
 	}
@@ -106,16 +104,14 @@ bool libcore::uint2str(std::string &result, uint64_t source, uint8_t zero_count,
 		int max = zero_count - (sizeof(s) - i) + 2;
 		for (int j=0; j < max; j++)
 		{
-			s[i] = '0';
-			i--;
+			s[i--] = '0';
 		}
 	}
 
 
 	if (flag_plus != false)
 	{
-		s[i] = '+';
-		i--;
+		s[i--] = '+';
 	}
 
 
@@ -166,21 +162,55 @@ bool libcore::uint2str(std::string &result, uint64_t source, uint8_t zero_count)
  */
 bool libcore::sint2str(std::string &result, int64_t source, uint8_t zero_count, bool flag_plus)
 {
-	bool rc;
-
-
-	if (source < 0)
+	if (source >= 0)
 	{
-		rc = libcore::uint2str(result, -source, zero_count, false);
-		result.insert(result.begin(), 1, '-');
-	}
-	else
-	{
-		rc = libcore::uint2str(result, +source, zero_count, flag_plus);
+		return libcore::uint2str(result, source, zero_count, flag_plus);
 	}
 
 
-	return rc;
+	source = -source;
+
+
+//01234567890123456789
+//18446744073709551615
+//-9223372036854775806
+//+9223372036854775807
+	char s[32];
+	int i = (sizeof(s) - 1);
+
+
+	s[i--] = '\0';
+
+
+	for (;;)
+	{
+		s[i--] = (source % 10) + '0';
+		source /= 10;
+		if (source == 0) break;
+	}
+
+
+	if (zero_count != 0)
+	{
+		if (zero_count > (sizeof(s) - 1))
+		{
+			zero_count = (sizeof(s) - 1);
+		}
+		int max = zero_count - (sizeof(s) - i) + 2;
+		for (int j=0; j < max; j++)
+		{
+			s[i--] = '0';
+		}
+	}
+
+
+	s[i--] = '-';
+
+
+	result = s + i + 1;
+
+
+	return true;
 }
 /*
 bool libcore::sint2str(std::string &result, int64_t source, uint8_t zero_count)
