@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.2.5
+// 0.2.6
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #define _LARGE_FILE_API
@@ -44,6 +44,7 @@ static uint8_t hex2bin_table[] =
 	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff  // 0xF0
 };
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+/*
 static const char *byte2str_table[] =
 {
 	  "0",   "1",   "2",   "3",   "4",   "5",   "6",   "7",   "8",   "9",  "10",  "11",  "12",  "13",  "14",  "15",
@@ -63,14 +64,67 @@ static const char *byte2str_table[] =
 	"224", "225", "226", "227", "228", "229", "230", "231", "232", "233", "234", "235", "236", "237", "238", "239",
 	"240", "241", "242", "243", "244", "245", "246", "247", "248", "249", "250", "251", "252", "253", "254", "255"
 };
+*/
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 /**
  * convert uint to string
  * \param[out] result string result
  * \param[in] source uint source
  * \param[in] zero_count zero count
+ * \param[in] flag_plus enable '+' before string
  * \return flag correct convertion
  */
+bool libcore::uint2str(std::string &result, uint64_t source, uint8_t zero_count, bool flag_plus)
+{
+//01234567890123456789
+//18446744073709551615
+//-9223372036854775806
+//+9223372036854775807
+	char s[32];
+	int i = (sizeof(s) - 1);
+
+
+	s[i] = '\0';
+	i--;
+
+
+	for (;;)
+	{
+		s[i] = (source % 10) + '0';
+		i--;
+		source /= 10;
+		if (source == 0) break;
+	}
+
+
+	if (zero_count != 0)
+	{
+		if (zero_count > (sizeof(s) - 1))
+		{
+			zero_count = (sizeof(s) - 1);
+		}
+		int max = zero_count - (sizeof(s) - i) + 2;
+		for (int j=0; j < max; j++)
+		{
+			s[i] = '0';
+			i--;
+		}
+	}
+
+
+	if (flag_plus != false)
+	{
+		s[i] = '+';
+		i--;
+	}
+
+
+	result = s + i + 1;
+
+
+	return true;
+}
+/*
 bool libcore::uint2str(std::string &result, uint64_t source, uint8_t zero_count)
 {
 	char buf[128], format[128];
@@ -100,14 +154,35 @@ bool libcore::uint2str(std::string &result, uint64_t source, uint8_t zero_count)
 
 	return true;
 }
+*/
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 /**
  * convert sint to string
  * \param[out] result string result
  * \param[in] source int source
  * \param[in] zero_count zero count
+ * \param[in] flag_plus enable '+' before string
  * \return flag correct convertion
  */
+bool libcore::sint2str(std::string &result, int64_t source, uint8_t zero_count, bool flag_plus)
+{
+	bool rc;
+
+
+	if (source < 0)
+	{
+		rc = libcore::uint2str(result, -source, zero_count, false);
+		result.insert(result.begin(), 1, '-');
+	}
+	else
+	{
+		rc = libcore::uint2str(result, +source, zero_count, flag_plus);
+	}
+
+
+	return rc;
+}
+/*
 bool libcore::sint2str(std::string &result, int64_t source, uint8_t zero_count)
 {
 	char buf[128], format[128];
@@ -137,6 +212,7 @@ bool libcore::sint2str(std::string &result, int64_t source, uint8_t zero_count)
 
 	return true;
 }
+*/
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // check const char * in set 0x[0-9a-fA-F]+
 bool libcore::is_hex(const char *pstr)

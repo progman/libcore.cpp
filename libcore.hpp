@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.2.5
+// 0.2.6
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #ifndef LIBCORE_HPP_INCLUDE
@@ -14,9 +14,10 @@ namespace libcore
  * \param[out] result string result
  * \param[in] source uint source
  * \param[in] zero_count zero count
+ * \param[in] flag_plus enable '+' before string
  * \return flag correct convertion
  */
-	bool uint2str(std::string &result, uint64_t source, uint8_t zero_count = 0);
+	bool uint2str(std::string &result, uint64_t source, uint8_t zero_count = 0, bool flag_plus = false);
 
 
 /**
@@ -24,9 +25,10 @@ namespace libcore
  * \param[out] result string result
  * \param[in] source int source
  * \param[in] zero_count zero count
+ * \param[in] flag_plus enable '+' before string
  * \return flag correct convertion
  */
-	bool sint2str(std::string &result, int64_t source, uint8_t zero_count = 0);
+	bool sint2str(std::string &result, int64_t source, uint8_t zero_count = 0, bool flag_plus = false);
 
 
 // check const string in set 0x[0-9a-fA-F]+

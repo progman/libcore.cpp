@@ -15,22 +15,48 @@ int uint2str()
 	if ((rc == false) || (value != "10"))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
+		printf("ERROR[%s()]: value:\"%s\"\n", __FUNCTION__, value.c_str());
+		return -1;
+	}
+
+	rc = libcore::uint2str(value, +10, 0, true);
+	if ((rc == false) || (value != "+10"))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "002");
 		return -1;
 	}
 
 	rc = libcore::uint2str(value, 1917, 6);
 	if ((rc == false) || (value != "001917"))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "002");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
 		return -1;
 	}
 
-	uint64_t x = 0;
+	rc = libcore::uint2str(value, 1917, 6, true);
+	if ((rc == false) || (value != "+001917"))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "004");
+		return -1;
+	}
+
+	uint64_t x;
+
+	x = 0;
 	x = ~x;
 	rc = libcore::uint2str(value, x);
 	if ((rc == false) || (value != "18446744073709551615"))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "005");
+		return -1;
+	}
+
+	x = 0;
+	x = ~x;
+	rc = libcore::uint2str(value, x, 0, true);
+	if ((rc == false) || (value != "+18446744073709551615"))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
 		return -1;
 	}
 
@@ -49,19 +75,52 @@ int sint2str()
 		return -1;
 	}
 
-	rc = libcore::sint2str(value, 1917, 6);
-	if ((rc == false) || (value != "001917"))
+	rc = libcore::sint2str(value, +10);
+	if ((rc == false) || (value != "10"))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "002");
 		return -1;
 	}
 
-	uint64_t x = 0;
+	rc = libcore::sint2str(value, +10, 0, true);
+	if ((rc == false) || (value != "+10"))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
+		return -1;
+	}
+
+	rc = libcore::sint2str(value, 1917, 6);
+	if ((rc == false) || (value != "001917"))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "004");
+		return -1;
+	}
+
+	rc = libcore::sint2str(value, 1917, 6, true);
+	if ((rc == false) || (value != "+001917"))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "005");
+		return -1;
+	}
+
+	uint64_t x;
+
+	x = 0;
 	x = ~x;
 	rc = libcore::sint2str(value, x);
 	if ((rc == false) || (value != "-1"))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
+		return -1;
+	}
+
+	x = 0;
+	x = ~x;
+	rc = libcore::sint2str(value, x, 0, true);
+	if ((rc == false) || (value != "-1"))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "007");
+		printf("ERROR[%s()]: value:\"%s\"\n", __FUNCTION__, value.c_str());
 		return -1;
 	}
 
