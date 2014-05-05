@@ -40,6 +40,13 @@ int uint2str()
 		return -1;
 	}
 
+	rc = libcore::uint2str(value, 1917, 200, true);
+	if ((rc == false) || (value != "+000000000000000000000000001917"))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "005");
+		return -1;
+	}
+
 	uint64_t x;
 
 	x = 0;
@@ -47,7 +54,7 @@ int uint2str()
 	rc = libcore::uint2str(value, x);
 	if ((rc == false) || (value != "18446744073709551615"))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "005");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
 		return -1;
 	}
 
@@ -56,7 +63,7 @@ int uint2str()
 	rc = libcore::uint2str(value, x, 0, true);
 	if ((rc == false) || (value != "+18446744073709551615"))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "007");
 		return -1;
 	}
 
@@ -103,6 +110,14 @@ int sint2str()
 		return -1;
 	}
 
+	rc = libcore::sint2str(value, 1917, 200, true);
+	if ((rc == false) || (value != "+000000000000000000000000001917"))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
+		return -1;
+	}
+
+
 	uint64_t x;
 
 	x = 0;
@@ -110,7 +125,7 @@ int sint2str()
 	rc = libcore::sint2str(value, x);
 	if ((rc == false) || (value != "-1"))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "007");
 		return -1;
 	}
 
@@ -119,7 +134,7 @@ int sint2str()
 	rc = libcore::sint2str(value, x, 0, true);
 	if ((rc == false) || (value != "-1"))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "007");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "008");
 		printf("ERROR[%s()]: value:\"%s\"\n", __FUNCTION__, value.c_str());
 		return -1;
 	}

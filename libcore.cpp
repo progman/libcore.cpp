@@ -76,20 +76,24 @@ static const char *byte2str_table[] =
  */
 bool libcore::uint2str(std::string &result, uint64_t source, uint8_t zero_count, bool flag_plus)
 {
-//01234567890123456789
+//0         1         2         3
+//0123456789012345678901234567890123456789
+//+000000000000000000000000001917
 //18446744073709551615
 //-9223372036854775806
 //+9223372036854775807
 	char s[32];
-	int i = (sizeof(s) - 1);
+	char *p = s + (sizeof(s) - 1);
 
 
-	s[i--] = '\0';
+	*p = '\0';
+	p--;
 
 
 	for (;;)
 	{
-		s[i--] = (source % 10) + '0';
+		*p = (source % 10) + '0';
+		p--;
 		source /= 10;
 		if (source == 0) break;
 	}
@@ -97,25 +101,27 @@ bool libcore::uint2str(std::string &result, uint64_t source, uint8_t zero_count,
 
 	if (zero_count != 0)
 	{
-		if (zero_count > (sizeof(s) - 1))
+		if (zero_count > (sizeof(s) - 2))
 		{
-			zero_count = (sizeof(s) - 1);
+			zero_count = (sizeof(s) - 2);
 		}
-		int max = zero_count - (sizeof(s) - i) + 2;
+		int max = zero_count - (sizeof(s) - (p - s)) + 2;
 		for (int j=0; j < max; j++)
 		{
-			s[i--] = '0';
+			*p = '0';
+			p--;
 		}
 	}
 
 
 	if (flag_plus != false)
 	{
-		s[i--] = '+';
+		*p = '+';
+		p--;
 	}
 
 
-	result = s + i + 1;
+	result = ++p;
 
 
 	return true;
@@ -171,20 +177,24 @@ bool libcore::sint2str(std::string &result, int64_t source, uint8_t zero_count, 
 	source = -source;
 
 
-//01234567890123456789
+//0         1         2         3
+//0123456789012345678901234567890123456789
+//+000000000000000000000000001917
 //18446744073709551615
 //-9223372036854775806
 //+9223372036854775807
 	char s[32];
-	int i = (sizeof(s) - 1);
+	char *p = s + (sizeof(s) - 1);
 
 
-	s[i--] = '\0';
+	*p = '\0';
+	p--;
 
 
 	for (;;)
 	{
-		s[i--] = (source % 10) + '0';
+		*p = (source % 10) + '0';
+		p--;
 		source /= 10;
 		if (source == 0) break;
 	}
@@ -192,22 +202,24 @@ bool libcore::sint2str(std::string &result, int64_t source, uint8_t zero_count, 
 
 	if (zero_count != 0)
 	{
-		if (zero_count > (sizeof(s) - 1))
+		if (zero_count > (sizeof(s) - 2))
 		{
-			zero_count = (sizeof(s) - 1);
+			zero_count = (sizeof(s) - 2);
 		}
-		int max = zero_count - (sizeof(s) - i) + 2;
+		int max = zero_count - (sizeof(s) - (p - s)) + 2;
 		for (int j=0; j < max; j++)
 		{
-			s[i--] = '0';
+			*p = '0';
+			p--;
 		}
 	}
 
 
-	s[i--] = '-';
+	*p = '-';
+	p--;
 
 
-	result = s + i + 1;
+	result = ++p;
 
 
 	return true;
