@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.2.6
+// 0.2.7
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #ifndef LIBCORE_HPP_INCLUDE
@@ -44,7 +44,7 @@ namespace libcore
 	bool is_sdec(const std::string &str);
 
 // check number in string less number in str_max
-	bool is_numeric_string_overflow(const char *pstr_max, const char *pstr, const size_t size);
+	bool is_numeric_string_overflow(const char *pstr_max, const char *pstr, size_t size);
 	bool is_numeric_string_overflow(const char *pstr_max, const std::string &str);
 
 // convert hex string to uint

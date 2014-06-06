@@ -6,6 +6,47 @@
 #include <string.h>
 #include "libcore.hpp"
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+int dec2sint()
+{
+	bool rc;
+
+	int64_t result;
+	std::string value = "+1";
+	rc = libcore::dec2sint(result, value);
+	if (rc == false)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
+		printf("ERROR[%s()]: value:\"%s\"\n", __FUNCTION__, value.c_str());
+		return -1;
+	}
+
+	return 0;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+int str2uint()
+{
+	bool rc;
+
+	uint64_t result;
+	std::string value = "-1";
+	rc = libcore::str2uint(result, value);
+	if (rc == false)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
+		printf("ERROR[%s()]: value:\"%s\"\n", __FUNCTION__, value.c_str());
+		return -1;
+	}
+	if (result != uint64_t(-1))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
+		printf("ERROR[%s()]: value:\"%s\"\n", __FUNCTION__, value.c_str());
+		return -1;
+	}
+//printf("%lu\n", result);
+
+	return 0;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 int uint2str()
 {
 	bool rc;
@@ -459,6 +500,11 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	rc = dec2sint();
+	if (rc == -1) return 1;
+
+	rc = str2uint();
+	if (rc == -1) return 1;
 
 	rc = uint2str();
 	if (rc == -1) return 1;

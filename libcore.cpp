@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.2.6
+// 0.2.7
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #define _LARGE_FILE_API
@@ -344,19 +344,29 @@ bool libcore::is_sdec(const char *pstr)
 {
 	if (pstr == NULL) return false;
 
+
 	if
 	(
-		(*pstr != '-') &&
-		(*pstr != '+')
+		(*pstr == '-') ||
+		(*pstr == '+')
 	)
 	{
-		return false;
+		pstr++;
+		return libcore::is_udec(pstr);
 	}
 
-	pstr++;
+
+	if
+	(
+		(*pstr >= '0') &&
+		(*pstr <= '9')
+	)
+	{
+		return libcore::is_udec(pstr);
+	}
 
 
-	return libcore::is_udec(pstr);
+	return false;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // check const std::string in set [-+]*[0-9]+
@@ -366,7 +376,7 @@ bool libcore::is_sdec(const std::string &str)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // check number in str less number in str_max
-bool libcore::is_numeric_string_overflow(const char *pstr_max, const char *pstr, const size_t size)
+bool libcore::is_numeric_string_overflow(const char *pstr_max, const char *pstr, size_t size)
 {
 	if
 	(
@@ -376,6 +386,26 @@ bool libcore::is_numeric_string_overflow(const char *pstr_max, const char *pstr,
 	{
 		return false;
 	}
+
+
+	if ((*pstr_max == '-') || (*pstr_max == '+'))
+	{
+		if ((*pstr != '-') && (*pstr != '+'))
+		{
+			pstr_max++;
+		}
+	}
+
+
+	if ((*pstr_max != '-') && (*pstr_max != '+'))
+	{
+		if ((*pstr == '-') || (*pstr == '+'))
+		{
+			pstr++;
+			size--;
+		}
+	}
+
 
 	size_t str_max_size = strlen(pstr_max);
 
