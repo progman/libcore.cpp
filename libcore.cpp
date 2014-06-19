@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.2.7
+// 0.2.8
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #define _LARGE_FILE_API
@@ -299,13 +299,23 @@ bool libcore::is_hex(const std::string &str)
 	return libcore::is_hex(str.c_str());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// check const char * in set [0-9]+
+/**
+ * check whether a string is equivalent to regexp [+]?[0-9]+
+ * \param[in] pstr string
+ * \return flag correct check
+ */
 bool libcore::is_udec(const char *pstr)
 {
 	if (pstr == NULL) return false;
 
-	size_t i = 0;
 
+	if (*pstr == '+')
+	{
+		pstr++;
+	}
+
+
+	size_t i = 0;
 	for (;; i++, pstr++)
 	{
 		char ch = *pstr;
@@ -324,22 +334,30 @@ bool libcore::is_udec(const char *pstr)
 			return false;
 		}
 	}
-
 	if (i == 0)
 	{
 		return false;
 	}
 
+
 	return true;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// check const std::string in set [0-9]+
+/**
+ * check whether a string is equivalent to regexp [+]?[0-9]+
+ * \param[in] str string
+ * \return flag correct check
+ */
 bool libcore::is_udec(const std::string &str)
 {
 	return libcore::is_udec(str.c_str());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// check const char * in set [-+]*[0-9]+
+/**
+ * check whether a string is equivalent to regexp [-+]?[0-9]+
+ * \param[in] pstr string
+ * \return flag correct check
+ */
 bool libcore::is_sdec(const char *pstr)
 {
 	if (pstr == NULL) return false;
@@ -352,24 +370,42 @@ bool libcore::is_sdec(const char *pstr)
 	)
 	{
 		pstr++;
-		return libcore::is_udec(pstr);
 	}
 
 
-	if
-	(
-		(*pstr >= '0') &&
-		(*pstr <= '9')
-	)
+	size_t i = 0;
+	for (;; i++, pstr++)
 	{
-		return libcore::is_udec(pstr);
+		char ch = *pstr;
+
+		if (ch == 0)
+		{
+			break;
+		}
+
+		if
+		(
+			(ch < '0') ||
+			(ch > '9')
+		)
+		{
+			return false;
+		}
+	}
+	if (i == 0)
+	{
+		return false;
 	}
 
 
-	return false;
+	return true;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// check const std::string in set [-+]*[0-9]+
+/**
+ * check whether a string is equivalent to regexp [-+]?[0-9]+
+ * \param[in] str string
+ * \return flag correct check
+ */
 bool libcore::is_sdec(const std::string &str)
 {
 	return libcore::is_sdec(str.c_str());

@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.2.7
+// 0.2.8
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #ifndef LIBCORE_HPP_INCLUDE
@@ -35,13 +35,23 @@ namespace libcore
 	bool is_hex(const char *pstr);
 	bool is_hex(const std::string &str);
 
-// check const string in set [0-9]+
+/**
+ * check whether a string is equivalent to regexp [+]?[0-9]+
+ * \param[in] pstr string
+ * \return flag correct check
+ */
 	bool is_udec(const char *pstr);
 	bool is_udec(const std::string &str);
 
-// check const string in set [-+]*[0-9]+
+
+/**
+ * check whether a string is equivalent to regexp [-+]?[0-9]+
+ * \param[in] pstr string
+ * \return flag correct check
+ */
 	bool is_sdec(const char *pstr);
 	bool is_sdec(const std::string &str);
+
 
 // check number in string less number in str_max
 	bool is_numeric_string_overflow(const char *pstr_max, const char *pstr, size_t size);
