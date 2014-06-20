@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.2.8
+// 0.2.9
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #ifndef LIBCORE_HPP_INCLUDE
@@ -31,9 +31,21 @@ namespace libcore
 	bool sint2str(std::string &result, int64_t source, uint8_t zero_count = 0, bool flag_plus = false);
 
 
-// check const string in set 0x[0-9a-fA-F]+
+/**
+ * check whether a string is equivalent to regexp 0x[0-9a-fA-F]+
+ * \param[in] pstr string
+ * \return flag correct check
+ */
 	bool is_hex(const char *pstr);
+
+
+/**
+ * check whether a string is equivalent to regexp 0x[0-9a-fA-F]+
+ * \param[in] str string
+ * \return flag correct check
+ */
 	bool is_hex(const std::string &str);
+
 
 /**
  * check whether a string is equivalent to regexp [+]?[0-9]+
@@ -41,6 +53,13 @@ namespace libcore
  * \return flag correct check
  */
 	bool is_udec(const char *pstr);
+
+
+/**
+ * check whether a string is equivalent to regexp [+]?[0-9]+
+ * \param[in] str string
+ * \return flag correct check
+ */
 	bool is_udec(const std::string &str);
 
 
@@ -50,20 +69,189 @@ namespace libcore
  * \return flag correct check
  */
 	bool is_sdec(const char *pstr);
+
+
+/**
+ * check whether a string is equivalent to regexp [-+]?[0-9]+
+ * \param[in] str string
+ * \return flag correct check
+ */
 	bool is_sdec(const std::string &str);
 
 
-// check number in string less number in str_max
-	bool is_numeric_string_overflow(const char *pstr_max, const char *pstr, size_t size);
-	bool is_numeric_string_overflow(const char *pstr_max, const std::string &str);
+/**
+ * check 0 < number < pstr_max
+ * \param[in] pstr_max string with max number
+ * \param[in] pstr string with test number
+ * \param[in] size size string
+ * \return flag correct check
+ */
+	bool is_uint_string_overflow(const char *pstr_max, const char *pstr, size_t size);
 
-// convert hex string to uint
+
+/**
+ * check 0 < number < pstr_max
+ * \param[in] pstr_max string with max number
+ * \param[in] str string with test number
+ * \return flag correct check
+ */
+	bool is_uint_string_overflow(const char *pstr_max, const std::string &str);
+
+
+/**
+ * check pstr_min < number < pstr_max
+ * \param[in] pstr_min string with min number
+ * \param[in] pstr_max string with max number
+ * \param[in] pstr string with test number
+ * \param[in] size size string
+ * \return flag correct check
+ */
+	bool is_sint_string_overflow(const char *pstr_min, const char *pstr_max, const char *pstr, size_t size);
+
+
+/**
+ * check pstr_min < number < pstr_max
+ * \param[in] pstr_min string with min number
+ * \param[in] pstr_max string with max number
+ * \param[in] str string with test number
+ * \return flag correct check
+ */
+	bool is_sint_string_overflow(const char *pstr_min, const char *pstr_max, const std::string &str);
+
+
+/**
+ * convert hex string to uint
+ * \param[in] result return value
+ * \param[in] default_value default value
+ * \param[in] pstr source string
+ * \param[in] size size source string
+ * \return flag correct convert
+ */
 	bool hex2uint(uint64_t &result, uint64_t default_value, const char *pstr, size_t size);
+
+
+/**
+ * convert hex string to uint
+ * \param[in] result return value
+ * \param[in] default_value default value
+ * \param[in] pstr source string
+ * \return flag correct convert
+ */
 	bool hex2uint(uint64_t &result, uint64_t default_value, const char *pstr);
+
+
+/**
+ * convert hex string to uint
+ * \param[in] result return value
+ * \param[in] default_value default value
+ * \param[in] str source string
+ * \return flag correct convert
+ */
 	bool hex2uint(uint64_t &result, uint64_t default_value, const std::string &str);
+
+
+/**
+ * convert hex string to uint
+ * \param[in] result return value
+ * \param[in] pstr source string
+ * \param[in] size size source string
+ * \return flag correct convert
+ */
 	bool hex2uint(uint64_t &result, const char *pstr, size_t size);
+
+
+/**
+ * convert hex string to uint
+ * \param[in] result return value
+ * \param[in] pstr source string
+ * \return flag correct convert
+ */
 	bool hex2uint(uint64_t &result, const char *pstr);
+
+
+/**
+ * convert hex string to uint
+ * \param[in] result return value
+ * \param[in] str source string
+ * \return flag correct convert
+ */
 	bool hex2uint(uint64_t &result, const std::string &str);
+
+
+/**
+ * convert hex string to sint
+ * \param[in] result return value
+ * \param[in] default_value default value
+ * \param[in] pstr source string
+ * \param[in] size size source string
+ * \return flag correct convert
+ */
+	bool hex2sint(int64_t &result, int64_t default_value, const char *pstr, size_t size);
+
+
+/**
+ * convert hex string to sint
+ * \param[in] result return value
+ * \param[in] default_value default value
+ * \param[in] pstr source string
+ * \return flag correct convert
+ */
+	bool hex2sint(int64_t &result, int64_t default_value, const char *pstr);
+
+
+/**
+ * convert hex string to sint
+ * \param[in] result return value
+ * \param[in] default_value default value
+ * \param[in] str source string
+ * \return flag correct convert
+ */
+	bool hex2sint(int64_t &result, int64_t default_value, const std::string &str);
+
+
+/**
+ * convert hex string to sint
+ * \param[in] result return value
+ * \param[in] pstr source string
+ * \param[in] size size source string
+ * \return flag correct convert
+ */
+	bool hex2sint(int64_t &result, const char *pstr, size_t size);
+
+
+/**
+ * convert hex string to sint
+ * \param[in] result return value
+ * \param[in] pstr source string
+ * \return flag correct convert
+ */
+	bool hex2sint(int64_t &result, const char *pstr);
+
+
+/**
+ * convert hex string to sint
+ * \param[in] result return value
+ * \param[in] str source string
+ * \return flag correct convert
+ */
+	bool hex2sint(int64_t &result, const std::string &str);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // convert dec string to uint
 	bool dec2uint(uint64_t &result, uint64_t default_value, const char *pstr, size_t size);
@@ -141,8 +329,14 @@ namespace libcore
 // signal name
 	const char *get_signal_name(const int sig);
 
-// flip bytes
+
+/**
+ * flip bytes in buffer
+ * \param[in,out] pbuffer buffer bytes
+ * \param[in] size size buffer
+ */
 	void flip(void *pbuffer, size_t size);
+
 
 // remove file extension
 	bool remove_file_ext(std::string& filename);

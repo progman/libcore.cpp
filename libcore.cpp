@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.2.8
+// 0.2.9
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #define _LARGE_FILE_API
@@ -256,10 +256,15 @@ bool libcore::sint2str(std::string &result, int64_t source, uint8_t zero_count)
 }
 */
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// check const char * in set 0x[0-9a-fA-F]+
+/**
+ * check whether a string is equivalent to regexp 0x[0-9a-fA-F]+
+ * \param[in] pstr string
+ * \return flag correct check
+ */
 bool libcore::is_hex(const char *pstr)
 {
 	if (pstr == NULL) return false;
+
 
 	if (*pstr != '0') return false;
 	pstr++;
@@ -269,7 +274,6 @@ bool libcore::is_hex(const char *pstr)
 
 
 	size_t i = 0;
-
 	for (;; i++, pstr++)
 	{
 		uint8_t ch = *pstr;
@@ -284,16 +288,20 @@ bool libcore::is_hex(const char *pstr)
 			return false;
 		}
 	}
-
 	if (i == 0)
 	{
 		return false;
 	}
 
+
 	return true;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// check const std::string in set 0x[0-9a-fA-F]+
+/**
+ * check whether a string is equivalent to regexp 0x[0-9a-fA-F]+
+ * \param[in] str string
+ * \return flag correct check
+ */
 bool libcore::is_hex(const std::string &str)
 {
 	return libcore::is_hex(str.c_str());
@@ -411,8 +419,14 @@ bool libcore::is_sdec(const std::string &str)
 	return libcore::is_sdec(str.c_str());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// check number in str less number in str_max
-bool libcore::is_numeric_string_overflow(const char *pstr_max, const char *pstr, size_t size)
+/**
+ * check 0 < number < pstr_max
+ * \param[in] pstr_max string with max number
+ * \param[in] pstr string with test number
+ * \param[in] size size string
+ * \return flag correct check
+ */
+bool libcore::is_uint_string_overflow(const char *pstr_max, const char *pstr, size_t size)
 {
 	if
 	(
@@ -424,22 +438,24 @@ bool libcore::is_numeric_string_overflow(const char *pstr_max, const char *pstr,
 	}
 
 
-	if ((*pstr_max == '-') || (*pstr_max == '+'))
+	if (*pstr_max == '-')
 	{
-		if ((*pstr != '-') && (*pstr != '+'))
-		{
-			pstr_max++;
-		}
+		return false;
+	}
+	if (*pstr == '-')
+	{
+		return false;
 	}
 
 
-	if ((*pstr_max != '-') && (*pstr_max != '+'))
+	if (*pstr_max == '+')
 	{
-		if ((*pstr == '-') || (*pstr == '+'))
-		{
-			pstr++;
-			size--;
-		}
+		pstr_max++;
+	}
+	if (*pstr == '+')
+	{
+		pstr++;
+		size--;
 	}
 
 
@@ -451,8 +467,6 @@ bool libcore::is_numeric_string_overflow(const char *pstr_max, const char *pstr,
 	{
 		return false;
 	}
-
-
 	if (size < str_max_size)
 	{
 		return true;
@@ -471,10 +485,126 @@ bool libcore::is_numeric_string_overflow(const char *pstr_max, const char *pstr,
 		{
 			return false;
 		}
+	}
 
-		if ((i + 1) == str_max_size)
+
+	return true;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+/**
+ * check 0 < number < pstr_max
+ * \param[in] pstr_max string with max number
+ * \param[in] str string with test number
+ * \return flag correct check
+ */
+bool libcore::is_uint_string_overflow(const char *pstr_max, const std::string &str)
+{
+	return libcore::is_uint_string_overflow(pstr_max, str.c_str(), str.size());
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+/**
+ * check pstr_min < number < pstr_max
+ * \param[in] pstr_min string with min number
+ * \param[in] pstr_max string with max number
+ * \param[in] pstr string with test number
+ * \param[in] size size string
+ * \return flag correct check
+ */
+bool libcore::is_sint_string_overflow(const char *pstr_min, const char *pstr_max, const char *pstr, size_t size)
+{
+	if
+	(
+		(pstr_min == NULL) ||
+		(pstr_max == NULL) ||
+		(pstr     == NULL)
+	)
+	{
+		return false;
+	}
+
+
+	if (*pstr_min == '+')
+	{
+		return false;
+	}
+	if (*pstr_max == '-')
+	{
+		return false;
+	}
+
+
+	bool flag_positive = true;
+	if (*pstr == '-')
+	{
+		flag_positive = false;
+	}
+
+
+	if (*pstr_min == '-')
+	{
+		pstr_min++;
+	}
+	if (*pstr_max == '+')
+	{
+		pstr_max++;
+	}
+	if ((*pstr == '-') || (*pstr == '+'))
+	{
+		pstr++;
+		size--;
+	}
+
+
+	size_t str_min_size = strlen(pstr_min);
+	size_t str_max_size = strlen(pstr_max);
+
+
+	if (str_min_size != str_max_size)
+	{
+		return false;
+	}
+
+
+// check size input string
+	if (size > str_max_size)
+	{
+		return false;
+	}
+	if (size < str_max_size)
+	{
+		return true;
+	}
+
+
+// size == str_max_size
+	if (flag_positive == false)
+	{
+		for (size_t i=0; i < str_min_size; i++)
 		{
-			break;
+			if (pstr_min[i] > pstr[i])
+			{
+				break;
+			}
+
+			if (pstr_min[i] < pstr[i])
+			{
+				return false;
+			}
+		}
+	}
+	else
+	{
+		for (size_t i=0; i < str_max_size; i++)
+		{
+			if (pstr_max[i] > pstr[i])
+			{
+				break;
+			}
+
+			if (pstr_max[i] < pstr[i])
+			{
+				return false;
+			}
 		}
 	}
 
@@ -482,25 +612,38 @@ bool libcore::is_numeric_string_overflow(const char *pstr_max, const char *pstr,
 	return true;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// check number in str less number in str_max
-bool libcore::is_numeric_string_overflow(const char *pstr_max, const std::string &str)
+/**
+ * check pstr_min < number < pstr_max
+ * \param[in] pstr_min string with min number
+ * \param[in] pstr_max string with max number
+ * \param[in] str string with test number
+ * \return flag correct check
+ */
+bool libcore::is_sint_string_overflow(const char *pstr_min, const char *pstr_max, const std::string &str)
 {
-	return libcore::is_numeric_string_overflow(pstr_max, str.c_str(), str.size());
+	return libcore::is_sint_string_overflow(pstr_min, pstr_max, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert hex string to uint
-bool libcore::hex2uint(uint64_t &value, uint64_t default_value, const char *pstr, size_t size)
+/**
+ * convert hex string to uint
+ * \param[in] result return value
+ * \param[in] default_value default value
+ * \param[in] pstr source string
+ * \param[in] size size source string
+ * \return flag correct convert
+ */
+bool libcore::hex2uint(uint64_t &result, uint64_t default_value, const char *pstr, size_t size)
 {
-	if (size == 0)
+	if ((pstr == NULL) || (size == 0))
 	{
-		value = default_value;
+		result = default_value;
 		return false;
 	}
 
 
 	if (*pstr != '0')
 	{
-		value = default_value;
+		result = default_value;
 		return false;
 	}
 	pstr++;
@@ -508,11 +651,18 @@ bool libcore::hex2uint(uint64_t &value, uint64_t default_value, const char *pstr
 
 	if (*pstr != 'x')
 	{
-		value = default_value;
+		result = default_value;
 		return false;
 	}
 	pstr++;
 	size--;
+
+
+	if (size == 0)
+	{
+		result = default_value;
+		return false;
+	}
 
 
 	char ch1, ch2;
@@ -522,7 +672,7 @@ bool libcore::hex2uint(uint64_t &value, uint64_t default_value, const char *pstr
 	size_t byte_count = size / 2;
 	if (byte_count > sizeof(uint64_t))
 	{
-		value = default_value;
+		result = default_value;
 		return false;
 	}
 
@@ -530,15 +680,16 @@ bool libcore::hex2uint(uint64_t &value, uint64_t default_value, const char *pstr
 	if ((byte_count * 2) != size)
 	{
 		flag_parity = false;
+		byte_count++;
 	}
 
 
-	value = 0;
+	result = 0;
 	for (;;)
 	{
 		if (flag_parity == false)
 		{
-			ch1 = 0;
+			ch1 = '0';
 			flag_parity = true;
 		}
 		else
@@ -552,19 +703,19 @@ bool libcore::hex2uint(uint64_t &value, uint64_t default_value, const char *pstr
 
 		if (libcore::hex2bin((uint8_t)ch1, r1) == false)
 		{
-			value = default_value;
+			result = default_value;
 			return false;
 		}
 		if (libcore::hex2bin((uint8_t)ch2, r2) == false)
 		{
-			value = default_value;
+			result = default_value;
 			return false;
 		}
 		out = (uint8_t)((r1 << 4) + r2);
 
 
-		value <<= 8;
-		value  |= out;
+		result <<= 8;
+		result |= out;
 		byte_count--;
 
 
@@ -575,34 +726,168 @@ bool libcore::hex2uint(uint64_t &value, uint64_t default_value, const char *pstr
 	return true;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert hex string to uint
-bool libcore::hex2uint(uint64_t &value, uint64_t default_value, const char *pstr)
+/**
+ * convert hex string to uint
+ * \param[in] result return value
+ * \param[in] default_value default value
+ * \param[in] pstr source string
+ * \return flag correct convert
+ */
+bool libcore::hex2uint(uint64_t &result, uint64_t default_value, const char *pstr)
 {
-	return libcore::hex2uint(value, default_value, pstr, libcore::strlen(pstr));
+	return libcore::hex2uint(result, default_value, pstr, libcore::strlen(pstr));
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert hex string to uint
-bool libcore::hex2uint(uint64_t &value, uint64_t default_value, const std::string &str)
+/**
+ * convert hex string to uint
+ * \param[in] result return value
+ * \param[in] default_value default value
+ * \param[in] str source string
+ * \return flag correct convert
+ */
+bool libcore::hex2uint(uint64_t &result, uint64_t default_value, const std::string &str)
 {
-	return libcore::hex2uint(value, default_value, str.c_str(), str.size());
+	return libcore::hex2uint(result, default_value, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert hex string to uint
-bool libcore::hex2uint(uint64_t &value, const char *pstr, size_t size)
+/**
+ * convert hex string to uint
+ * \param[in] result return value
+ * \param[in] pstr source string
+ * \param[in] size size source string
+ * \return flag correct convert
+ */
+bool libcore::hex2uint(uint64_t &result, const char *pstr, size_t size)
 {
-	return libcore::hex2uint(value, 0, pstr, size);
+	return libcore::hex2uint(result, 0, pstr, size);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert hex string to uint
-bool libcore::hex2uint(uint64_t &value, const char *pstr)
+/**
+ * convert hex string to uint
+ * \param[in] result return value
+ * \param[in] pstr source string
+ * \return flag correct convert
+ */
+bool libcore::hex2uint(uint64_t &result, const char *pstr)
 {
-	return libcore::hex2uint(value, 0, pstr, libcore::strlen(pstr));
+	return libcore::hex2uint(result, 0, pstr, libcore::strlen(pstr));
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// convert hex string to uint
-bool libcore::hex2uint(uint64_t &value, const std::string &str)
+/**
+ * convert hex string to uint
+ * \param[in] result return value
+ * \param[in] str source string
+ * \return flag correct convert
+ */
+bool libcore::hex2uint(uint64_t &result, const std::string &str)
 {
-	return libcore::hex2uint(value, 0, str.c_str(), str.size());
+	return libcore::hex2uint(result, 0, str.c_str(), str.size());
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+/**
+ * convert hex string to sint
+ * \param[in] result return value
+ * \param[in] default_value default value
+ * \param[in] pstr source string
+ * \param[in] size size source string
+ * \return flag correct convert
+ */
+bool libcore::hex2sint(int64_t &result, int64_t default_value, const char *pstr, size_t size)
+{
+	bool rc;
+	uint64_t tmp;
+
+	rc = libcore::hex2uint(tmp, (uint64_t)default_value, pstr, size);
+	if (rc == false)
+	{
+		result = tmp;
+		return rc;
+	}
+
+// expand sign
+	uint64_t m1 = 0xff00000000000000;
+	uint64_t m2 = 0x8000000000000000;
+	uint64_t m3 = 0x7fffffffffffffff;
+
+	for (;;)
+	{
+		if (m1 == 0) break;
+
+		if ((tmp & m1) != 0)
+		{
+			if ((tmp & m2) != 0)
+			{
+				result = -(tmp & m3);
+				return rc;
+			}
+			break;;
+		}
+
+		m1 >>= 8;
+		m2 >>= 8;
+		m3 >>= 8;
+	}
+
+	result = tmp;
+	return rc;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+/**
+ * convert hex string to sint
+ * \param[in] result return value
+ * \param[in] default_value default value
+ * \param[in] pstr source string
+ * \return flag correct convert
+ */
+bool libcore::hex2sint(int64_t &result, int64_t default_value, const char *pstr)
+{
+	return libcore::hex2sint(result, default_value, pstr, libcore::strlen(pstr));
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+/**
+ * convert hex string to sint
+ * \param[in] result return value
+ * \param[in] default_value default value
+ * \param[in] str source string
+ * \return flag correct convert
+ */
+bool libcore::hex2sint(int64_t &result, int64_t default_value, const std::string &str)
+{
+	return libcore::hex2sint(result, default_value, str.c_str(), str.size());
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+/**
+ * convert hex string to sint
+ * \param[in] result return value
+ * \param[in] pstr source string
+ * \param[in] size size source string
+ * \return flag correct convert
+ */
+bool libcore::hex2sint(int64_t &result, const char *pstr, size_t size)
+{
+	return libcore::hex2sint(result, 0, pstr, size);
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+/**
+ * convert hex string to sint
+ * \param[in] result return value
+ * \param[in] pstr source string
+ * \return flag correct convert
+ */
+bool libcore::hex2sint(int64_t &result, const char *pstr)
+{
+	return libcore::hex2sint(result, 0, pstr, libcore::strlen(pstr));
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+/**
+ * convert hex string to sint
+ * \param[in] result return value
+ * \param[in] str source string
+ * \return flag correct convert
+ */
+bool libcore::hex2sint(int64_t &result, const std::string &str)
+{
+	return libcore::hex2sint(result, 0, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert dec string to uint
@@ -617,7 +902,7 @@ bool libcore::dec2uint(uint64_t &value, uint64_t default_value, const char *pstr
 
 
 // check overflow
-	if (libcore::is_numeric_string_overflow("18446744073709551615", pstr, size) == false)
+	if (libcore::is_uint_string_overflow("18446744073709551615", pstr, size) == false)
 	{
 		value = default_value;
 		return false;
@@ -671,6 +956,13 @@ bool libcore::dec2sint(int64_t &value, int64_t default_value, const char *pstr, 
 
 
 // check overflow
+	if (libcore::is_sint_string_overflow("-9223372036854775806", "+9223372036854775807", pstr, size) == false)
+	{
+		value = default_value;
+		return false;
+	}
+
+/*
 	if (*pstr == '-')
 	{
 		if (libcore::is_numeric_string_overflow("-9223372036854775806", pstr, size) == false)
@@ -687,7 +979,7 @@ bool libcore::dec2sint(int64_t &value, int64_t default_value, const char *pstr, 
 			return false;
 		}
 	}
-
+*/
 
 // convert it
 	value = strtoll(pstr, NULL, 10); // atoll
@@ -1393,7 +1685,11 @@ const char *libcore::get_signal_name(const int sig)
 	return "unknown";
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// flip bytes
+/**
+ * flip bytes in buffer
+ * \param[in,out] pbuffer buffer bytes
+ * \param[in] size size buffer
+ */
 void libcore::flip(void *pbuffer, size_t size)
 {
 	if (size < 2) return;

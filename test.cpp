@@ -182,6 +182,69 @@ int sint2str()
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 /**
+ * check whether a string is equivalent to regexp 0x[0-9a-fA-F]+
+ * \param[in] pstr string
+ * \return flag correct check
+ */
+//	bool is_hex(const char *pstr);
+//	bool is_hex(const std::string &str);
+int is_hex()
+{
+	bool rc;
+
+	rc = libcore::is_hex(NULL);
+	if (rc != false)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
+		return -1;
+	}
+
+	rc = libcore::is_hex("");
+	if (rc != false)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "002");
+		return -1;
+	}
+
+	rc = libcore::is_hex("wow");
+	if (rc != false)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
+		return -1;
+	}
+
+	rc = libcore::is_hex("0xwow");
+	if (rc != false)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "004");
+		return -1;
+	}
+
+	rc = libcore::is_hex("0x");
+	if (rc != false)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "005");
+		return -1;
+	}
+
+	rc = libcore::is_hex("0xff");
+	if (rc != true)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
+		return -1;
+	}
+
+	rc = libcore::is_hex("0xfff");
+	if (rc != true)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "007");
+		return -1;
+	}
+
+	return 0;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+/**
  * check whether a string is equivalent to regexp [+]?[0-9]+
  * \param[in] pstr string
  * \return flag correct check
@@ -233,7 +296,6 @@ int is_udec()
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
 		return -1;
 	}
-
 
 	return 0;
 }
@@ -291,9 +353,367 @@ int is_sdec()
 		return -1;
 	}
 
+	return 0;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+/**
+ * check 0 < number < pstr_max
+ * \param[in] pstr_max string with max number
+ * \param[in] pstr string with test number
+ * \param[in] size size string
+ * \return flag correct check
+ */
+//	bool is_uint_string_overflow(const char *pstr_max, const char *pstr, size_t size);
+//	bool is_uint_string_overflow(const char *pstr_max, const std::string &str);
+int is_uint_string_overflow()
+{
+	bool rc;
+
+	rc = libcore::is_uint_string_overflow(NULL, NULL, 10);
+	if (rc != false)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
+		return -1;
+	}
+
+	rc = libcore::is_uint_string_overflow("0", "0");
+	if (rc != true)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "002");
+		return -1;
+	}
+
+	rc = libcore::is_uint_string_overflow("0", "-0");
+	if (rc != false)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
+		return -1;
+	}
+
+	rc = libcore::is_uint_string_overflow("-0", "0");
+	if (rc != false)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "004");
+		return -1;
+	}
+
+	rc = libcore::is_uint_string_overflow("0", "10");
+	if (rc != false)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "005");
+		return -1;
+	}
+
+	rc = libcore::is_uint_string_overflow("18446744073709551615", "18446744073709551615");
+	if (rc != true)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
+		return -1;
+	}
+
+	rc = libcore::is_uint_string_overflow("18446744073709551615", "+18446744073709551615");
+	if (rc != true)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "007");
+		return -1;
+	}
+
+	rc = libcore::is_uint_string_overflow("+18446744073709551615", "18446744073709551615");
+	if (rc != true)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "008");
+		return -1;
+	}
+
+	rc = libcore::is_uint_string_overflow("+18446744073709551615", "+18446744073709551615");
+	if (rc != true)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "009");
+		return -1;
+	}
+
+	rc = libcore::is_uint_string_overflow("18446744073709551615", "18446744073709551616");
+	if (rc != false)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "010");
+		return -1;
+	}
 
 	return 0;
 }
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+/**
+ * check pstr_min < number < pstr_max
+ * \param[in] pstr_min string with min number
+ * \param[in] pstr_max string with max number
+ * \param[in] pstr string with test number
+ * \param[in] size size string
+ * \return flag correct check
+ */
+//	bool is_sint_string_overflow(const char *pstr_min, const char *pstr_max, const char *pstr, size_t size);
+//	bool is_sint_string_overflow(const char *pstr_min, const char *pstr_max, const std::string &str);
+int is_sint_string_overflow()
+{
+	bool rc;
+
+	rc = libcore::is_sint_string_overflow(NULL, NULL, NULL, 10);
+	if (rc != false)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
+		return -1;
+	}
+
+	rc = libcore::is_sint_string_overflow("-0", "+0", "0");
+	if (rc != true)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "002");
+		return -1;
+	}
+
+	rc = libcore::is_sint_string_overflow("-0", "+0", "10");
+	if (rc != false)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
+		return -1;
+	}
+
+	rc = libcore::is_sint_string_overflow("-9223372036854775806", "+9223372036854775807", "0");
+	if (rc != true)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "004");
+		return -1;
+	}
+
+	rc = libcore::is_sint_string_overflow("-9223372036854775806", "+9223372036854775807", "-9223372036854775807");
+	if (rc != false)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "005");
+		return -1;
+	}
+
+	rc = libcore::is_sint_string_overflow("-9223372036854775806", "+9223372036854775807", "-9223372036854775806");
+	if (rc != true)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
+		return -1;
+	}
+
+	rc = libcore::is_sint_string_overflow("-9223372036854775806", "+9223372036854775807", "+9223372036854775807");
+	if (rc != true)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "007");
+		return -1;
+	}
+
+	rc = libcore::is_sint_string_overflow("-9223372036854775806", "+9223372036854775807", "9223372036854775807");
+	if (rc != true)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "008");
+		return -1;
+	}
+
+	rc = libcore::is_sint_string_overflow("-9223372036854775806", "+9223372036854775807", "9223372036854775808");
+	if (rc != false)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "009");
+		return -1;
+	}
+
+	return 0;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+/**
+ * convert hex string to uint
+ * \param[in] result return value
+ * \param[in] default_value default value
+ * \param[in] pstr source string
+ * \param[in] size size source string
+ * \return flag correct convert
+ */
+//	bool hex2uint(uint64_t &result, uint64_t default_value, const char *pstr, size_t size);
+//	bool hex2uint(uint64_t &result, uint64_t default_value, const char *pstr);
+//	bool hex2uint(uint64_t &result, uint64_t default_value, const std::string &str);
+//	bool hex2uint(uint64_t &result, const char *pstr, size_t size);
+//	bool hex2uint(uint64_t &result, const char *pstr);
+//	bool hex2uint(uint64_t &result, const std::string &str);
+int hex2uint()
+{
+	bool rc;
+	uint64_t result;
+
+	rc = libcore::hex2uint(result, 777, NULL, 10);
+	if ((rc != false) || (result != 777))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
+		printf("ERROR[%s()]: result:\"%u\"\n", __FUNCTION__, int(result));
+		return -1;
+	}
+
+	rc = libcore::hex2uint(result, 777, "");
+	if ((rc != false) || (result != 777))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "002");
+		printf("ERROR[%s()]: result:\"%u\"\n", __FUNCTION__, int(result));
+		return -1;
+	}
+
+	rc = libcore::hex2uint(result, 777, "0");
+	if ((rc != false) || (result != 777))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
+		printf("ERROR[%s()]: result:\"%u\"\n", __FUNCTION__, int(result));
+		return -1;
+	}
+
+	rc = libcore::hex2uint(result, 777, "0x");
+	if ((rc != false) || (result != 777))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "004");
+		printf("ERROR[%s()]: result:\"%u\"\n", __FUNCTION__, int(result));
+		return -1;
+	}
+
+	rc = libcore::hex2uint(result, 777, "0xf");
+	if ((rc != true) || (result != 0xf))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "005");
+		printf("ERROR[%s()]: result:\"%u\"\n", __FUNCTION__, int(result));
+		return -1;
+	}
+
+	rc = libcore::hex2uint(result, 777, "0xff");
+	if ((rc != true) || (result != 0xff))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
+		printf("ERROR[%s()]: result:\"%u\"\n", __FUNCTION__, int(result));
+		return -1;
+	}
+
+	rc = libcore::hex2uint(result, 777, "0xfff");
+	if ((rc != true) || (result != 0xfff))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "007");
+		printf("ERROR[%s()]: result:\"%u\"\n", __FUNCTION__, int(result));
+		return -1;
+	}
+
+	rc = libcore::hex2uint(result, 777, "0xffff");
+	if ((rc != true) || (result != 0xffff))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "008");
+		printf("ERROR[%s()]: result:\"%u\"\n", __FUNCTION__, int(result));
+		return -1;
+	}
+
+	return 0;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+/**
+ * convert hex string to sint
+ * \param[in] result return value
+ * \param[in] default_value default value
+ * \param[in] pstr source string
+ * \param[in] size size source string
+ * \return flag correct convert
+ */
+//	bool hex2sint(int64_t &result, int64_t default_value, const char *pstr, size_t size);
+//	bool hex2sint(int64_t &result, int64_t default_value, const char *pstr);
+//	bool hex2sint(int64_t &result, int64_t default_value, const std::string &str);
+//	bool hex2sint(int64_t &result, const char *pstr, size_t size);
+//	bool hex2sint(int64_t &result, const char *pstr);
+//	bool hex2sint(int64_t &result, const std::string &str);
+int hex2sint()
+{
+	bool rc;
+	int64_t result;
+
+	rc = libcore::hex2sint(result, 777, NULL, 10);
+	if ((rc != false) || (result != 777))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
+		printf("ERROR[%s()]: result:\"%d\"\n", __FUNCTION__, int(result));
+		return -1;
+	}
+
+	rc = libcore::hex2sint(result, 777, "");
+	if ((rc != false) || (result != 777))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "002");
+		printf("ERROR[%s()]: result:\"%d\"\n", __FUNCTION__, int(result));
+		return -1;
+	}
+
+	rc = libcore::hex2sint(result, 777, "0");
+	if ((rc != false) || (result != 777))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
+		printf("ERROR[%s()]: result:\"%d\"\n", __FUNCTION__, int(result));
+		return -1;
+	}
+
+	rc = libcore::hex2sint(result, 777, "0x");
+	if ((rc != false) || (result != 777))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "004");
+		printf("ERROR[%s()]: result:\"%d\"\n", __FUNCTION__, int(result));
+		return -1;
+	}
+
+	rc = libcore::hex2sint(result, 777, "0xf");
+	if ((rc != true) || (result != 15))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "005");
+		printf("ERROR[%s()]: result:\"%d\"\n", __FUNCTION__, int(result));
+		return -1;
+	}
+
+	rc = libcore::hex2sint(result, 777, "0xff");
+	if ((rc != true) || (result != -127))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
+		printf("ERROR[%s()]: result:\"%d\"\n", __FUNCTION__, int(result));
+		return -1;
+	}
+
+	rc = libcore::hex2sint(result, 777, "0xfff");
+	if ((rc != true) || (result != 4095))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "007");
+		printf("ERROR[%s()]: result:\"%d\"\n", __FUNCTION__, int(result));
+		return -1;
+	}
+
+	rc = libcore::hex2sint(result, 777, "0xffff");
+	if ((rc != true) || (result != -32767))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "008");
+		printf("ERROR[%s()]: result:\"%d\"\n", __FUNCTION__, int(result));
+		return -1;
+	}
+
+	return 0;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
@@ -341,8 +761,6 @@ int str2uint()
 
 	return 0;
 }
-//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 int str2bool()
 {
@@ -492,7 +910,6 @@ int str2bool()
 		return -1;
 	}
 
-
 	return 0;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
@@ -508,6 +925,12 @@ int get_signal_name()
 	return 0;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+/**
+ * flip bytes in buffer
+ * \param[in,out] pbuffer buffer bytes
+ * \param[in] size size buffer
+ */
+//	void flip(void *pbuffer, size_t size);
 int flip()
 {
 	char t1[]={ 3 };
@@ -661,19 +1084,15 @@ int main(int argc, char *argv[])
 		}
 	}
 
+
 	rc = uint2str();
 	if (rc == -1) return 1;
 
 	rc = sint2str();
 	if (rc == -1) return 1;
 
-
-/*
-// check const string in set 0x[0-9a-fA-F]+
-	bool is_hex(const char *pstr);
-	bool is_hex(const std::string &str);
-*/
-
+	rc = is_hex();
+	if (rc == -1) return 1;
 
 	rc = is_udec();
 	if (rc == -1) return 1;
@@ -681,19 +1100,21 @@ int main(int argc, char *argv[])
 	rc = is_sdec();
 	if (rc == -1) return 1;
 
+	rc = is_uint_string_overflow();
+	if (rc == -1) return 1;
+
+	rc = is_sint_string_overflow();
+	if (rc == -1) return 1;
+
+	rc = hex2uint();
+	if (rc == -1) return 1;
+
+	rc = hex2sint();
+	if (rc == -1) return 1;
+
+
+
 /*
-// check number in string less number in str_max
-	bool is_numeric_string_overflow(const char *pstr_max, const char *pstr, size_t size);
-	bool is_numeric_string_overflow(const char *pstr_max, const std::string &str);
-
-// convert hex string to uint
-	bool hex2uint(uint64_t &result, uint64_t default_value, const char *pstr, size_t size);
-	bool hex2uint(uint64_t &result, uint64_t default_value, const char *pstr);
-	bool hex2uint(uint64_t &result, uint64_t default_value, const std::string &str);
-	bool hex2uint(uint64_t &result, const char *pstr, size_t size);
-	bool hex2uint(uint64_t &result, const char *pstr);
-	bool hex2uint(uint64_t &result, const std::string &str);
-
 // convert dec string to uint
 	bool dec2uint(uint64_t &result, uint64_t default_value, const char *pstr, size_t size);
 	bool dec2uint(uint64_t &result, uint64_t default_value, const char *pstr);
