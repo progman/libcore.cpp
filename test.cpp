@@ -668,7 +668,7 @@ int hex2sint()
 	}
 
 	rc = libcore::hex2sint(result, 777, "0xff");
-	if ((rc != true) || (result != -127))
+	if ((rc != true) || (result != -1))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
 		printf("ERROR[%s()]: result:\"%d\"\n", __FUNCTION__, int(result));
@@ -684,7 +684,7 @@ int hex2sint()
 	}
 
 	rc = libcore::hex2sint(result, 777, "0xffff");
-	if ((rc != true) || (result != -32767))
+	if ((rc != true) || (result != -1))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "008");
 		printf("ERROR[%s()]: result:\"%d\"\n", __FUNCTION__, int(result));
@@ -694,6 +694,82 @@ int hex2sint()
 	return 0;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+/**
+ * expand sign in value, example: 0xff -> -1, 0xffff -> -1, ...
+ * \param[in] value unsign value
+ * \return sign value
+ */
+//	int64_t sign_expand(const uint64_t value);
+int sign_expand()
+{
+	int64_t rc;
+
+	rc = libcore::sign_expand(0x7f);
+	if (rc != INT8_MAX) // 127
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
+		printf("ERROR[%s()]: result:\"%d\"\n", __FUNCTION__, int(rc));
+		return -1;
+	}
+
+	rc = libcore::sign_expand(0x80);
+	if (rc != INT8_MIN) // -128
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "002");
+		printf("ERROR[%s()]: result:\"%d\"\n", __FUNCTION__, int(rc));
+		return -1;
+	}
+
+	rc = libcore::sign_expand(0x7fff);
+	if (rc != INT16_MAX) // 32767
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
+		printf("ERROR[%s()]: result:\"%d\"\n", __FUNCTION__, int(rc));
+		return -1;
+	}
+
+	rc = libcore::sign_expand(0x8000);
+	if (rc != INT16_MIN) // -32768
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "004");
+		printf("ERROR[%s()]: result:\"%d\"\n", __FUNCTION__, int(rc));
+		return -1;
+	}
+
+	rc = libcore::sign_expand(0x7fffffff);
+	if (rc != INT32_MAX) // 2147483647
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "005");
+		printf("ERROR[%s()]: result:\"%d\"\n", __FUNCTION__, int(rc));
+		return -1;
+	}
+
+	rc = libcore::sign_expand(0x80000000);
+	if (rc != INT32_MIN) // -2147483648
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
+		printf("ERROR[%s()]: result:\"%d\"\n", __FUNCTION__, int(rc));
+		return -1;
+	}
+
+	rc = libcore::sign_expand(0x7fffffffffffffff);
+	if (rc != INT64_MAX) // -9223372036854775807
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "007");
+		printf("ERROR[%s()]: result:\"%d\"\n", __FUNCTION__, int(rc));
+		return -1;
+	}
+
+	rc = libcore::sign_expand(0x8000000000000000);
+	if (rc != INT64_MIN) // 9223372036854775808
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "008");
+		printf("ERROR[%s()]: result:\"%d\"\n", __FUNCTION__, int(rc));
+		return -1;
+	}
+
+	return 0;
+}
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
@@ -1112,6 +1188,8 @@ int main(int argc, char *argv[])
 	rc = hex2sint();
 	if (rc == -1) return 1;
 
+	rc = sign_expand();
+	if (rc == -1) return 1;
 
 
 /*

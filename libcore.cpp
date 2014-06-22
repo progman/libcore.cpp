@@ -804,31 +804,7 @@ bool libcore::hex2sint(int64_t &result, int64_t default_value, const char *pstr,
 		return rc;
 	}
 
-// expand sign
-	uint64_t m1 = 0xff00000000000000;
-	uint64_t m2 = 0x8000000000000000;
-	uint64_t m3 = 0x7fffffffffffffff;
-
-	for (;;)
-	{
-		if (m1 == 0) break;
-
-		if ((tmp & m1) != 0)
-		{
-			if ((tmp & m2) != 0)
-			{
-				result = -(tmp & m3);
-				return rc;
-			}
-			break;;
-		}
-
-		m1 >>= 8;
-		m2 >>= 8;
-		m3 >>= 8;
-	}
-
-	result = tmp;
+	result = libcore::sign_expand(tmp);
 	return rc;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
@@ -888,6 +864,31 @@ bool libcore::hex2sint(int64_t &result, const char *pstr)
 bool libcore::hex2sint(int64_t &result, const std::string &str)
 {
 	return libcore::hex2sint(result, 0, str.c_str(), str.size());
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+/**
+ * expand sign in value, example: 0xff -> -1, 0xffff -> -1, ...
+ * \param[in] value unsign value
+ * \return sign value
+ */
+int64_t libcore::sign_expand(const uint64_t value)
+{
+	if (value & 0xffffffff00000000)
+	{
+		return (int64_t)value;
+	}
+
+	if (value & 0xffffffffffff0000)
+	{
+		return (int32_t)value;
+	}
+
+	if (value & 0xffffffffffffff00)
+	{
+		return (int16_t)value;
+	}
+
+	return (int8_t)value;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert dec string to uint
