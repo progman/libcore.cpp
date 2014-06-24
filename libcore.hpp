@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.2.9
+// 0.3.0
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #ifndef LIBCORE_HPP_INCLUDE
@@ -34,17 +34,19 @@ namespace libcore
 /**
  * check whether a string is equivalent to regexp 0x[0-9a-fA-F]+
  * \param[in] pstr string
+ * \param[in] flag_prefix prefix '0x'
  * \return flag correct check
  */
-	bool is_hex(const char *pstr);
+	bool is_hex(const char *pstr, bool flag_prefix = true);
 
 
 /**
  * check whether a string is equivalent to regexp 0x[0-9a-fA-F]+
  * \param[in] str string
+ * \param[in] flag_prefix prefix '0x'
  * \return flag correct check
  */
-	bool is_hex(const std::string &str);
+	bool is_hex(const std::string &str, bool flag_prefix = true);
 
 
 /**
