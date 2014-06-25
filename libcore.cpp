@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.3.0
+// 0.3.1
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #define _LARGE_FILE_API
@@ -259,21 +259,26 @@ bool libcore::sint2str(std::string &result, int64_t source, uint8_t zero_count)
 /**
  * check whether a string is equivalent to regexp 0x[0-9a-fA-F]+
  * \param[in] pstr string
- * \param[in] flag_prefix prefix '0x'
+ * \param[in] flag_prefix must prefix '0x'
  * \return flag correct check
  */
 bool libcore::is_hex(const char *pstr, bool flag_prefix)
 {
 	if (pstr == NULL) return false;
+	if (*pstr == 0) return false;
 
 
-	if (flag_prefix == true)
+	if ((pstr[0] == '0') && (pstr[1] == 'x'))
 	{
-		if (*pstr != '0') return false;
 		pstr++;
-
-		if (*pstr != 'x') return false;
 		pstr++;
+	}
+	else
+	{
+		if (flag_prefix == true)
+		{
+			return false;
+		}
 	}
 
 
@@ -304,7 +309,7 @@ bool libcore::is_hex(const char *pstr, bool flag_prefix)
 /**
  * check whether a string is equivalent to regexp 0x[0-9a-fA-F]+
  * \param[in] str string
- * \param[in] flag_prefix prefix '0x'
+ * \param[in] flag_prefix must prefix '0x'
  * \return flag correct check
  */
 bool libcore::is_hex(const std::string &str, bool flag_prefix)

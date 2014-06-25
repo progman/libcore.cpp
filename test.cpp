@@ -184,7 +184,7 @@ int sint2str()
 /**
  * check whether a string is equivalent to regexp 0x[0-9a-fA-F]+
  * \param[in] pstr string
- * \param[in] flag_prefix prefix '0x'
+ * \param[in] flag_prefix must prefix '0x'
  * \return flag correct check
  */
 //	bool is_hex(const char *pstr, bool flag_prefix = true);
@@ -239,6 +239,20 @@ int is_hex()
 	if (rc != true)
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "007");
+		return -1;
+	}
+
+	rc = libcore::is_hex("0xfff", true);
+	if (rc != true)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "008");
+		return -1;
+	}
+
+	rc = libcore::is_hex("0xfff", false);
+	if (rc != true)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "008");
 		return -1;
 	}
 
