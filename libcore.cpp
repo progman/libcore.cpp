@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.3.1
+// 0.3.2
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #define _LARGE_FILE_API
@@ -70,11 +70,12 @@ static const char *byte2str_table[] =
  * convert uint to string
  * \param[out] result string result
  * \param[in] source uint source
- * \param[in] zero_count zero count
+ * \param[in] fill_count fill count
+ * \param[in] fill_char char for fill
  * \param[in] flag_plus enable '+' before string
  * \return flag correct convertion
  */
-bool libcore::uint2str(std::string &result, uint64_t source, uint8_t zero_count, bool flag_plus)
+bool libcore::uint2str(std::string &result, uint64_t source, uint8_t fill_count, char fill_char, bool flag_plus)
 {
 //0         1         2         3
 //0123456789012345678901234567890123456789
@@ -99,16 +100,16 @@ bool libcore::uint2str(std::string &result, uint64_t source, uint8_t zero_count,
 	}
 
 
-	if (zero_count != 0)
+	if (fill_count != 0)
 	{
-		if (zero_count > (sizeof(s) - 2))
+		if (fill_count > (sizeof(s) - 2))
 		{
-			zero_count = (sizeof(s) - 2);
+			fill_count = (sizeof(s) - 2);
 		}
-		int max = zero_count - (sizeof(s) - (p - s)) + 2;
+		int max = fill_count - (sizeof(s) - (p - s)) + 2;
 		for (int j=0; j < max; j++)
 		{
-			*p = '0';
+			*p = fill_char;
 			p--;
 		}
 	}
@@ -162,15 +163,16 @@ bool libcore::uint2str(std::string &result, uint64_t source, uint8_t zero_count)
  * convert sint to string
  * \param[out] result string result
  * \param[in] source int source
- * \param[in] zero_count zero count
+ * \param[in] fill_count fill count
+ * \param[in] fill_char char for fill
  * \param[in] flag_plus enable '+' before string
  * \return flag correct convertion
  */
-bool libcore::sint2str(std::string &result, int64_t source, uint8_t zero_count, bool flag_plus)
+bool libcore::sint2str(std::string &result, int64_t source, uint8_t fill_count, char fill_char, bool flag_plus)
 {
 	if (source >= 0)
 	{
-		return libcore::uint2str(result, source, zero_count, flag_plus);
+		return libcore::uint2str(result, source, fill_count, fill_char, flag_plus);
 	}
 
 
@@ -200,16 +202,16 @@ bool libcore::sint2str(std::string &result, int64_t source, uint8_t zero_count, 
 	}
 
 
-	if (zero_count != 0)
+	if (fill_count != 0)
 	{
-		if (zero_count > (sizeof(s) - 2))
+		if (fill_count > (sizeof(s) - 2))
 		{
-			zero_count = (sizeof(s) - 2);
+			fill_count = (sizeof(s) - 2);
 		}
-		int max = zero_count - (sizeof(s) - (p - s)) + 2;
+		int max = fill_count - (sizeof(s) - (p - s)) + 2;
 		for (int j=0; j < max; j++)
 		{
-			*p = '0';
+			*p = fill_char;
 			p--;
 		}
 	}

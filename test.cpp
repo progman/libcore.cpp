@@ -10,11 +10,12 @@
  * convert uint to string
  * \param[out] result string result
  * \param[in] source uint source
- * \param[in] zero_count zero count
+ * \param[in] fill_count fill count
+ * \param[in] fill_char char for fill
  * \param[in] flag_plus enable '+' before string
  * \return flag correct convertion
  */
-//	bool uint2str(std::string &result, uint64_t source, uint8_t zero_count = 0, bool flag_plus = false);
+//	bool uint2str(std::string &result, uint64_t source, uint8_t fill_count = 0, char fill_char = '0', bool flag_plus = false);
 int uint2str()
 {
 	bool rc;
@@ -36,7 +37,7 @@ int uint2str()
 		return -1;
 	}
 
-	rc = libcore::uint2str(value, +1, 0, true);
+	rc = libcore::uint2str(value, +1, 0, '0', true);
 	if ((rc == false) || (value != "+1"))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
@@ -52,7 +53,7 @@ int uint2str()
 		return -1;
 	}
 
-	rc = libcore::uint2str(value, 1917, 6, true);
+	rc = libcore::uint2str(value, 1917, 6, '0', true);
 	if ((rc == false) || (value != "+001917"))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "005");
@@ -60,7 +61,7 @@ int uint2str()
 		return -1;
 	}
 
-	rc = libcore::uint2str(value, 1917, 200, true);
+	rc = libcore::uint2str(value, 1917, 200, '0', true);
 	if ((rc == false) || (value != "+000000000000000000000000001917"))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
@@ -82,7 +83,7 @@ int uint2str()
 
 	x = 0;
 	x = ~x;
-	rc = libcore::uint2str(value, x, 0, true);
+	rc = libcore::uint2str(value, x, 0, '0', true);
 	if ((rc == false) || (value != "+18446744073709551615"))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "008");
@@ -97,11 +98,12 @@ int uint2str()
  * convert sint to string
  * \param[out] result string result
  * \param[in] source int source
- * \param[in] zero_count zero count
+ * \param[in] fill_count fill count
+ * \param[in] fill_char char for fill
  * \param[in] flag_plus enable '+' before string
  * \return flag correct convertion
  */
-//	bool sint2str(std::string &result, int64_t source, uint8_t zero_count = 0, bool flag_plus = false);
+//	bool sint2str(std::string &result, int64_t source, uint8_t fill_count = 0, char fill_char = '0', bool flag_plus = false);
 int sint2str()
 {
 	bool rc;
@@ -123,7 +125,7 @@ int sint2str()
 		return -1;
 	}
 
-	rc = libcore::sint2str(value, +1, 0, true);
+	rc = libcore::sint2str(value, +1, 0, '0', true);
 	if ((rc == false) || (value != "+1"))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
@@ -139,7 +141,7 @@ int sint2str()
 		return -1;
 	}
 
-	rc = libcore::sint2str(value, 1917, 6, true);
+	rc = libcore::sint2str(value, 1917, 6, '0', true);
 	if ((rc == false) || (value != "+001917"))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "005");
@@ -147,7 +149,7 @@ int sint2str()
 		return -1;
 	}
 
-	rc = libcore::sint2str(value, 1917, 200, true);
+	rc = libcore::sint2str(value, 1917, 200, '0', true);
 	if ((rc == false) || (value != "+000000000000000000000000001917"))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "006");
@@ -170,7 +172,7 @@ int sint2str()
 
 	x = 0;
 	x = ~x;
-	rc = libcore::sint2str(value, x, 0, true);
+	rc = libcore::sint2str(value, x, 0, '0', true);
 	if ((rc == false) || (value != "-1"))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "008");
