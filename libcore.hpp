@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.3.2
+// 0.3.3
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #ifndef LIBCORE_HPP_INCLUDE
@@ -36,10 +36,11 @@ namespace libcore
 /**
  * check whether a string is equivalent to regexp 0x[0-9a-fA-F]+
  * \param[in] pstr string
+ * \param[in] size size string
  * \param[in] flag_prefix must prefix '0x'
  * \return flag correct check
  */
-	bool is_hex(const char *pstr, bool flag_prefix = true);
+	bool is_hex(const char *pstr, size_t size = size_t(-1), bool flag_prefix = true);
 
 
 /**
@@ -54,9 +55,10 @@ namespace libcore
 /**
  * check whether a string is equivalent to regexp [+]?[0-9]+
  * \param[in] pstr string
+ * \param[in] size size string
  * \return flag correct check
  */
-	bool is_udec(const char *pstr);
+	bool is_udec(const char *pstr, size_t size = size_t(-1));
 
 
 /**
@@ -70,9 +72,10 @@ namespace libcore
 /**
  * check whether a string is equivalent to regexp [-+]?[0-9]+
  * \param[in] pstr string
+ * \param[in] size size string
  * \return flag correct check
  */
-	bool is_sdec(const char *pstr);
+	bool is_sdec(const char *pstr, size_t size = size_t(-1));
 
 
 /**

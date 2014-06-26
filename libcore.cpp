@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.3.2
+// 0.3.3
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #define _LARGE_FILE_API
@@ -261,47 +261,82 @@ bool libcore::sint2str(std::string &result, int64_t source, uint8_t zero_count)
 /**
  * check whether a string is equivalent to regexp 0x[0-9a-fA-F]+
  * \param[in] pstr string
+ * \param[in] size size string
  * \param[in] flag_prefix must prefix '0x'
  * \return flag correct check
  */
-bool libcore::is_hex(const char *pstr, bool flag_prefix)
+bool libcore::is_hex(const char *pstr, size_t size, bool flag_prefix)
 {
 	if (pstr == NULL) return false;
-	if (*pstr == 0) return false;
+	if (size == 0) return false;
 
 
-	if ((pstr[0] == '0') && (pstr[1] == 'x'))
+	if (size == size_t(-1))
 	{
-		pstr++;
-		pstr++;
+		if (*pstr == 0) return false;
+		if ((pstr[0] == '0') && (pstr[1] == 'x'))
+		{
+			pstr++;
+			pstr++;
+		}
+		else
+		{
+			if (flag_prefix == true)
+			{
+				return false;
+			}
+		}
+
+
+		const char *pstr_start = pstr;
+		for (;; pstr++)
+		{
+			uint8_t ch = *pstr;
+
+			if (ch == 0)
+			{
+				break;
+			}
+
+			if (::hex2bin_table[ch] == 0xff)
+			{
+				return false;
+			}
+		}
+		if (pstr == pstr_start)
+		{
+			return false;
+		}
 	}
 	else
 	{
-		if (flag_prefix == true)
+		if ((size > 1) && (pstr[0] == '0') && (pstr[1] == 'x'))
 		{
-			return false;
+			pstr++;
+			pstr++;
+			size--;
+			size--;
+			if (size == 0) return false;
 		}
-	}
-
-
-	size_t i = 0;
-	for (;; i++, pstr++)
-	{
-		uint8_t ch = *pstr;
-
-		if (ch == 0)
+		else
 		{
-			break;
+			if (flag_prefix == true)
+			{
+				return false;
+			}
 		}
 
-		if (::hex2bin_table[ch] == 0xff)
+
+		const char *pstr_end = pstr + size;
+		for (; pstr != pstr_end; pstr++)
 		{
-			return false;
+			uint8_t ch = *pstr;
+
+			if (::hex2bin_table[ch] == 0xff)
+			{
+				return false;
+			}
 		}
-	}
-	if (i == 0)
-	{
-		return false;
 	}
 
 
@@ -316,47 +351,77 @@ bool libcore::is_hex(const char *pstr, bool flag_prefix)
  */
 bool libcore::is_hex(const std::string &str, bool flag_prefix)
 {
-	return libcore::is_hex(str.c_str(), flag_prefix);
+	return libcore::is_hex(str.c_str(), str.size(), flag_prefix);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 /**
  * check whether a string is equivalent to regexp [+]?[0-9]+
  * \param[in] pstr string
+ * \param[in] size size string
  * \return flag correct check
  */
-bool libcore::is_udec(const char *pstr)
+bool libcore::is_udec(const char *pstr, size_t size)
 {
 	if (pstr == NULL) return false;
+	if (size == 0) return false;
 
 
-	if (*pstr == '+')
+	if (size == size_t(-1))
 	{
-		pstr++;
-	}
-
-
-	size_t i = 0;
-	for (;; i++, pstr++)
-	{
-		char ch = *pstr;
-
-		if (ch == 0)
+		if (*pstr == '+')
 		{
-			break;
+			pstr++;
 		}
 
-		if
-		(
-			(ch < '0') ||
-			(ch > '9')
-		)
+
+		const char *pstr_start = pstr;
+		for (;; pstr++)
+		{
+			char ch = *pstr;
+
+			if (ch == 0)
+			{
+				break;
+			}
+
+			if
+			(
+				(ch < '0') ||
+				(ch > '9')
+			)
+			{
+				return false;
+			}
+		}
+		if (pstr == pstr_start)
 		{
 			return false;
 		}
 	}
-	if (i == 0)
+	else
 	{
-		return false;
+		if (*pstr == '+')
+		{
+			pstr++;
+			size--;
+			if (size == 0) return false;
+		}
+
+
+		const char *pstr_end = pstr + size;
+		for (; pstr != pstr_end; pstr++)
+		{
+			char ch = *pstr;
+
+			if
+			(
+				(ch < '0') ||
+				(ch > '9')
+			)
+			{
+				return false;
+			}
+		}
 	}
 
 
@@ -370,51 +435,77 @@ bool libcore::is_udec(const char *pstr)
  */
 bool libcore::is_udec(const std::string &str)
 {
-	return libcore::is_udec(str.c_str());
+	return libcore::is_udec(str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 /**
  * check whether a string is equivalent to regexp [-+]?[0-9]+
  * \param[in] pstr string
+ * \param[in] size size string
  * \return flag correct check
  */
-bool libcore::is_sdec(const char *pstr)
+bool libcore::is_sdec(const char *pstr, size_t size)
 {
 	if (pstr == NULL) return false;
+	if (size == 0) return false;
 
 
-	if
-	(
-		(*pstr == '-') ||
-		(*pstr == '+')
-	)
+	if (size == size_t(-1))
 	{
-		pstr++;
-	}
-
-
-	size_t i = 0;
-	for (;; i++, pstr++)
-	{
-		char ch = *pstr;
-
-		if (ch == 0)
+		if ((*pstr == '-') || (*pstr == '+'))
 		{
-			break;
+			pstr++;
 		}
 
-		if
-		(
-			(ch < '0') ||
-			(ch > '9')
-		)
+
+		const char *pstr_start = pstr;
+		for (;; pstr++)
+		{
+			char ch = *pstr;
+
+			if (ch == 0)
+			{
+				break;
+			}
+
+			if
+			(
+				(ch < '0') ||
+				(ch > '9')
+			)
+			{
+				return false;
+			}
+		}
+		if (pstr == pstr_start)
 		{
 			return false;
 		}
 	}
-	if (i == 0)
+	else
 	{
-		return false;
+		if ((*pstr == '-') || (*pstr == '+'))
+		{
+			pstr++;
+			size--;
+			if (size == 0) return false;
+		}
+
+
+		const char *pstr_end = pstr + size;
+		for (; pstr != pstr_end; pstr++)
+		{
+			char ch = *pstr;
+
+			if
+			(
+				(ch < '0') ||
+				(ch > '9')
+			)
+			{
+				return false;
+			}
+		}
 	}
 
 
@@ -428,7 +519,7 @@ bool libcore::is_sdec(const char *pstr)
  */
 bool libcore::is_sdec(const std::string &str)
 {
-	return libcore::is_sdec(str.c_str());
+	return libcore::is_sdec(str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 /**
@@ -907,7 +998,7 @@ int64_t libcore::sign_expand(const uint64_t value)
 bool libcore::dec2uint(uint64_t &value, uint64_t default_value, const char *pstr, size_t size)
 {
 // check correct data input string
-	if (libcore::is_udec(pstr) == false)
+	if (libcore::is_udec(pstr, size) == false)
 	{
 		value = default_value;
 		return false;
@@ -961,7 +1052,7 @@ bool libcore::dec2uint(uint64_t &value, const std::string &str)
 bool libcore::dec2sint(int64_t &value, int64_t default_value, const char *pstr, size_t size)
 {
 // check correct data input string
-	if (libcore::is_sdec(pstr) == false)
+	if (libcore::is_sdec(pstr, size) == false)
 	{
 		value = default_value;
 		return false;

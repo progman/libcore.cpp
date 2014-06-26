@@ -186,10 +186,11 @@ int sint2str()
 /**
  * check whether a string is equivalent to regexp 0x[0-9a-fA-F]+
  * \param[in] pstr string
+ * \param[in] size size string
  * \param[in] flag_prefix must prefix '0x'
  * \return flag correct check
  */
-//	bool is_hex(const char *pstr, bool flag_prefix = true);
+//	bool is_hex(const char *pstr, size_t size = size_t(-1), bool flag_prefix = true);
 //	bool is_hex(const std::string &str, bool flag_prefix = true);
 int is_hex()
 {
@@ -244,28 +245,28 @@ int is_hex()
 		return -1;
 	}
 
-	rc = libcore::is_hex("0xfff", true);
+	rc = libcore::is_hex("0xfff", size_t(-1), true);
 	if (rc != true)
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "008");
 		return -1;
 	}
 
-	rc = libcore::is_hex("0xfff", false);
+	rc = libcore::is_hex("0xfff", size_t(-1), false);
 	if (rc != true)
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "008");
 		return -1;
 	}
 
-	rc = libcore::is_hex("fff", true);
+	rc = libcore::is_hex("fff", size_t(-1), true);
 	if (rc != false)
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "008");
 		return -1;
 	}
 
-	rc = libcore::is_hex("fff", false);
+	rc = libcore::is_hex("fff", size_t(-1), false);
 	if (rc != true)
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "009");
@@ -278,9 +279,10 @@ int is_hex()
 /**
  * check whether a string is equivalent to regexp [+]?[0-9]+
  * \param[in] pstr string
+ * \param[in] size size string
  * \return flag correct check
  */
-//	bool is_udec(const char *pstr);
+//	bool is_udec(const char *pstr, size_t size = size_t(-1));
 //	bool is_udec(const std::string &str);
 int is_udec()
 {
@@ -334,9 +336,10 @@ int is_udec()
 /**
  * check whether a string is equivalent to regexp [-+]?[0-9]+
  * \param[in] pstr string
+ * \param[in] size size string
  * \return flag correct check
  */
-//	bool is_sdec(const char *pstr);
+//	bool is_sdec(const char *pstr, size_t size = size_t(-1));
 //	bool is_sdec(const std::string &str);
 int is_sdec()
 {
@@ -860,11 +863,28 @@ int str2uint()
 	}
 	if (result != uint64_t(-1))
 	{
-		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "002");
 		printf("ERROR[%s()]: value:\"%s\"\n", __FUNCTION__, value.c_str());
 		return -1;
 	}
-//printf("%lu\n", result);
+
+	const char *p1 = "777 ";
+	const char *p2 = p1 + 3;
+	std::string x(p1, p2 - p1);
+
+	rc = libcore::str2uint(result, x);
+	if ((rc == false) || (result != 777))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
+		return -1;
+	}
+
+	rc = libcore::str2uint(result, p1, p2 - p1);
+	if ((rc == false) || (result != 777))
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "004");
+		return -1;
+	}
 
 	return 0;
 }
