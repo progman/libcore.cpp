@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.3.3
+// 0.3.4
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #define _LARGE_FILE_API
@@ -976,17 +976,17 @@ bool libcore::hex2sint(int64_t &result, const std::string &str)
  */
 int64_t libcore::sign_expand(const uint64_t value)
 {
-	if (value & 0xffffffff00000000)
+	if (value & (uint64_t(-1) << 32)) // 0xffffffff00000000
 	{
 		return (int64_t)value;
 	}
 
-	if (value & 0xffffffffffff0000)
+	if (value & (uint64_t(-1) << 16)) // 0xffffffffffff0000
 	{
 		return (int32_t)value;
 	}
 
-	if (value & 0xffffffffffffff00)
+	if (value & (uint64_t(-1) << 8))  // 0xffffffffffffff00
 	{
 		return (int16_t)value;
 	}

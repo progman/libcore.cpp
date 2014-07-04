@@ -786,7 +786,7 @@ int sign_expand()
 		return -1;
 	}
 
-	rc = libcore::sign_expand(0x7fffffffffffffff);
+	rc = libcore::sign_expand((uint64_t(1) << 63) - 1); // 0x7fffffffffffffff
 	if (rc != INT64_MAX) // -9223372036854775807
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "007");
@@ -794,7 +794,7 @@ int sign_expand()
 		return -1;
 	}
 
-	rc = libcore::sign_expand(0x8000000000000000);
+	rc = libcore::sign_expand(uint64_t(1) << 63); // 0x8000000000000000
 	if (rc != INT64_MIN) // 9223372036854775808
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "008");
