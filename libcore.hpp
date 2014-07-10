@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.3.4
+// 0.3.5
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #ifndef LIBCORE_HPP_INCLUDE
@@ -291,6 +291,9 @@ namespace libcore
 	bool str2bool(bool &result, bool default_value, const std::string &str);
 	bool str2bool(bool &result, const char *str);
 	bool str2bool(bool &result, const std::string &str);
+
+// convert bool to string
+	const char *bool2str(bool value);
 
 // convert byte to hex string
 	const char *bin2hex(const uint8_t byte, bool flag_up = false);
