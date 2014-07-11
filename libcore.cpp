@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.3.6
+// 0.3.7
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #define _LARGE_FILE_API
@@ -1175,46 +1175,53 @@ bool libcore::str2uint(uint64_t &value, const std::string &str)
 	return libcore::str2uint(value, 0, str.c_str(), str.size());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-bool libcore::str2bool(bool &result, bool default_value, const char *str)
+bool libcore::str2bool(bool &result, bool default_value, const char *pstr)
 {
-	if (strcasecmp(str, "1")    == 0)
+	if (pstr == NULL)
+	{
+		result = default_value;
+		return false;
+	}
+
+
+	if (strcasecmp(pstr, "1")    == 0)
 	{
 		result = true;
 		return true;
 	}
-	if (strcasecmp(str, "t")    == 0)
+	if (strcasecmp(pstr, "t")    == 0)
 	{
 		result = true;
 		return true;
 	}
-	if (strcasecmp(str, "on")   == 0)
+	if (strcasecmp(pstr, "on")   == 0)
 	{
 		result = true;
 		return true;
 	}
-	if (strcasecmp(str, "true") == 0)
+	if (strcasecmp(pstr, "true") == 0)
 	{
 		result = true;
 		return true;
 	}
 
 
-	if (strcasecmp(str, "0")    == 0)
+	if (strcasecmp(pstr, "0")    == 0)
 	{
 		result = false;
 		return true;
 	}
-	if (strcasecmp(str, "f")    == 0)
+	if (strcasecmp(pstr, "f")    == 0)
 	{
 		result = false;
 		return true;
 	}
-	if (strcasecmp(str, "off")   == 0)
+	if (strcasecmp(pstr, "off")   == 0)
 	{
 		result = false;
 		return true;
 	}
-	if (strcasecmp(str, "false") == 0)
+	if (strcasecmp(pstr, "false") == 0)
 	{
 		result = false;
 		return true;
@@ -1230,9 +1237,9 @@ bool libcore::str2bool(bool &result, bool default_value, const std::string &str)
 	return libcore::str2bool(result, default_value, str.c_str());
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-bool libcore::str2bool(bool &result, const char *str)
+bool libcore::str2bool(bool &result, const char *pstr)
 {
-	return libcore::str2bool(result, false, str);
+	return libcore::str2bool(result, false, pstr);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 bool libcore::str2bool(bool &result, const std::string &str)
