@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.3.7
+// 0.3.8
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #define _LARGE_FILE_API
@@ -274,10 +274,9 @@ bool libcore::is_hex(const char *pstr, size_t size, bool flag_prefix)
 	if (size == size_t(-1))
 	{
 		if (*pstr == 0) return false;
-		if ((pstr[0] == '0') && (pstr[1] == 'x'))
+		if ((pstr[1] == 'x') && (pstr[0] == '0'))
 		{
-			pstr++;
-			pstr++;
+			pstr += 2;
 		}
 		else
 		{
@@ -310,12 +309,10 @@ bool libcore::is_hex(const char *pstr, size_t size, bool flag_prefix)
 	}
 	else
 	{
-		if ((size > 1) && (pstr[0] == '0') && (pstr[1] == 'x'))
+		if ((size > 1) && (pstr[1] == 'x') && (pstr[0] == '0'))
 		{
-			pstr++;
-			pstr++;
-			size--;
-			size--;
+			pstr += 2;
+			size -= 2;
 			if (size == 0) return false;
 		}
 		else
@@ -327,8 +324,7 @@ bool libcore::is_hex(const char *pstr, size_t size, bool flag_prefix)
 		}
 
 
-		const char *pstr_end = pstr + size;
-		for (; pstr != pstr_end; pstr++)
+		for (; size != 0; pstr++, size--)
 		{
 			uint8_t ch = *pstr;
 
