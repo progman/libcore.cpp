@@ -1192,6 +1192,54 @@ int find()
 	return 0;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//	bool bin2print(std::string &result, const void *psource, size_t source_size, bool ignore_nonprint = false);
+//	bool bin2print(std::string &result, const std::string &source,               bool ignore_nonprint = false);
+int bin2print()
+{
+	std::string source;
+	std::string target;
+
+
+	source = "hello world\n";
+
+	char addon[2];
+	addon[0] = 1;
+	addon[1] = 0;
+
+	source.append(addon);
+
+
+	target.clear();
+	if (libcore::bin2print(target, source, false) == false)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
+		return -1;
+	}
+
+	if (target != "hello world\\n\\x01")
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "002");
+		return -1;
+	}
+
+
+	target.clear();
+	if (libcore::bin2print(target, source, true) == false)
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
+		return -1;
+	}
+
+	if (target != "hello world\\n.")
+	{
+		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "004");
+		return -1;
+	}
+
+
+	return 0;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 int main(int argc, char *argv[])
 {
 	int rc;
@@ -1333,10 +1381,8 @@ int main(int argc, char *argv[])
 	rc = find();
 	if (rc == -1) return 1;
 
-/*
-	bool bin2print(std::string &result, const void *psource, size_t source_size, bool ignore_nonprint = false);
-	bool bin2print(std::string &result, const std::string &source,               bool ignore_nonprint = false);
-*/
+	rc = bin2print();
+	if (rc == -1) return 1;
 
 
 	return 0;
