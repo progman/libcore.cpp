@@ -592,7 +592,7 @@ int hex2uint()
 	}
 
 	rc = libcore::hex2uint(result, 777, "0");
-	if ((rc != false) || (result != 777))
+	if ((rc == false) || (result != 0))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
 		printf("ERROR[%s()]: result:\"%u\"\n", __FUNCTION__, int(result));
@@ -678,7 +678,7 @@ int hex2sint()
 	}
 
 	rc = libcore::hex2sint(result, 777, "0");
-	if ((rc != false) || (result != 777))
+	if ((rc == false) || (result != 0))
 	{
 		printf("ERROR[%s()]: step%s\n", __FUNCTION__, "003");
 		printf("ERROR[%s()]: result:\"%d\"\n", __FUNCTION__, int(result));

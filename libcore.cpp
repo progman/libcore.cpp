@@ -740,21 +740,14 @@ bool libcore::hex2uint(uint64_t &result, uint64_t default_value, const char *pst
 	}
 
 
-	if (*pstr != '0')
+	if (size > 1)
 	{
-		result = default_value;
-		return false;
+		if ((pstr[0] == '0') && (pstr[1] == 'x'))
+		{
+			pstr += 2;
+			size -= 2;
+		}
 	}
-	pstr++;
-	size--;
-
-	if (*pstr != 'x')
-	{
-		result = default_value;
-		return false;
-	}
-	pstr++;
-	size--;
 
 
 	if (size == 0)
@@ -1126,19 +1119,34 @@ bool libcore::str2uint(uint64_t &value, uint64_t default_value, const char *pstr
 	}
 
 
-	if (libcore::hex2uint(value, default_value, pstr, size) != false)
+	if (is_hex(pstr, size, true) != false) // 0x??
 	{
-		return true;
+		if (libcore::hex2uint(value, default_value, pstr, size) != false)
+		{
+			return true;
+		}
 	}
 
 
-	if (libcore::dec2sint((int64_t &)value, (int64_t &)default_value, pstr, size) != false)
+	if (is_sdec(pstr, size) != false)
 	{
-		return true;
+		if (libcore::dec2sint((int64_t &)value, (int64_t &)default_value, pstr, size) != false)
+		{
+			return true;
+		}
 	}
 
 
-	return libcore::dec2uint(value, default_value, pstr, size);
+	if (is_udec(pstr, size) != false)
+	{
+		if (libcore::dec2uint(value, default_value, pstr, size) != false)
+		{
+			return true;
+		}
+	}
+
+
+	return false;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // convert const char * to uint
