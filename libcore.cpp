@@ -1334,14 +1334,25 @@ size_t libcore::blk_read(int handle, off64_t offset, void *pdata, size_t size)
 
 	for (;;)
 	{
-		size_t rc = ::read(handle, p, cur_size);
-		if (rc == 0) return -1;
-		if (rc == size_t(-1)) return -1;
+		if (cur_size == 0) break;
+
+		ssize_t rc = ::read(handle, p, cur_size);
+
+		if (rc == 0)
+		{
+			return -1;
+		}
+		if (rc == -1)
+		{
+			if (errno == EAGAIN)
+			{
+				continue;
+			}
+			return -1;
+		}
 
 		p += rc;
 		cur_size -= rc;
-
-		if (cur_size == 0) break;
 	}
 
 
@@ -1390,19 +1401,31 @@ size_t libcore::blk_write(int handle, off64_t offset, const void *pdata, size_t 
 // block recv from handle
 size_t libcore::blk_recv(int handle, void *pdata, size_t size)
 {
-	uint8_t *p_cur = (uint8_t *)pdata;
-	size_t count = size;
+	uint8_t *p = (uint8_t *)pdata;
+	size_t cur_size = size;
 
 
 	for (;;)
 	{
-		ssize_t size_cur = ::recv(handle, p_cur, count, MSG_NOSIGNAL);
-		if (size_cur == -1) return -1;
+		if (cur_size == 0) break;
 
-		count -= size_cur;
-		p_cur += size_cur;
+		ssize_t rc = ::recv(handle, p, cur_size, MSG_NOSIGNAL);
 
-		if (count == 0) break;
+		if (rc == 0)
+		{
+			return -1;
+		}
+		if (rc == -1)
+		{
+			if (errno == EAGAIN)
+			{
+				continue;
+			}
+			return -1;
+		}
+
+		p += rc;
+		cur_size -= rc;
 	}
 
 
