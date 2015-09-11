@@ -1255,11 +1255,17 @@ int rnd()
 			uint64_t x = libcore::rnd(0, max);
 			if (x == i) break;
 
-			count++;
-
-			if (count == 10000)
+			if (x == (max + 1))
 			{
 				printf("ERROR[%s()]: step%s\n", __FUNCTION__, "001");
+				return -1;
+			}
+
+			count++;
+
+			if (count == 1000000000)
+			{
+				printf("ERROR[%s()]: step%s\n", __FUNCTION__, "002");
 				return -1;
 			}
 		}
