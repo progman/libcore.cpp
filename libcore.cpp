@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.4.5
+// 0.4.6
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #define _LARGE_FILE_API
@@ -1455,7 +1455,7 @@ size_t libcore::blk_send(int handle, const void *pdata, size_t size)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // get file size
-off64_t libcore::get_size(int handle)
+off64_t libcore::get_file_size(int handle)
 {
 	struct stat my_stat;
 	int rc = ::fstat(handle, &my_stat);
@@ -1468,7 +1468,7 @@ off64_t libcore::get_size(int handle)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // get file size
-off64_t libcore::get_size(const char *pfilename)
+off64_t libcore::get_file_size(const char *pfilename)
 {
 	struct stat my_stat;
 	int rc = ::stat(pfilename, &my_stat);
@@ -1553,7 +1553,7 @@ int libcore::file_get(const char *pfilename, off_t offset, void *pdata, size_t d
 
 
 // get file size
-	size_t size = libcore::get_size(fd);
+	size_t size = libcore::get_file_size(fd);
 	if (size == size_t(-1))
 	{
 		rc = errno;
@@ -1598,7 +1598,7 @@ int libcore::file_get(const char *pfilename, void **pdata, size_t *data_size)
 {
 	int rc;
 
-	size_t size = get_size(pfilename);
+	size_t size = get_file_size(pfilename);
 	if (size == size_t(-1))
 	{
 		return -1;
