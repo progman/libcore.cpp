@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.4.6
+// 0.4.7
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #define _LARGE_FILE_API
@@ -1538,7 +1538,7 @@ int libcore::file_close(int handle, bool flag_sync)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // read data from exist file
-int libcore::file_get(const char *pfilename, off_t offset, void *pdata, size_t data_size)
+int libcore::file_get(const char *pfilename, off64_t offset, void *pdata, size_t data_size)
 {
 	int rc;
 
@@ -1594,7 +1594,7 @@ int libcore::file_get(const char *pfilename, off_t offset, void *pdata, size_t d
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // read data from exist file
-int libcore::file_get(const char *pfilename, void **pdata, size_t *data_size)
+int libcore::file_get(const char *pfilename, off64_t offset, void **pdata, size_t *data_size)
 {
 	int rc;
 
@@ -1610,7 +1610,7 @@ int libcore::file_get(const char *pfilename, void **pdata, size_t *data_size)
 		return -1;
 	}
 
-	rc = libcore::file_get(pfilename, 0, *pdata, size);
+	rc = libcore::file_get(pfilename, offset, *pdata, size);
 	if (rc == -1)
 	{
 		::free(*pdata);
@@ -1623,13 +1623,13 @@ int libcore::file_get(const char *pfilename, void **pdata, size_t *data_size)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // read data from exist file
-int libcore::file_get(const char *pfilename, std::string &data)
+int libcore::file_get(const char *pfilename, off64_t offset, std::string &data)
 {
 	int rc;
 	void *pdata;
 	size_t data_size;
 
-	rc = libcore::file_get(pfilename, &pdata, &data_size);
+	rc = libcore::file_get(pfilename, offset, &pdata, &data_size);
 	if (rc == -1)
 	{
 		return -1;
@@ -1642,7 +1642,7 @@ int libcore::file_get(const char *pfilename, std::string &data)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // write data to exist file
-int libcore::file_set(const char *pfilename, off_t offset, const void *pdata, size_t data_size, bool flag_sync, bool flag_truncate, bool flag_excl)
+int libcore::file_set(const char *pfilename, off64_t offset, const void *pdata, size_t data_size, bool flag_sync, bool flag_truncate, bool flag_excl)
 {
 	int rc;
 
@@ -1679,15 +1679,9 @@ int libcore::file_set(const char *pfilename, off_t offset, const void *pdata, si
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // write data to exist file
-int libcore::file_set(const char *pfilename, off_t offset, const std::string &data, bool flag_sync, bool flag_truncate, bool flag_excl)
+int libcore::file_set(const char *pfilename, off64_t offset, const std::string &data, bool flag_sync, bool flag_truncate, bool flag_excl)
 {
 	return libcore::file_set(pfilename, offset, data.c_str(), data.size(), flag_sync, flag_truncate, flag_excl);
-}
-//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// write data to exist file
-int libcore::file_set(const char *pfilename, const std::string &data, bool flag_sync, bool flag_truncate, bool flag_excl)
-{
-	return libcore::file_set(pfilename, 0, data.c_str(), data.size(), flag_sync, flag_truncate, flag_excl);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // return (concat str1 and str2) or NULL
