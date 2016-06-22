@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.4.4
+// 0.4.5
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #ifndef LIBCORE_HPP_INCLUDE
@@ -312,6 +312,12 @@ namespace libcore
 
 // block send to handle
 	size_t blk_send(int handle, const void *pdata, size_t size);
+
+// get file size
+	off64_t get_size(int handle);
+
+// get file size
+	off64_t get_size(const char *pfilename);
 
 // file open read only
 	int file_open_ro(const char *pfilename);

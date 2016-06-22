@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.4.4
+// 0.4.5
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #define _LARGE_FILE_API
@@ -1454,6 +1454,32 @@ size_t libcore::blk_send(int handle, const void *pdata, size_t size)
 	return size;
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// get file size
+off64_t libcore::get_size(int handle)
+{
+	struct stat my_stat;
+	int rc = ::fstat(handle, &my_stat);
+	if (rc == -1)
+	{
+		return -1;
+	}
+
+	return my_stat.st_size;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+// get file size
+off64_t libcore::get_size(const char *pfilename)
+{
+	struct stat my_stat;
+	int rc = ::stat(pfilename, &my_stat);
+	if (rc == -1)
+	{
+		return -1;
+	}
+
+	return my_stat.st_size;
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // file open read only
 int libcore::file_open_ro(const char *pfilename)
 {
@@ -1527,16 +1553,14 @@ int libcore::file_get(const char *pfilename, off_t offset, void *pdata, size_t d
 
 
 // get file size
-	struct stat my_stat;
-	rc = ::fstat(fd, &my_stat);
-	if (rc == -1)
+	size_t size = libcore::get_size(fd);
+	if (size == size_t(-1))
 	{
 		rc = errno;
 		::close(fd);
 		errno = rc;
 		return -1;
 	}
-	size_t size = my_stat.st_size;
 
 
 // check offset
@@ -1574,27 +1598,26 @@ int libcore::file_get(const char *pfilename, void **pdata, size_t *data_size)
 {
 	int rc;
 
-	struct stat buf;
-	rc = ::stat(pfilename, &buf);
-	if (rc != 0)
+	size_t size = get_size(pfilename);
+	if (size == size_t(-1))
 	{
 		return -1;
 	}
 
-	*pdata = ::malloc(buf.st_size);
+	*pdata = ::malloc(size);
 	if (*pdata == NULL)
 	{
 		return -1;
 	}
 
-	rc = libcore::file_get(pfilename, 0, *pdata, buf.st_size);
+	rc = libcore::file_get(pfilename, 0, *pdata, size);
 	if (rc == -1)
 	{
 		::free(*pdata);
 		*pdata = NULL;
 		return -1;
 	}
-	*data_size = buf.st_size;
+	*data_size = size;
 
 	return 0;
 }
