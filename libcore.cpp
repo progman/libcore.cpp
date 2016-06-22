@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.4.7
+// 0.4.8
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #define _LARGE_FILE_API
@@ -1604,20 +1604,20 @@ int libcore::file_get(const char *pfilename, off64_t offset, void **pdata, size_
 		return -1;
 	}
 
-	*pdata = ::malloc(size);
+	*pdata = ::malloc(size - offset);
 	if (*pdata == NULL)
 	{
 		return -1;
 	}
 
-	rc = libcore::file_get(pfilename, offset, *pdata, size);
+	rc = libcore::file_get(pfilename, offset, *pdata, size - offset);
 	if (rc == -1)
 	{
 		::free(*pdata);
 		*pdata = NULL;
 		return -1;
 	}
-	*data_size = size;
+	*data_size = size - offset;
 
 	return 0;
 }
