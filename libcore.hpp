@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.4.9
+// 0.5.0
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #ifndef LIBCORE_HPP_INCLUDE
@@ -266,31 +266,31 @@ namespace libcore
 	bool dec2uint(uint64_t &result, uint64_t default_value, const char *pstr, size_t size);
 	bool dec2uint(uint64_t &result, uint64_t default_value, const char *pstr);
 	bool dec2uint(uint64_t &result, uint64_t default_value, const std::string &str);
-	bool dec2uint(uint64_t &result, const char *pstr, size_t size);
-	bool dec2uint(uint64_t &result, const char *pstr);
-	bool dec2uint(uint64_t &result, const std::string &str);
+	bool dec2uint(uint64_t &result,                         const char *pstr, size_t size);
+	bool dec2uint(uint64_t &result,                         const char *pstr);
+	bool dec2uint(uint64_t &result,                         const std::string &str);
 
 // convert dec string to sint
 	bool dec2sint(int64_t  &result, int64_t  default_value, const char *pstr, size_t size);
 	bool dec2sint(int64_t  &result, int64_t  default_value, const char *pstr);
 	bool dec2sint(int64_t  &result, int64_t  default_value, const std::string &str);
-	bool dec2sint(int64_t  &result, const char *pstr, size_t size);
-	bool dec2sint(int64_t  &result, const char *pstr);
-	bool dec2sint(int64_t  &result, const std::string &str);
+	bool dec2sint(int64_t  &result,                         const char *pstr, size_t size);
+	bool dec2sint(int64_t  &result,                         const char *pstr);
+	bool dec2sint(int64_t  &result,                         const std::string &str);
 
 // convert string to uint
 	bool str2uint(uint64_t &result, uint64_t default_value, const char *pstr, size_t size);
 	bool str2uint(uint64_t &result, uint64_t default_value, const char *pstr);
 	bool str2uint(uint64_t &result, uint64_t default_value, const std::string &str);
-	bool str2uint(uint64_t &result, const char *pstr, size_t size);
-	bool str2uint(uint64_t &result, const char *pstr);
-	bool str2uint(uint64_t &result, const std::string &str);
+	bool str2uint(uint64_t &result,                         const char *pstr, size_t size);
+	bool str2uint(uint64_t &result,                         const char *pstr);
+	bool str2uint(uint64_t &result,                         const std::string &str);
 
 // convert string to bool
 	bool str2bool(bool &result, bool default_value, const char *pstr);
 	bool str2bool(bool &result, bool default_value, const std::string &str);
-	bool str2bool(bool &result, const char *pstr);
-	bool str2bool(bool &result, const std::string &str);
+	bool str2bool(bool &result,                     const char *pstr);
+	bool str2bool(bool &result,                     const std::string &str);
 
 // convert bool to string
 	const char *bool2str(bool value);
@@ -305,7 +305,7 @@ namespace libcore
 	size_t blk_read(int handle, off64_t offset, void *pdata, size_t size);
 
 // block write to handle
-	size_t blk_write(int handle, off64_t offset, const void *pdata, size_t size, bool flag_sync = false);
+	size_t blk_write(int handle, off64_t offset, const void *pdata, size_t size, bool flag_sync);
 
 // block recv from handle
 	size_t blk_recv(int handle, void *pdata, size_t size);
@@ -323,7 +323,7 @@ namespace libcore
 	int file_open_ro(const char *pfilename);
 
 // file open read/write
-	int file_open_rw(const char *pfilename, bool flag_truncate = false, bool flag_excl = false);
+	int file_open_rw(const char *pfilename, bool flag_sync, bool flag_truncate, bool flag_excl);
 
 // file close
 	int file_close(int handle, bool flag_sync = false);
@@ -334,8 +334,8 @@ namespace libcore
 	int file_get(const char *pfilename, off64_t offset, std::string &data);
 
 // write data to exist file
-	int file_set(const char *pfilename, off64_t offset, const void *pdata, size_t data_size, bool flag_sync = false, bool flag_truncate = false, bool flag_excl = false);
-	int file_set(const char *pfilename, off64_t offset, const std::string &data, bool flag_sync = false, bool flag_truncate = false, bool flag_excl = false);
+	int file_set(const char *pfilename, off64_t offset, const void *pdata, size_t data_size, bool flag_sync, bool flag_truncate, bool flag_excl);
+	int file_set(const char *pfilename, off64_t offset, const std::string &data,             bool flag_sync, bool flag_truncate, bool flag_excl);
 
 // return (concat str1 and str2) or NULL
 	char *concat_str(const char *pstr1, const char *pstr2);

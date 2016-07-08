@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.4.9
+// 0.5.0
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #define _LARGE_FILE_API
@@ -1487,10 +1487,14 @@ int libcore::file_open_ro(const char *pfilename)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // file open read/write
-int libcore::file_open_rw(const char *pfilename, bool flag_truncate, bool flag_excl)
+int libcore::file_open_rw(const char *pfilename, bool flag_sync, bool flag_truncate, bool flag_excl)
 {
 // set open flags
 	int open_flags = O_WRONLY | O_CREAT | O_LARGEFILE;
+	if (flag_sync != false)
+	{
+		flag_sync |= O_SYNC;
+	}
 	if (flag_truncate != false)
 	{
 		open_flags |= O_TRUNC;
@@ -1515,7 +1519,7 @@ int libcore::file_close(int handle, bool flag_sync)
 // fsync file
 	if (flag_sync != false)
 	{
-		rc = ::fdatasync(handle);
+		rc = ::fsync(handle);
 		if (rc == -1)
 		{
 			rc = errno;
@@ -1648,7 +1652,7 @@ int libcore::file_set(const char *pfilename, off64_t offset, const void *pdata, 
 
 
 // open file
-	rc = libcore::file_open_rw(pfilename, flag_truncate, flag_excl);
+	rc = libcore::file_open_rw(pfilename, false, flag_truncate, flag_excl);
 	if (rc == -1)
 	{
 		return -1;
