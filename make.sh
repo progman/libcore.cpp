@@ -29,6 +29,8 @@ function do_it()
 	while read -r LINE;
 	do
 
+		echo >> libcore.hpp;
+		echo >> libcore.hpp;
 		cat "${LINE}" >> libcore.hpp;
 
 	done < "${TMP1}";

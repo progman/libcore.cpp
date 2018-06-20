@@ -1,0 +1,1 @@
+	void rnd_init();
