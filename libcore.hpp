@@ -257,6 +257,14 @@ namespace libcore
 	bool is_hex(const std::string &str, bool flag_prefix = true);
 
 
+/**
+ * check char is control character/non-printing character from ASCII table?
+ * \param[in] ch char
+ * \return flag correct check
+ */
+	bool is_ascii_hide_char(const char ch);
+
+
 // check ipv4 string like '127.0.0.1'
 	bool is_ipaddress(const char *str);
 
@@ -440,14 +448,6 @@ namespace libcore
  * \return flag correct convertion
  */
 	bool uint2str(std::string &result, uint64_t source, uint8_t fill_count = 0, char fill_char = '0', bool flag_plus = false);
-
-
-/**
- * check char is control character/non-printing character from ASCII table?
- * \param[in] ch char
- * \return flag correct check
- */
-	bool is_ascii_hide_char(const char ch);
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #endif
