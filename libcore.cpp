@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.5.5
+// 0.5.6
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // PLEASE DO NOT EDIT !!! THIS FILE IS GENERATED FROM FILES FROM DIR src BY make.sh
@@ -650,14 +650,21 @@ int libcore::file_open_rw(const char *pfilename, bool flag_sync, bool flag_trunc
 {
 // set open flags
 	int open_flags = O_WRONLY | O_CREAT | O_LARGEFILE;
+
 	if (flag_sync != false)
 	{
 		open_flags |= O_SYNC;
 	}
+
 	if (flag_truncate != false)
 	{
 		open_flags |= O_TRUNC;
 	}
+	else
+	{
+		open_flags |= O_APPEND;
+	}
+
 	if (flag_excl != false)
 	{
 		open_flags |= O_EXCL;
@@ -1688,10 +1695,11 @@ bool libcore::is_sint_string_overflow(const char *pstr_min, const char *pstr_max
 /**
  * check whether a string is equivalent to regexp [+]?[0-9]+
  * \param[in] pstr string
- * \param[in] size size string
+ * \param[in] size size string or -1
+ * \param[in] flag_enable_positive_sign enable or disable positive sign
  * \return flag correct check
  */
-bool libcore::is_udec(const char *pstr, size_t size)
+bool libcore::is_udec(const char *pstr, size_t size, bool flag_enable_positive_sign)
 {
 	if (pstr == NULL) return false;
 	if (size == 0) return false;
@@ -1699,9 +1707,12 @@ bool libcore::is_udec(const char *pstr, size_t size)
 
 	if (size == size_t(-1))
 	{
-		if (*pstr == '+')
+		if (flag_enable_positive_sign == true)
 		{
-			pstr++;
+			if (*pstr == '+')
+			{
+				pstr++;
+			}
 		}
 
 
@@ -1731,11 +1742,14 @@ bool libcore::is_udec(const char *pstr, size_t size)
 	}
 	else
 	{
-		if (*pstr == '+')
+		if (flag_enable_positive_sign == true)
 		{
-			pstr++;
-			size--;
-			if (size == 0) return false;
+			if (*pstr == '+')
+			{
+				pstr++;
+				size--;
+				if (size == 0) return false;
+			}
 		}
 
 

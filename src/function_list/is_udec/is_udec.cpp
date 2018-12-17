@@ -2,10 +2,11 @@
 /**
  * check whether a string is equivalent to regexp [+]?[0-9]+
  * \param[in] pstr string
- * \param[in] size size string
+ * \param[in] size size string or -1
+ * \param[in] flag_enable_positive_sign enable or disable positive sign
  * \return flag correct check
  */
-bool libcore::is_udec(const char *pstr, size_t size)
+bool libcore::is_udec(const char *pstr, size_t size, bool flag_enable_positive_sign)
 {
 	if (pstr == NULL) return false;
 	if (size == 0) return false;
@@ -13,9 +14,12 @@ bool libcore::is_udec(const char *pstr, size_t size)
 
 	if (size == size_t(-1))
 	{
-		if (*pstr == '+')
+		if (flag_enable_positive_sign == true)
 		{
-			pstr++;
+			if (*pstr == '+')
+			{
+				pstr++;
+			}
 		}
 
 
@@ -45,11 +49,14 @@ bool libcore::is_udec(const char *pstr, size_t size)
 	}
 	else
 	{
-		if (*pstr == '+')
+		if (flag_enable_positive_sign == true)
 		{
-			pstr++;
-			size--;
-			if (size == 0) return false;
+			if (*pstr == '+')
+			{
+				pstr++;
+				size--;
+				if (size == 0) return false;
+			}
 		}
 
 

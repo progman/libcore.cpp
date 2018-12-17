@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.5.5
+// 0.5.6
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // PLEASE DO NOT EDIT !!! THIS FILE IS GENERATED FROM FILES FROM DIR src BY make.sh
@@ -347,10 +347,11 @@ namespace libcore
 /**
  * check whether a string is equivalent to regexp [+]?[0-9]+
  * \param[in] pstr string
- * \param[in] size size string
+ * \param[in] size size string or -1
+ * \param[in] flag_enable_positive_sign enable or disable positive sign
  * \return flag correct check
  */
-	bool is_udec(const char *pstr, size_t size = size_t(-1));
+	bool is_udec(const char *pstr, size_t size = size_t(-1), bool flag_enable_positive_sign = true);
 
 
 /**
