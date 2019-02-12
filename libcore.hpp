@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.5.6
+// 0.5.7
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // PLEASE DO NOT EDIT !!! THIS FILE IS GENERATED FROM FILES FROM DIR src BY make.sh
@@ -15,6 +15,10 @@ namespace libcore
 
 // convert byte to hex string
 	const char *bin2hex(const uint8_t byte, bool flag_up = false);
+
+
+	void bin2print2(std::string &result, const void *psource, size_t source_size);
+	void bin2print2(std::string &result, const std::string &source);
 
 
 	bool bin2print(std::string &result, const void *psource, size_t source_size, bool ignore_nonprint = false);
@@ -239,6 +243,14 @@ namespace libcore
 
 
 /**
+ * check char is control character/non-printing character from ASCII table?
+ * \param[in] ch char
+ * \return flag correct check
+ */
+	bool is_ascii_hide_char(const char ch);
+
+
+/**
  * check whether a string is equivalent to regexp 0x[0-9a-fA-F]+
  * \param[in] pstr string
  * \param[in] size size string
@@ -255,14 +267,6 @@ namespace libcore
  * \return flag correct check
  */
 	bool is_hex(const std::string &str, bool flag_prefix = true);
-
-
-/**
- * check char is control character/non-printing character from ASCII table?
- * \param[in] ch char
- * \return flag correct check
- */
-	bool is_ascii_hide_char(const char ch);
 
 
 // check ipv4 string like '127.0.0.1'
