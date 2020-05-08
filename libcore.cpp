@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-// 0.5.9
+// 0.6.0
 // Alexey Potehin <gnuplanet@gmail.com>, http://www.gnuplanet.ru/doc/cv
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // PLEASE DO NOT EDIT !!! THIS FILE IS GENERATED FROM FILES FROM DIR src BY make.sh
@@ -1758,6 +1758,7 @@ bool libcore::is_udec(const char *pstr, size_t size, bool flag_enable_positive_s
 {
 	if (pstr == NULL) return false;
 	if (size == 0) return false;
+	char ch;
 
 
 	if (size == size_t(-1))
@@ -1774,7 +1775,7 @@ bool libcore::is_udec(const char *pstr, size_t size, bool flag_enable_positive_s
 		const char *pstr_start = pstr;
 		for (;; pstr++)
 		{
-			char ch = *pstr;
+			ch = *pstr;
 
 			if (ch == 0)
 			{
@@ -1811,7 +1812,7 @@ bool libcore::is_udec(const char *pstr, size_t size, bool flag_enable_positive_s
 		const char *pstr_end = pstr + size;
 		for (; pstr != pstr_end; pstr++)
 		{
-			char ch = *pstr;
+			ch = *pstr;
 
 			if
 			(

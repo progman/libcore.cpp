@@ -22,7 +22,7 @@ STDCPP              ?= -std=c++11
 CC                  ?= gcc
 CXX                 ?= g++
 LN                  ?= g++
-TST                 ?= clang
+TST                 ?= g++-10
 STRIP               := strip --strip-unneeded -R .comment -R .GCC.command.line -R .note.gnu.gold-version
 AR                  := ar rsc
 RM                  := rm -rf
@@ -36,7 +36,7 @@ FLAGS               := -pedantic -Wall -Wextra -Wno-long-long -Wunused -pipe -ma
 
 FLAGS_DBG           := $(FLAGS) -O0 -g3 -ggdb -pg -fmax-errors=3 -fstack-protector-all
 FLAGS_REL           := $(FLAGS) -O3 -g0           -fmax-errors=3 -funroll-all-loops
-FLAGS_TST           := $(FLAGS) -O3 -g0                          --analyze -fsanitize=address -fsanitize=bounds
+FLAGS_TST           := $(FLAGS) -O3 -g0                          -fanalyzer
 
 CFLAGS_DBG          := $(FLAGS_DBG) $(CFLAGS)   $(STDC)
 CFLAGS_REL          := $(FLAGS_REL) $(CFLAGS)   $(STDC)
